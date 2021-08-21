@@ -25,6 +25,15 @@ class LoginPage extends StatefulWidget {
 
 
 class _LoginPageState extends State<LoginPage> {
+  final usernameController = TextEditingController();
+  final pwdController = TextEditingController();
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    pwdController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +42,24 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Column(
         children: [
+          Container(
+            height: 350,
+            width: 350,
+            padding: EdgeInsets.only(top: 40),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(200),
+            ),
+            child: Center(
+              child: Image.asset(
+                'images/logo.png',
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+          ),
           Padding(
             padding: EdgeInsets.all(10),
             child: TextField(
+              controller: usernameController,
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'User Name',
@@ -45,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: EdgeInsets.all(10),
             child: TextField(
+              controller: pwdController,
               obscureText: true,
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -68,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.blue, borderRadius: BorderRadius.circular(20)),
             child: TextButton(
               onPressed: () {
-                signup("frozencoconut0@gmail.com", "hunter12");
+                signup(usernameController.text, pwdController.text);
               },
               child: Text(
                 'Signup',
