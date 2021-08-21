@@ -7,6 +7,8 @@ import 'login.dart';
 FirebaseAuth auth = FirebaseAuth.instance;
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   FirebaseAuth.instance
       .authStateChanges()
       .listen((User? user) {
@@ -16,8 +18,6 @@ Future<void> main() async {
       print('User is signed in!');
     }
   });
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
