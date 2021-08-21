@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1070637374753",
+    "firebase_url": "https://wanderlist-e423e-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "wanderlist-e423e",
+    "storage_bucket": "wanderlist-e423e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070637374753:android:c6d43582ed7bf3a42e3260",
+        "android_client_info": {
+          "package_name": "dev.flutter.application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070637374753-garjds5aoh469nnmba32im13tsadvdph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBG6q-nSw3IMyuS7MrHbPpLJarm1wUKKyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070637374753-garjds5aoh469nnmba32im13tsadvdph.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
