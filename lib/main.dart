@@ -30,8 +30,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      //home: MyHomePage(title: 'WanderList'),
-      home: LoginPage(),
+      home: MyHomePage(title: 'WanderList'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -47,6 +46,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
+
+  void checkSignedIn() {
+    if (true || FirebaseAuth.instance.currentUser == null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage()
+          )
+      );
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -66,9 +77,34 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                child: Text(
-                  "Cairns",
-                  style: TextStyle(fontFamily: 'RobotoMono'),
+                child: TextButton(
+                  child: Text(
+                    "Sign in",
+                    style: TextStyle(fontFamily: 'RobotoMono'),
+                  ),
+                  onPressed: () {
+                    checkSignedIn();
+                  },
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: (Colors.grey[500])!,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                child: TextButton(
+                  child: Text(
+                    "Sign out",
+                    style: TextStyle(fontFamily: 'RobotoMono'),
+                  ),
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                  },
                 ),
               ),
             )

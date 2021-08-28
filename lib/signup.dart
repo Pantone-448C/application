@@ -162,6 +162,7 @@ class _SignupPasswordPageState extends State<SignupPasswordPage> {
     } catch (e) {
       print(e);
     }
+    Navigator.pop(context);
   }
 
   @override

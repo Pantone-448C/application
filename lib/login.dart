@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         print('Wrong password provided for that user.');
       } else {
         setState(() {
-          errorMessage = "Unhandled error";
+          errorMessage = e.code;
         });
       }
     }
