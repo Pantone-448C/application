@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
           email: email.text,
           password: password.text,
       );
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         setState(() {
