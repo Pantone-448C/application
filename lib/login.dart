@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'signup.dart';
@@ -10,13 +11,35 @@ class LoginPage extends StatefulWidget {
 
 
 class _LoginPageState extends State<LoginPage> {
-  final usernameController = TextEditingController();
-  final pwdController = TextEditingController();
+  final email = TextEditingController();
+  final password = TextEditingController();
+  var errorMessage = "test";
+
+  void login() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email.text,
+          password: password.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email') {
+        setState(() {
+          errorMessage = "No user found for that email.";
+        });
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      } else {
+        setState(() {
+          errorMessage = "Unhandled error";
+        });
+      }
+    }
+  }
 
   @override
   void dispose() {
-    usernameController.dispose();
-    pwdController.dispose();
+    email.dispose();
+    password.dispose();
     super.dispose();
   }
   @override
@@ -47,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: EdgeInsets.all(10),
             child: TextField(
-              controller: usernameController,
+              controller: email,
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'User Name',
@@ -57,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: EdgeInsets.all(10),
             child: TextField(
-              controller: pwdController,
+              controller: password,
               obscureText: true,
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -85,12 +108,26 @@ class _LoginPageState extends State<LoginPage> {
             decoration: BoxDecoration(
                 color: Colors.blue, borderRadius: BorderRadius.circular(20)),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                login();
+              },
               child: Text(
                 'Login',
                 style: TextStyle(color: Colors.white, fontSize: 25),
               ),
             ),
+          ),
+          Container(
+            height: 50,
+            width: 250,
+            child: Center(
+              child: Text(
+                errorMessage,
+                style: TextStyle(
+                  color: Colors.red,
+                )
+              ),
+            )
           ),
         ],
       ),
