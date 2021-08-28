@@ -1,11 +1,6 @@
 # WanderList Application
 This is the repository that stores the application code for WanderList, being built out by Pantone 448C.
 
-## Dependencies
-Install dependencies
-```bash
-flutter pub get
-```
 ## Running the application
 
 ### Installation
@@ -13,7 +8,11 @@ Note that this requires the `flutter` command line utility to be installed.
 ```bash
 git clone https://www.github.com/Pantone-448C/application.git && cd application
 ```
-TODO package installation instructions
+#### Dependencies
+Install dependencies
+```bash
+flutter pub get
+```
 
 #### IDE
 The easiest way to now get this running is through an IDE like Android Studio or VSCode (with plugins).
