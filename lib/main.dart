@@ -1,6 +1,23 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'login.dart';
+
+FirebaseAuth auth = FirebaseAuth.instance;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseAuth.instance
+      .authStateChanges()
+      .listen((User? user) {
+    if (user == null) {
+      print('User is currently signed out!');
+    } else {
+      print('User is signed in!');
+    }
+  });
   runApp(MyApp());
 }
 
@@ -29,12 +46,23 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
+
+  void checkSignedIn() {
+    if (true || FirebaseAuth.instance.currentUser == null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage()
+          )
+      );
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         centerTitle: true,
-        backgroundColor: (Colors.grey)!,
       ),
       body: Center(
         child: Column(
@@ -49,9 +77,34 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                child: Text(
-                  "Cairns",
-                  style: TextStyle(fontFamily: 'RobotoMono'),
+                child: TextButton(
+                  child: Text(
+                    "Sign in",
+                    style: TextStyle(fontFamily: 'RobotoMono'),
+                  ),
+                  onPressed: () {
+                    checkSignedIn();
+                  },
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: (Colors.grey[500])!,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                child: TextButton(
+                  child: Text(
+                    "Sign out",
+                    style: TextStyle(fontFamily: 'RobotoMono'),
+                  ),
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                  },
                 ),
               ),
             )

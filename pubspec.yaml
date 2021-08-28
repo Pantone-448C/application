@@ -23,6 +23,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  firebase_core: ^1.5.0
+  cloud_firestore: ^2.5.0
+  firebase_auth: ^3.0.2
+  firebase_analytics: ^5.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -38,7 +42,12 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
+  fonts:
+    - family: pacifico
+      fonts:
+        - asset: assets/fonts/Pacifico-Regular.ttf
+  assets:
+    - assets/images/logo.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

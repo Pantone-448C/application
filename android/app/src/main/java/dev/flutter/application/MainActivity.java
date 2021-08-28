@@ -1,4 +1,4 @@
-package dev.flutter.application;
+package dev.flutter.wanderlist;
 
 import io.flutter.embedding.android.FlutterActivity;
 
