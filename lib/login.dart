@@ -13,7 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final email = TextEditingController();
   final password = TextEditingController();
-  var errorMessage = "test";
+  var errorMessage = "";
 
   void login() async {
     try {
@@ -44,6 +44,10 @@ class _LoginPageState extends State<LoginPage> {
   }
   @override
   Widget build(BuildContext context) {
+    var logoHeight = 350.0;
+    if (MediaQuery.of(context).viewInsets.bottom > 0) {
+      logoHeight = 0.0;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
@@ -51,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Column(
         children: [
           Container(
-            height: 350,
+            height: logoHeight,
             width: 350,
             padding: EdgeInsets.only(top: 40),
             decoration: BoxDecoration(
