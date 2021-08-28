@@ -1,22 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-Future<void> signup(String email, String password) async {
-  try {
-    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password
-    );
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'weak-password') {
-      print('The password provided is too weak.');
-    } else if (e.code == 'email-already-in-use') {
-      print('The account already exists for that email.');
-    }
-  } catch (e) {
-    print(e);
-  }
-}
+import 'signup.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -50,10 +35,13 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius: BorderRadius.circular(200),
             ),
             child: Center(
-              child: Image.asset(
-                'images/logo.png',
-                fit: BoxFit.fitWidth,
-              ),
+              child: Text(
+                "wanderlist",
+                style: TextStyle(
+                  fontFamily: 'Pacifico',
+                  fontSize: 40,
+                )
+              )
             ),
           ),
           Padding(
@@ -78,11 +66,16 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           TextButton(
-            onPressed: (){
-              //TODO FORGOT PASSWORD SCREEN GOES HERE
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SignupPage()
+                )
+              );
             },
             child: Text(
-              'Forgot Password',
+              'Sign up',
               style: TextStyle(color: Colors.blue, fontSize: 15),
             ),
           ),
@@ -92,11 +85,9 @@ class _LoginPageState extends State<LoginPage> {
             decoration: BoxDecoration(
                 color: Colors.blue, borderRadius: BorderRadius.circular(20)),
             child: TextButton(
-              onPressed: () {
-                signup(usernameController.text, pwdController.text);
-              },
+              onPressed: () {},
               child: Text(
-                'Signup',
+                'Login',
                 style: TextStyle(color: Colors.white, fontSize: 25),
               ),
             ),
