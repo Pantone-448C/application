@@ -1,9 +1,12 @@
+import 'package:application/colors.dart';
+import 'package:application/titlebar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'login.dart';
 import 'navbar.dart';
+import 'titlebar.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -61,10 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-      ),
+      backgroundColor: WanderlistColors.offWhite,
+      appBar: Titlebar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

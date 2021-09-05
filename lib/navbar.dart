@@ -21,8 +21,8 @@ class _NavbarState extends State<Navbar> {
       type: BottomNavigationBarType.fixed, /* No switching animation */
       showSelectedLabels: false, /* Remove labels */
       showUnselectedLabels: false,
-      selectedItemColor: WanderlistColors.Pink,
-      unselectedItemColor: WanderlistColors.Grey,
+      selectedItemColor: WanderlistColors.pink,
+      unselectedItemColor: WanderlistColors.grey,
       items: [
         BottomNavigationBarItem(
           label: "Home",
