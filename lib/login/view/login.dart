@@ -2,6 +2,7 @@ import 'package:application/login/cubit/login_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import 'signup.dart';
 
@@ -15,10 +16,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    var logoHeight = 350.0;
-    if (MediaQuery.of(context).viewInsets.bottom > 0) {
-      logoHeight = 0.0;
-    }
+    //var logoHeight = 350.0;
+    //if (MediaQuery.of(context).viewInsets.bottom > 0) {
+    //  logoHeight = 0.0;
+    //}
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
@@ -37,17 +38,53 @@ class _LoginPageState extends State<LoginPage> {
 
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({Key? key}) : super(key: key);
+  static const logoHeight = 200.0;
+  static const horizontalInset = 30.0;
+  static const fontSize = 40.0;
+
+
+  LoginForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    var actualLogoHeight;
+    if (MediaQuery.of(context).viewInsets.bottom > 0) {
+      actualLogoHeight = 0;
+    } else {
+      actualLogoHeight = logoHeight;
+    }
+
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
       },
       child: Column(
         children: [
-          _EmailInput(),
-          _PasswordInput(),
+          Container(
+            height: actualLogoHeight,
+            alignment: Alignment.center,
+            child: Text(
+              "wanderlist",
+              style: TextStyle(
+                fontFamily: "Pacifico",
+                fontSize: fontSize,
+              )
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              left: horizontalInset,
+              right: horizontalInset,
+            ),
+            child: _EmailInput(),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+                left: horizontalInset,
+                right: horizontalInset,
+            ),
+            child: _PasswordInput(),
+          ),
           _LoginButton(),
         ],
       ),
@@ -55,6 +92,19 @@ class LoginForm extends StatelessWidget {
   }
 }
 
+
+InputDecoration inputDecoration(String label) {
+  const roundedness = 10.0;
+  return InputDecoration(
+    border: OutlineInputBorder(
+        borderRadius: const BorderRadius.all(
+          const Radius.circular(roundedness),
+        )
+    ),
+    labelText: label,
+    helperText: '',
+  );
+}
 
 
 class _EmailInput extends StatelessWidget {
@@ -64,13 +114,9 @@ class _EmailInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
-          key: const Key('loginForm_emailInput_textField'),
           onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
           keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            labelText: 'email',
-            helperText: '',
-          ),
+          decoration: inputDecoration('Email'),
         );
       },
     );
@@ -87,10 +133,7 @@ class _PasswordInput extends StatelessWidget {
           onChanged: (password) =>
               context.read<LoginCubit>().passwordChanged(password),
           obscureText: true,
-          decoration: InputDecoration(
-            labelText: 'password',
-            helperText: '',
-          ),
+          decoration: inputDecoration('Password'),
         );
       },
     );
