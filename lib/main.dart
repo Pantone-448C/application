@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'login.dart';
+import 'navbar.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -111,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: Navbar(),
     );
   }
 }
