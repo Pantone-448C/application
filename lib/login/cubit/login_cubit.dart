@@ -13,6 +13,18 @@ class LoginCubit extends Cubit<LoginState> {
     ));
   }
 
+  void selectInput() {
+    emit(state.copyWith(
+      isKeyboardOpen: true,
+    ));
+  }
+
+  void deSelectInput() {
+    emit(state.copyWith(
+      isKeyboardOpen: false,
+    ));
+  }
+
   void passwordChanged(String value) {
     emit(state.copyWith(
       password: value,

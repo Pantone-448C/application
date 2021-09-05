@@ -38,41 +38,21 @@ class _LoginPageState extends State<LoginPage> {
 
 
 class LoginForm extends StatelessWidget {
-  static const logoHeight = 200.0;
   static const horizontalInset = 30.0;
-  static const fontSize = 40.0;
-
-
+  static const topInset = 50.0;
   LoginForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-    var actualLogoHeight;
-    if (MediaQuery.of(context).viewInsets.bottom > 0) {
-      actualLogoHeight = 0;
-    } else {
-      actualLogoHeight = logoHeight;
-    }
-
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
       },
       child: Column(
         children: [
-          Container(
-            height: actualLogoHeight,
-            alignment: Alignment.center,
-            child: Text(
-              "wanderlist",
-              style: TextStyle(
-                fontFamily: "Pacifico",
-                fontSize: fontSize,
-              )
-            ),
-          ),
+          Logo(),
           Padding(
             padding: EdgeInsets.only(
+              top: topInset,
               left: horizontalInset,
               right: horizontalInset,
             ),
@@ -107,6 +87,31 @@ InputDecoration inputDecoration(String label) {
 }
 
 
+class Logo extends StatelessWidget {
+  static const height = 200.0;
+  static const fontSize = 40.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyboardVisibilityBuilder(
+      builder: (context, isKeyboardVisible) {
+        return Container(
+          height: isKeyboardVisible ? 0 : height,
+          alignment: Alignment.center,
+          child: Text(
+              "wanderlist",
+              style: TextStyle(
+                fontFamily: "Pacifico",
+                fontSize: fontSize,
+              )
+          ),
+        );
+      }
+    );
+  }
+}
+
+
 class _EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -115,6 +120,8 @@ class _EmailInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
+          onTap: () => context.read<LoginCubit>().selectInput(),
+          onEditingComplete: () => context.read<LoginCubit>().deSelectInput(),
           keyboardType: TextInputType.emailAddress,
           decoration: inputDecoration('Email'),
         );
