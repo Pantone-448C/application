@@ -13,7 +13,7 @@ class Titlebar extends StatelessWidget implements PreferredSizeWidget {
     /* Transparent status bar on android -- not sure about apple */
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: WanderlistColors.offWhite,
+        statusBarColor: WanderlistColors.white,
         statusBarIconBrightness: Brightness.dark,
       )
     );
@@ -29,7 +29,7 @@ class Titlebar extends StatelessWidget implements PreferredSizeWidget {
               fontSize: titleSize,
             )
           ),
-          backgroundColor: WanderlistColors.offWhite,
+          backgroundColor: WanderlistColors.white,
           elevation: 0,
         )
       ),
