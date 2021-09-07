@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:application/sizeconfig.dart';
+import 'package:application/apptheme.dart';
 
 import 'signup.dart';
 
@@ -67,13 +68,10 @@ class _LoginPageState extends State<LoginPage> {
             child: Center(
               child: Text(
                 "wanderlist",
-                style: TextStyle(
-                  fontFamily: 'Pacifico',
-                  fontSize: 40,
+                style: theme.text.logo,
                 )
               )
             ),
-          ),
           Padding(
             padding: EdgeInsets.all(10),
             child: TextField(
@@ -106,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
             },
             child: Text(
               'Sign up',
-              style: TextStyle(color: Colors.blue, fontSize: 15),
+              style: theme.text.signupButton,
             ),
           ),
           Container(
@@ -120,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Text(
                 'Login',
-                style: TextStyle(color: Colors.white, fontSize: 25),
+                style: theme.text.loginButton,
               ),
             ),
           ),
@@ -130,9 +128,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Center(
               child: Text(
                 errorMessage,
-                style: TextStyle(
-                  color: Colors.red,
-                )
+                style: theme.text.errorLabel
               ),
             )
           ),

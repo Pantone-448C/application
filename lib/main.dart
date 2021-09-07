@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'WanderLists',
-      theme: theme,
+      theme: theme.materialTheme,
       home: MyHomePage(title: 'WanderList'),
       debugShowCheckedModeBanner: false,
     );
