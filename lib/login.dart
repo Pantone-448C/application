@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:application/sizeconfig.dart';
 
 import 'signup.dart';
 
@@ -45,7 +46,8 @@ class _LoginPageState extends State<LoginPage> {
   }
   @override
   Widget build(BuildContext context) {
-    var logoHeight = 350.0;
+    var sz = SizeConfig(context);
+    var logoHeight = sz.hPc * 33;
     if (MediaQuery.of(context).viewInsets.bottom > 0) {
       logoHeight = 0.0;
     }
@@ -53,11 +55,11 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: Text("Login"),
       ),
-      body: Column(
+      body: Column (
         children: [
           Container(
             height: logoHeight,
-            width: 350,
+            width: sz.wPc * 70,
             padding: EdgeInsets.only(top: 40),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(200),
@@ -109,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Container(
             height: 50,
-            width: 250,
+            width: sz.wPc * 70,
             decoration: BoxDecoration(
                 color: Colors.blue, borderRadius: BorderRadius.circular(20)),
             child: TextButton(
