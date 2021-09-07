@@ -1,17 +1,17 @@
 import 'package:flutter/widgets.dart';
 
 class SizeConfig {
-  static late MediaQueryData _mediaQueryData;
-  static late double w;
-  static late double h;
-  static late double hPc;
-  static late double vPc;
+  late MediaQueryData _mediaQueryData;
+  late double w;
+  late double h;
+  late double wPc;
+  late double hPc;
 
   SizeConfig(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context);
     w = _mediaQueryData.size.width;
     h = _mediaQueryData.size.height;
-    hPc = w / 100;
-    vPc = h / 100;
+    hPc = h / 100;
+    wPc = w / 100;
   }
 }
