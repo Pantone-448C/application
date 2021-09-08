@@ -14,7 +14,7 @@ class TripCubit extends Cubit<TripState> {
     // this is just a fake async call for testing.
     emit(TripLoading());
     await Future.delayed(Duration(seconds: 2));
-    emit(TripLoaded(3, 66, 1129, wanderlists));
+    emit(TripLoaded("Brisbane", 3, 66, 1129, wanderlists));
   }
 }
 
