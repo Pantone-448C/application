@@ -13,9 +13,10 @@ class TripLoading implements TripState {
 }
 
 class TripLoaded extends Equatable implements TripState {
-  const TripLoaded(this.numWanderlists, this.percentageComplete, this.points,
-      this.wanderlists);
+  const TripLoaded(this.name, this.numWanderlists, this.percentageComplete,
+      this.points, this.wanderlists);
 
+  final String name;
   final int numWanderlists;
   final int percentageComplete;
   final int points;
@@ -26,11 +27,13 @@ class TripLoaded extends Equatable implements TripState {
       [numWanderlists, percentageComplete, points, wanderlists];
 
   TripLoaded copyWith(
-      {int? numWanderlists,
+      {String? name,
+      int? numWanderlists,
       int? percentageComplete,
       int? points,
       List<UserWanderlist>? wanderlists}) {
     return TripLoaded(
+        name ?? this.name,
         numWanderlists ?? this.numWanderlists,
         percentageComplete ?? this.percentageComplete,
         points ?? this.points,
