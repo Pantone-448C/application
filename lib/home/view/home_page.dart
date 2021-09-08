@@ -1,4 +1,5 @@
 import 'package:application/home/cubit/trip_cubit.dart';
+import 'package:application/home/widgets/wanderlists_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,9 +51,7 @@ class _Wanderlists extends StatelessWidget {
     return BlocConsumer<TripCubit, TripState>(
       listener: (context, state) {},
       builder: (context, state) {
-        return Container(
-            // TODO: Implement _Wanderlists widgets
-            );
+        return Container();
       },
     );
   }
