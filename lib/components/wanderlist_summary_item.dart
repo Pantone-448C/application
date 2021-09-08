@@ -1,4 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class GetListSummary extends StatelessWidget {
+  final String activity;
+
+  GetListSummary(this.activity);
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference activities = FirebaseFirestore.instance.collection('wanderlists');
+
+    return FutureBuilder<DocumentSnapshot>(
+      future: activities.doc(activity).get(),
+
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return Text("Document does not exist");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+
+          return WanderlistSummaryItem(
+            listName: data['name'],
+            authorName: data['author'],
+            numTotalItems: data['activities'].length,
+            numCompletedItems: data['numComplete'],
+            imageUrl: data['icon']
+          );
+          return Text("Full Name: ${data['full_name']} ${data['last_name']}");
+        }
+
+        return Text("loading");
+      },
+    );
+  }
+}
 
 class WanderlistSummaryItem extends StatelessWidget {
   final double width;
