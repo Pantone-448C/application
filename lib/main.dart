@@ -68,50 +68,53 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: WanderlistColors.offWhite,
       appBar: Titlebar(),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+          ),
           children: <Widget>[
             Container(child: HomePage()),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: (Colors.grey[500])!,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                child: TextButton(
-                  child: Text(
-                    "Sign in",
-                    style: TextStyle(fontFamily: 'RobotoMono'),
-                  ),
-                  onPressed: () {
-                    checkSignedIn();
-                  },
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: (Colors.grey[500])!,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                child: TextButton(
-                  child: Text(
-                    "Sign out",
-                    style: TextStyle(fontFamily: 'RobotoMono'),
-                  ),
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
-                  },
-                ),
-              ),
-            )
+            //Container(
+            //  decoration: BoxDecoration(
+            //    border: Border.all(
+            //      color: (Colors.grey[500])!,
+            //    ),
+            //    borderRadius: BorderRadius.all(Radius.circular(40)),
+            //  ),
+            //  child: Padding(
+            //    padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+            //    child: TextButton(
+            //      child: Text(
+            //        "Sign in",
+            //        style: TextStyle(fontFamily: 'RobotoMono'),
+            //      ),
+            //      onPressed: () {
+            //        checkSignedIn();
+            //      },
+            //    ),
+            //  ),
+            //),
+            //Container(
+            //  decoration: BoxDecoration(
+            //    border: Border.all(
+            //      color: (Colors.grey[500])!,
+            //    ),
+            //    borderRadius: BorderRadius.all(Radius.circular(40)),
+            //  ),
+            //  child: Padding(
+            //    padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+            //    child: TextButton(
+            //      child: Text(
+            //        "Sign out",
+            //        style: TextStyle(fontFamily: 'RobotoMono'),
+            //      ),
+            //      onPressed: () {
+            //        FirebaseAuth.instance.signOut();
+            //      },
+            //    ),
+            //  ),
+            //)
           ],
         ),
       ),

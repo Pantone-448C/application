@@ -12,13 +12,15 @@ class HomePage extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    double tripInfoHeight = 120;
+    double tripInfoHeight = 130;
     double wanderlistHeight = height - tripInfoHeight;
 
     return BlocProvider(
       create: (context) => TripCubit(),
       child: Column(children: [
-        Container(child: _TripInfo(width, tripInfoHeight)),
+        Container(
+          padding: EdgeInsets.only(top: 30, bottom: 15),
+          child: _TripInfo(width, tripInfoHeight)),
         Container(child: _NextRewardsInfo()),
         Container(child: _Wanderlists(width, wanderlistHeight)),
       ]),
