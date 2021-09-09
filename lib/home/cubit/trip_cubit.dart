@@ -1,5 +1,7 @@
 import 'package:application/models/activity.dart';
+import 'package:application/models/user.dart';
 import 'package:application/models/wanderlist.dart';
+import 'package:application/repositories/user_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,8 +18,9 @@ class TripCubit extends Cubit<TripState> {
     // TODO: Implement properly after implementing basic repository pattern
     // this is just a fake async call for testing.
     emit(TripLoading());
+    UserDetails user = await UserRepository().getThisUserData();
     await Future.delayed(Duration(seconds: 2));
-    emit(TripLoaded("Brisbane", 3, 66, 1129, wanderlists, "Joe"));
+    emit(TripLoaded("Brisbane", 3, 66, 1129, wanderlists, user.firstName));
   }
 }
 
