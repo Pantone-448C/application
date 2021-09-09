@@ -28,9 +28,9 @@ class TripInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-                flex: 15,
-                child: _Details(this.name, this.numWanderlists,
-                    this.percentageComplete, this.points)),
+              flex: 15,
+              child: _Details(this.name, this.numWanderlists,
+                this.percentageComplete, this.points)),
             Spacer(flex: 1),
             Expanded(flex: 1, child: _ProgressBar(this.percentageComplete))
           ],
@@ -50,15 +50,21 @@ class _Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
           Expanded(
-              flex: 4,
-              child: _LeftDetails(this.name, this.numWanderlists, this.points)),
-          Expanded(flex: 1, child: _RightDetails(this.percentageComplete))
-        ]));
+            flex: 40,
+            child: _LeftDetails(this.name, this.numWanderlists, this.points)
+          ),
+          Expanded(
+            flex: 14,
+            child: _RightDetails(this.percentageComplete)
+          ),
+        ]
+      )
+    );
   }
 }
 
@@ -85,13 +91,16 @@ class _LeftDetails extends StatelessWidget {
         ]),
         Row(children: [
           Expanded(
-              flex: 4, child: _BigSmallText(this.points.toString(), " points")),
+            flex: 4, child: _BigSmallText(this.points.toString(), " points")
+          ),
           Spacer(flex: 1),
           Expanded(
-              flex: 4,
-              child: _BigSmallText(
-                  this.numWanderlists.toString(), " wanderlists")),
-          Spacer(flex: 4)
+            flex: 4,
+            child: _BigSmallText(
+              this.numWanderlists.toString(), " wanderlists"
+            )
+          ),
+          Spacer(flex: 3),
         ])
       ],
     ));
