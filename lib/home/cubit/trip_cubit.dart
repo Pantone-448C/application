@@ -7,7 +7,10 @@ part 'trip_state.dart';
 
 class TripCubit extends Cubit<TripState> {
   // TODO: Add a parameter to here after the repository pattern is implemented
-  TripCubit() : super(TripInitial());
+  TripCubit() : super(TripInitial()) {
+    emit(TripInitial());
+    getTripInfo();
+  }
 
   Future<void> getTripInfo() async {
     // TODO: Implement properly after implementing basic repository pattern
