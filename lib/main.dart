@@ -46,7 +46,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
-
   void checkSignedIn() {
     if (true || FirebaseAuth.instance.currentUser == null) {
       Navigator.push(
