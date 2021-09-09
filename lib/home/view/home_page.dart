@@ -18,12 +18,33 @@ class HomePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => TripCubit(),
       child: Column(children: [
+        Container(padding: EdgeInsets.only(top: 50), child:_HelloMessage()),
         Container(
           padding: EdgeInsets.only(top: 30, bottom: 15),
           child: _TripInfo(width, tripInfoHeight)),
         Container(child: _NextRewardsInfo()),
         Container(child: _Wanderlists(width, wanderlistHeight)),
       ]),
+    );
+  }
+}
+
+class _HelloMessage extends StatelessWidget {
+  final String name = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<TripCubit, TripState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        if (state is TripLoaded) {
+          return Text(
+            "Hello, " + state.firstName,
+          );
+        } else {
+          return Container();
+        }
+      }
     );
   }
 }
