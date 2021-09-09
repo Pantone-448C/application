@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:application/apptheme.dart';
 
 import 'login.dart';
 
@@ -27,9 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'WanderLists',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: theme.materialTheme,
       home: MyHomePage(title: 'WanderList'),
       debugShowCheckedModeBanner: false,
     );
@@ -79,7 +78,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: TextButton(
                   child: Text(
                     "Sign in",
-                    style: TextStyle(fontFamily: 'RobotoMono'),
                   ),
                   onPressed: () {
                     checkSignedIn();
@@ -99,7 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: TextButton(
                   child: Text(
                     "Sign out",
-                    style: TextStyle(fontFamily: 'RobotoMono'),
                   ),
                   onPressed: () {
                     FirebaseAuth.instance.signOut();
