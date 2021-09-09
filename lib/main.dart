@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'home/view/home_page.dart';
 import 'login.dart';
 import 'navbar.dart';
 import 'titlebar.dart';
@@ -70,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(child: HomePage()),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
