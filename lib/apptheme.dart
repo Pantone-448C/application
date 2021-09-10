@@ -17,7 +17,10 @@ class WanTextTheme {
         color: Colors.red
     );
 
-    var loginButton = TextStyle(color: Colors.white, fontSize: 25);
+    var cardTitle = TextStyle(fontSize: 18);
+    var cardBody = TextStyle(color: Color(0x999999),fontSize: 12);
+
+    var loginButton = TextStyle(color: Colors.white, fontSize: 25, );
 
     var signupButton = TextStyle(color: Colors.blue, fontSize: 15);
 }
@@ -31,14 +34,16 @@ class WanTheme {
             headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
             headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
 
+            headline4: TextStyle(fontSize: 18.0, color: Colors.black),
+
             //subtitle1: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
             //subtitle2: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
             button : TextStyle(fontSize: 14),
-            caption: TextStyle(fontSize: 14, fontWeight: FontWeight.w200),
+            caption: TextStyle(fontSize: 12),
 
             bodyText1: TextStyle(fontSize: 14.0),
             // ...
-            bodyText2: TextStyle(fontSize: 14.0),
+            bodyText2: TextStyle(fontSize: 12.0, color: Colors.grey),
         ),
     );
 
