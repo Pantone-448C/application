@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:application/apptheme.dart';
 
+import 'components/activity_summary_item_large.dart';
+import 'components/activity_summary_item_small.dart';
 import 'login.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -66,6 +68,29 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container (
+              child: Wrap (
+                spacing: 10,
+                runSpacing: 10,
+                children: <Widget> [
+                  ActivitySummaryItemSmall (
+                    activityName: "Fun Activity",
+                    activityDescription: "Go do a fun thidslkajfhasdlkjk ad a sdlakjsdlas jdlkasj dlkasjdlkajs dlka sjdlk asjldjaslkjds akldjaslkd jalksdj kals dlaj:wsldk a sald jalksj ldlakjfh dlkfj dlfjhbs lkjdhang",
+                    imageUrl: "https://topost.net/deco/media/img0.png",
+                  ),
+                  ActivitySummaryItemLarge (
+                    activityName: "Fun Activity",
+                    activityDescription: "Go do a fun thidslkajfhasdlkjk ad a sdlakjsdlas jdlkasj dlkasjdlkajs dlka sjdlk asjldjaslkjds akldjaslkd jalksdj kals dlaj:wsldk a sald jalksj ldlakjfh dlkfj dlfjhbs lkjdhang",
+                    imageUrl: "https://topost.net/deco/media/img0.png",
+                  ),
+                  ActivitySummaryItemSmall (
+                    activityName: "Fun Activity",
+                    activityDescription: "Go do a fun thing",
+                    imageUrl: "https://topost.net/deco/media/img0.png",
+                  ),
+                ]
+              ),
+            ),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(

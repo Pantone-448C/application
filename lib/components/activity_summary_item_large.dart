@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'activity_summary_item_small.dart';
 import '../apptheme.dart';
+import '../sizeconfig.dart';
 
-class ActivitySummaryItemSmall extends StatelessWidget {
+class ActivitySummaryItemLarge extends ActivitySummaryItemSmall {
   final double height;
   final double width;
   final String activityName;
@@ -13,36 +15,39 @@ class ActivitySummaryItemSmall extends StatelessWidget {
   final String imageUrl;
   final bool complete;
 
-
-  ActivitySummaryItemSmall(
+  ActivitySummaryItemLarge(
       {Key? key,
       this.activityName = "",
       this.activityDescription = "",
       this.documentName = "",
       this.imageUrl = "",
-      this.width = 375.0,
-      this.height = 75.0,
+      this.width = 375,
+      this.height = 75.0 * 3.4,
       this.complete = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: this.height,
-        width: this.width,
+        height: SizeConfig(context).w / 2 + 75,
+        width: SizeConfig(context).w,
         color: Colors.transparent,
         child: Container(
             decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(WanTheme.CARD_CORNER_RADIUS))),
-            child: Row(children: <Widget>[
+                borderRadius: BorderRadius.all(
+                    Radius.circular(WanTheme.CARD_CORNER_RADIUS))),
+            child: Column(children: <Widget>[
               Expanded(
                   flex: 0,
                   child:
                       _ImageComponent(this.width, this.height, this.imageUrl)),
-              Expanded(
-                  child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: _TextComponent(activityName, activityDescription)))
+              Row(children: <Widget>[
+                Expanded(
+                    child: Container(
+                        padding: const EdgeInsets.all(8),
+                        child:
+                            _TextComponent(activityName, activityDescription)))
+              ]),
             ])));
   }
 }
@@ -52,21 +57,20 @@ class _ImageComponent extends StatelessWidget {
   final double parentHeight;
   final String imageUrl;
 
-
   _ImageComponent(this.parentWidth, this.parentHeight, this.imageUrl);
 
   @override
   Widget build(BuildContext context) {
     return new Center(
       child: new AspectRatio(
-        aspectRatio: 1 / 1,
+        aspectRatio: 2.116 / 1,
         child: new Container(
           decoration: new BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
-                bottomLeft: Radius.circular(WanTheme.CARD_CORNER_RADIUS)),
+                topRight: Radius.circular(WanTheme.CARD_CORNER_RADIUS)),
             image: new DecorationImage(
-              fit: BoxFit.fitHeight,
+              fit: BoxFit.cover,
               alignment: FractionalOffset.topCenter,
               image: new NetworkImage(this.imageUrl),
             ),

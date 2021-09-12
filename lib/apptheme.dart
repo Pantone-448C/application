@@ -26,6 +26,9 @@ class WanTextTheme {
 }
 
 class WanTheme {
+
+    static const double CARD_CORNER_RADIUS = 15.0;
+
     ThemeData materialTheme = ThemeData (
         primarySwatch: Colors.pink,
         fontFamily: "inter",
