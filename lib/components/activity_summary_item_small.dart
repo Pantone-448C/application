@@ -42,7 +42,10 @@ class ActivitySummaryItemSmall extends StatelessWidget {
               Expanded(
                   child: Container(
                       padding: const EdgeInsets.all(8),
-                      child: _TextComponent(activityName, activityDescription)))
+                      child: _TextComponent(activityName, activityDescription))),
+              Container (
+                  padding: EdgeInsets.only(right: 8),
+                  child: Icon(Icons.chevron_right, color: Colors.grey)),
             ])));
   }
 }
