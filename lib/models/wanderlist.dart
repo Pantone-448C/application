@@ -1,29 +1,49 @@
+import 'dart:developer';
+
 import 'package:application/models/activity.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
-class Wanderlist {
-  Wanderlist(
-    this.id,
-    this.name,
-    this.activities,
-    this.creatorName,
-  );
+@immutable
+class Wanderlist extends Equatable {
+  Wanderlist(this.name, this.creatorName, this.activities);
 
-  int id;
-  String name;
-  List<ActivityDetails> activities;
-  String creatorName;
-}
+  factory Wanderlist.fromJson(Map<String, dynamic> json) {
+    List<ActivityDetails>? activities = List<ActivityDetails>.from(
+        json['activities']
+            .map((activity) => ActivityDetails.fromJson(activity))
+            .toList());
+    return Wanderlist(
+      json['name'],
+      json['creator_name'],
+      activities ?? [],
+    );
+  }
 
-class UserWanderlist {
-  UserWanderlist(
-    this.userId,
-    this.numCompleted,
-    this.numTotal,
-    this.wanderlist,
-  );
+  final String name;
+  final String creatorName;
+  final List<ActivityDetails> activities;
 
-  int userId;
-  int numCompleted;
-  int numTotal;
-  Wanderlist wanderlist;
+  @override
+  List<Object?> get props => [name, creatorName, activities];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'creator_name': creatorName,
+      'activities': activities.map((activity) => activity.toJson()),
+    };
+  }
+
+  Wanderlist copyWith({
+    String? name,
+    String? creatorName,
+    List<ActivityDetails>? activities,
+  }) {
+    return Wanderlist(
+      name ?? this.name,
+      creatorName ?? this.creatorName,
+      activities ?? this.activities,
+    );
+  }
 }

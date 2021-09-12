@@ -35,12 +35,12 @@ class TripLoaded extends Equatable implements TripState {
       List<UserWanderlist>? wanderlists,
       String? firstName}) {
     return TripLoaded(
-        name ?? this.name,
-        numWanderlists ?? this.numWanderlists,
-        percentageComplete ?? this.percentageComplete,
-        points ?? this.points,
-        wanderlists ?? this.wanderlists,
-        firstName ?? this.firstName,
+      name ?? this.name,
+      numWanderlists ?? this.numWanderlists,
+      percentageComplete ?? this.percentageComplete,
+      points ?? this.points,
+      wanderlists ?? this.wanderlists,
+      firstName ?? this.firstName,
     );
   }
 }
