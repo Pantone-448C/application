@@ -1,6 +1,6 @@
 import 'package:application/components/small_square_image.dart';
 import 'package:application/models/activity.dart';
-import 'package:application/models/wanderlist.dart';
+import 'package:application/models/user_wanderlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -8,15 +8,19 @@ class DetailedWanderlistSummary extends StatelessWidget {
   final double width;
   final double height;
   final ActivityDetails nextActivity;
-  final UserWanderlist wanderlist;
+  final UserWanderlist userWanderlist;
 
   static const double CORNER_RADIUS = 15.0;
 
   DetailedWanderlistSummary(
-      this.width, this.height, this.nextActivity, this.wanderlist);
+      this.width, this.height, this.nextActivity, this.userWanderlist);
 
   @override
   Widget build(BuildContext context) {
+    String name = userWanderlist.wanderlist.name;
+    int total = userWanderlist.wanderlist.activities.length;
+    int completed = userWanderlist.completedActivities.length;
+
     return Container(
       padding: EdgeInsets.fromLTRB(
           width / 25, height / 7.5, width / 25, height / 30),
@@ -25,11 +29,10 @@ class DetailedWanderlistSummary extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(CORNER_RADIUS))),
       child: Column(
         children: [
-          _TopSummary(this.width, 60, wanderlist.wanderlist.name,
-              wanderlist.numTotal, wanderlist.numCompleted),
+          _TopSummary(this.width, 60, name, total, completed),
           Divider(color: Colors.grey),
           _Activity(this.width, 70, nextActivity),
-          _NMoreItems(wanderlist.numTotal - 1),
+          _NMoreItems(total - 1),
         ],
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:application/home/widgets/detailed_wanderlist_summary.dart';
-import 'package:application/models/wanderlist.dart';
+import 'package:application/models/user_wanderlist.dart';
 import 'package:flutter/material.dart';
 
 class WanderlistsListView extends StatelessWidget {
