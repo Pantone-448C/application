@@ -1,12 +1,11 @@
 import 'package:application/home/cubit/trip_cubit.dart';
 import 'package:application/home/widgets/trip_info.dart';
 import 'package:application/home/widgets/wanderlists_list_view.dart';
+import 'package:application/repositories/user/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -16,12 +15,12 @@ class HomePage extends StatelessWidget {
     double wanderlistHeight = height - tripInfoHeight;
 
     return BlocProvider(
-      create: (context) => TripCubit(),
+      create: (context) => TripCubit(UserRepository()),
       child: Column(children: [
-        Container(padding: EdgeInsets.only(top: 50), child:_HelloMessage()),
+        Container(padding: EdgeInsets.only(top: 50), child: _HelloMessage()),
         Container(
-          padding: EdgeInsets.only(top: 30, bottom: 15),
-          child: _TripInfo(width, tripInfoHeight)),
+            padding: EdgeInsets.only(top: 30, bottom: 15),
+            child: _TripInfo(width, tripInfoHeight)),
         Container(child: _NextRewardsInfo()),
         Container(child: _Wanderlists(width, wanderlistHeight)),
       ]),
@@ -35,17 +34,16 @@ class _HelloMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TripCubit, TripState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is TripLoaded) {
-          return Text(
-            "Hello, " + state.firstName,
-          );
-        } else {
-          return Container();
-        }
-      }
-    );
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is TripLoaded) {
+            return Text(
+              "Hello, " + state.firstName,
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 }
 
@@ -66,9 +64,8 @@ class _TripInfo extends StatelessWidget {
           return CircularProgressIndicator();
         } else if (state is TripLoaded) {
           return Container(
-            child: TripInfo(width, height, state.name, state.numWanderlists,
-                state.percentageComplete, state.points)
-            );
+              child: TripInfo(width, height, state.name, state.numWanderlists,
+                  state.percentageComplete, state.points));
         }
 
         return Container(child: Text("Error!"));
@@ -108,15 +105,13 @@ class _Wanderlists extends StatelessWidget {
           return CircularProgressIndicator();
         } else if (state is TripLoaded) {
           return Container(
-            child: Column(
-              children: [
-              Container(
+              child: Column(children: [
+            Container(
                 width: width,
                 alignment: Alignment.centerLeft,
-                child: Text("Wanderlists", style:TextStyle(fontSize:24))
-              ),
-              WanderlistsListView(width, height, state.wanderlists)])
-            );
+                child: Text("Wanderlists", style: TextStyle(fontSize: 24))),
+            WanderlistsListView(width, height, state.wanderlists)
+          ]));
         }
 
         return Container(child: Text("Error!"));

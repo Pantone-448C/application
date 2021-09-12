@@ -1,1 +1,6 @@
-class TripModel {}
+import 'package:flutter/material.dart';
+
+@immutable
+class TripModel {
+  TripModel();
+}
