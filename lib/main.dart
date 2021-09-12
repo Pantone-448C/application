@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:application/apptheme.dart';
 
 import 'home/view/home_page.dart';
+import 'components/activity_summary_item_large.dart';
+import 'components/activity_summary_item_small.dart';
 import 'login.dart';
 import 'navbar.dart';
 import 'titlebar.dart';
@@ -67,46 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           children: <Widget>[
             Container(child: HomePage()),
-            //Container(
-            //  decoration: BoxDecoration(
-            //    border: Border.all(
-            //      color: (Colors.grey[500])!,
-            //    ),
-            //    borderRadius: BorderRadius.all(Radius.circular(40)),
-            //  ),
-            //  child: Padding(
-            //    padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-            //    child: TextButton(
-            //      child: Text(
-            //        "Sign in",
-            //        style: TextStyle(fontFamily: 'RobotoMono'),
-            //      ),
-            //      onPressed: () {
-            //        checkSignedIn();
-            //      },
-            //    ),
-            //  ),
-            //),
-            //Container(
-            //  decoration: BoxDecoration(
-            //    border: Border.all(
-            //      color: (Colors.grey[500])!,
-            //    ),
-            //    borderRadius: BorderRadius.all(Radius.circular(40)),
-            //  ),
-            //  child: Padding(
-            //    padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-            //    child: TextButton(
-            //      child: Text(
-            //        "Sign out",
-            //        style: TextStyle(fontFamily: 'RobotoMono'),
-            //      ),
-            //      onPressed: () {
-            //        FirebaseAuth.instance.signOut();
-            //      },
-            //    ),
-            //  ),
-            //)
           ],
         ),
       ),
