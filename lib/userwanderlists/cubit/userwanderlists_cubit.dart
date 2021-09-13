@@ -5,43 +5,63 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
-  late List<UserWanderlist> wanderlists;
 
-  UserWanderlistsCubit(wanderlists) : super(UserWanderlistsLoaded(wanderlists)) {
-    this.wanderlists = List.empty();
-
-  }
+  UserWanderlistsCubit(wanderlists) : super(UserWanderlistsLoaded(wanderlists));
 
   void swap(int old, int n) {
     if (state is UserWanderlistsLoaded) {
       var c = state as UserWanderlistsLoaded;
 
       int len = c.wanderlists.length;
+      var l = List<UserWanderlist>.from(c.wanderlists);
 
       print('$old to $n whlen: $len\n\n');
       if (old < n) {
         n -= 1;
       }
 
-      final UserWanderlist elem = c.wanderlists.removeAt(old);
-      c.wanderlists.insert(n, elem);
+      final UserWanderlist elem = l.removeAt(old);
+      l.insert(n, elem);
 
-      len = c.wanderlists.length;
+      len = l.length;
       print('$old to $n whyyy len: $len\n\n');
 
-      emit(UserWanderlistsLoaded(c.wanderlists));
+      emit(UserWanderlistsLoaded(l));
     }
     emit(state);
   }
 
+    void finish_search() {
+      if (state is UserWanderlistsSearch) {
+        var c = state as UserWanderlistsSearch;
+        List<UserWanderlist> original = List.of(c.original_wanderlists);
+        emit(UserWanderlistsLoaded(original));
+      }
+
+    }
 
     void filter_search(String query) {
 
-    List<UserWanderlist> matches = List.empty();
+
+      List<UserWanderlist> original;
+      if (state is UserWanderlistsSearch) {
+        var c = state as UserWanderlistsSearch;
+        original = List.of(c.original_wanderlists);
+      } else {
+        var c = state as UserWanderlistsLoaded;
+        original = List.of(c.wanderlists);
+      }
+
+    if (query == "") {
+      emit(UserWanderlistsLoaded(original));
+      return;
+    }
+
+    List<UserWanderlist> matches = [];
     List<String> words = query.split(" ");
     Set<int> added = Set<int> ();
     for (var word in words) {
-      for (var list in wanderlists) {
+      for (var list in original) {
         if (!added.contains(list.wanderlist.id)) {
           if (list.wanderlist.name.contains(word)
            || list.wanderlist.creatorName.contains(word)) {
@@ -52,7 +72,7 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
       }
     }
 
-    emit(UserWanderlistsSearchResults(matches));
+    emit(UserWanderlistsSearch(original, matches));
 
   }
 
