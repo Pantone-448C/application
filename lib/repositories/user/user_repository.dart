@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,15 +9,14 @@ class UserRepository implements IUserRepository {
   UserRepository() {
     final FirebaseAuth auth = FirebaseAuth.instance;
     _setUser(auth, auth.currentUser);
+    _users = FirebaseFirestore.instance.collection('users');
     auth.authStateChanges().listen((newUser) => _setUser(auth, newUser));
   }
 
   _setUser(auth, user) {
-    log("called");
     if (user != null) {
       _uid = user.uid;
     }
-    _users = FirebaseFirestore.instance.collection('users');
   }
 
   late String _uid;
