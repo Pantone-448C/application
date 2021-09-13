@@ -1,20 +1,23 @@
+import 'package:application/colors.dart';
+import 'package:application/titlebar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:application/apptheme.dart';
 
+import 'home/view/home_page.dart';
 import 'components/activity_summary_item_large.dart';
 import 'components/activity_summary_item_small.dart';
 import 'login.dart';
+import 'navbar.dart';
+import 'titlebar.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseAuth.instance
-      .authStateChanges()
-      .listen((User? user) {
+  FirebaseAuth.instance.authStateChanges().listen((User? user) {
     if (user == null) {
       print('User is currently signed out!');
     } else {
@@ -50,88 +53,26 @@ class _MyHomePageState extends State<MyHomePage> {
   void checkSignedIn() {
     if (true || FirebaseAuth.instance.currentUser == null) {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginPage()
-          )
-      );
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
     }
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-      ),
+      backgroundColor: WanderlistColors.offWhite,
+      appBar: Titlebar(),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+          ),
           children: <Widget>[
-            Container (
-              child: Wrap (
-                spacing: 10,
-                runSpacing: 10,
-                children: <Widget> [
-                  ActivitySummaryItemSmall (
-                    activityName: "Fun Activity",
-                    activityDescription: "Go do a fun thidslkajfhasdlkjk ad a sdlakjsdlas jdlkasj dlkasjdlkajs dlka sjdlk asjldjaslkjds akldjaslkd jalksdj kals dlaj:wsldk a sald jalksj ldlakjfh dlkfj dlfjhbs lkjdhang",
-                    imageUrl: "https://topost.net/deco/media/img0.png",
-                  ),
-                  ActivitySummaryItemLarge (
-                    activityName: "Fun Activity",
-                    activityDescription: "Go do a fun thidslkajfhasdlkjk ad a sdlakjsdlas jdlkasj dlkasjdlkajs dlka sjdlk asjldjaslkjds akldjaslkd jalksdj kals dlaj:wsldk a sald jalksj ldlakjfh dlkfj dlfjhbs lkjdhang",
-                    imageUrl: "https://topost.net/deco/media/img0.png",
-                  ),
-                  ActivitySummaryItemSmall (
-                    activityName: "Fun Activity",
-                    activityDescription: "Go do a fun thing",
-                    imageUrl: "https://topost.net/deco/media/img0.png",
-                  ),
-                ]
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: (Colors.grey[500])!,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                child: TextButton(
-                  child: Text(
-                    "Sign in",
-                  ),
-                  onPressed: () {
-                    checkSignedIn();
-                  },
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: (Colors.grey[500])!,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                child: TextButton(
-                  child: Text(
-                    "Sign out",
-                  ),
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
-                  },
-                ),
-              ),
-            )
+            Container(child: HomePage()),
           ],
         ),
       ),
+      bottomNavigationBar: Navbar(),
     );
   }
 }
