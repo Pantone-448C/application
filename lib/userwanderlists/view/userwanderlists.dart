@@ -66,7 +66,7 @@ class _WanderlistsView extends StatelessWidget {
               ]
           );
         } else {
-          return Container();
+          return Center(child: CircularProgressIndicator());
         }
       },
 
