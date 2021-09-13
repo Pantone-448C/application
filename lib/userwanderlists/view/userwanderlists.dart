@@ -1,6 +1,5 @@
 
 import 'package:application/components/wanderlist_summary_item.dart';
-import 'package:application/models/userwanderlists.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
