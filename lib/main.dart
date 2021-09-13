@@ -1,6 +1,7 @@
 import 'package:application/colors.dart';
 import 'package:application/qr/view/qr_view.dart';
 import 'package:application/titlebar.dart';
+import 'package:application/userwanderlists/view/userwanderlists.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(child: HomePage()),
             Container(child: Text("Search Page")),
             Container(child: WanQrPage()),
-            Container(child: Text("Wanderlists Page")),
+            Container(child: UserWanderlistsPage()),
           ],
         ),
       ),
