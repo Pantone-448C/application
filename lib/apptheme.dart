@@ -11,6 +11,7 @@ class WanTextTheme {
     var logo = TextStyle(
         fontFamily: 'Pacifico',
         fontSize: 40,
+        color: WanTheme.colors.pink,
     );
 
     var errorLabel = TextStyle(
@@ -22,14 +23,14 @@ class WanTextTheme {
 
     var loginButton = TextStyle(color: Colors.white, fontSize: 25, );
 
-    var signupButton = TextStyle(color: Colors.blue, fontSize: 15);
+    var signupButton = TextStyle(color: WanTheme.colors.pink, fontSize: 15);
 }
 
 class WanTheme {
 
     static const double CARD_CORNER_RADIUS = 15.0;
 
-    ThemeData materialTheme = ThemeData (
+    static ThemeData materialTheme = ThemeData (
         primarySwatch: Colors.pink,
         fontFamily: "inter",
 
@@ -50,10 +51,13 @@ class WanTheme {
         ),
     );
 
-    WanTextTheme text = WanTextTheme();
+    static WanTextTheme text = WanTextTheme();
+    static WanColors colors = WanColors();
 
 }
-
-
-WanTheme theme = WanTheme();
-
+class WanColors {
+    var pink = Color.fromRGBO(0xFF, 0x2D, 0x55, 0.9);
+    var grey = Color.fromRGBO(0x42, 0x42, 0x42, 0.9);
+    var offWhite = Color.fromRGBO(0xF6, 0xF6, 0xF6, 1);
+    var white = Colors.white;
+}

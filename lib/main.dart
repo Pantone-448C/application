@@ -1,4 +1,3 @@
-import 'package:application/colors.dart';
 import 'package:application/titlebar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,7 +7,7 @@ import 'package:application/apptheme.dart';
 import 'home/view/home_page.dart';
 import 'components/activity_summary_item_large.dart';
 import 'components/activity_summary_item_small.dart';
-import 'login.dart';
+import 'login/view/login.dart';
 import 'navbar.dart';
 import 'titlebar.dart';
 
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'WanderLists',
-      theme: theme.materialTheme,
+      theme: WanTheme.materialTheme,
       home: MyHomePage(title: 'WanderList'),
       debugShowCheckedModeBanner: false,
     );
@@ -59,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: WanderlistColors.offWhite,
+      backgroundColor: WanTheme.colors.offWhite,
       appBar: Titlebar(),
       body: Center(
         child: ListView(

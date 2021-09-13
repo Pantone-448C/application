@@ -1,7 +1,7 @@
 
 
+import 'package:application/apptheme.dart';
 import 'package:flutter/material.dart';
-import 'colors.dart';
 
 class Navbar extends StatefulWidget {
   _NavbarState createState() => _NavbarState();
@@ -21,8 +21,8 @@ class _NavbarState extends State<Navbar> {
       type: BottomNavigationBarType.fixed, /* No switching animation */
       showSelectedLabels: false, /* Remove labels */
       showUnselectedLabels: false,
-      selectedItemColor: WanderlistColors.pink,
-      unselectedItemColor: WanderlistColors.grey,
+      selectedItemColor: WanTheme.colors.pink,
+      unselectedItemColor: WanTheme.colors.grey,
       items: [
         BottomNavigationBarItem(
           label: "Home",
