@@ -69,12 +69,24 @@ class _WanderlistsView extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         if (state is UserWanderlistsLoaded) {
-          UserWanderlistsCubit c = BlocProvider.of(context);
-          return ReorderableListView (
+          return Column(
+          children: <Widget>[
+            Padding (
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: TextField(
+                keyboardType: TextInputType.text,
+                onChanged: (value) {context.read<UserWanderlistsCubit>().filter_search(value);},
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Search',
+                ),
+              ),
+            ),
+            ReorderableListView (
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               padding: EdgeInsets.all(8),
-              onReorder: (int o, int n) { c.swap(o,n); },
+              onReorder: (int o, int n) { context.read<UserWanderlistsCubit>().swap(o,n); },
               children: [
                 for (int index = 0; index < state.wanderlists.length; index++)
                   Container (
@@ -87,6 +99,7 @@ class _WanderlistsView extends StatelessWidget {
                     numTotalItems: 11,
                   ) )
               ]
+          )]
           );
         } else {
           return Container();

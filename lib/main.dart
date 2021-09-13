@@ -68,7 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            UserWanderlists(),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
