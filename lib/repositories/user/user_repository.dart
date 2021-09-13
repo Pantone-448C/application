@@ -10,7 +10,12 @@ import 'i_user_repository.dart';
 class UserRepository implements IUserRepository {
   UserRepository() {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    var user = auth.currentUser;
+    _setUser(auth, auth.currentUser);
+    auth.authStateChanges().listen((newUser) => _setUser(auth, newUser));
+  }
+
+  _setUser(auth, user) {
+    log("called");
     if (user != null) {
       _uid = user.uid;
     }
