@@ -1,17 +1,23 @@
+import 'package:application/colors.dart';
+import 'package:application/titlebar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:application/apptheme.dart';
 
-import 'login/view/login.dart';
+import 'home/view/home_page.dart';
+import 'components/activity_summary_item_large.dart';
+import 'components/activity_summary_item_small.dart';
+import 'login.dart';
+import 'navbar.dart';
+import 'titlebar.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseAuth.instance
-      .authStateChanges()
-      .listen((User? user) {
+  FirebaseAuth.instance.authStateChanges().listen((User? user) {
     if (user == null) {
       print('User is currently signed out!');
     } else {
@@ -27,9 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'WanderLists',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: theme.materialTheme,
       home: MyHomePage(title: 'WanderList'),
       debugShowCheckedModeBanner: false,
     );
@@ -46,71 +50,29 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
-
   void checkSignedIn() {
     if (true || FirebaseAuth.instance.currentUser == null) {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginPage()
-          )
-      );
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
     }
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-      ),
+      backgroundColor: WanderlistColors.offWhite,
+      appBar: Titlebar(),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+          ),
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: (Colors.grey[500])!,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                child: TextButton(
-                  child: Text(
-                    "Sign in",
-                    style: TextStyle(fontFamily: 'RobotoMono'),
-                  ),
-                  onPressed: () {
-                    checkSignedIn();
-                  },
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: (Colors.grey[500])!,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                child: TextButton(
-                  child: Text(
-                    "Sign out",
-                    style: TextStyle(fontFamily: 'RobotoMono'),
-                  ),
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
-                  },
-                ),
-              ),
-            )
+            Container(child: HomePage()),
           ],
         ),
       ),
+      bottomNavigationBar: Navbar(),
     );
   }
 }
