@@ -54,7 +54,7 @@ class _SignupPageState extends State<SignupPage> {
         appBar: AppBar(
           title: Text("Sign Up"),
       ),
-      body: Column(
+      body: ListView(
         children: [
           Container(
             height: 200,
@@ -171,7 +171,7 @@ class _SignupPasswordPageState extends State<SignupPasswordPage> {
         appBar: AppBar(
           title: Text("Sign Up"),
         ),
-        body: Column(
+        body: ListView(
             children: [
               Container(
                 height: 200,
