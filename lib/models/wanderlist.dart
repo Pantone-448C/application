@@ -15,7 +15,7 @@ class Wanderlist extends Equatable {
             .toList());
     return Wanderlist(
       json['name'],
-      json['creator_name'],
+      json['author_name'],
       activities ?? [],
     );
   }
@@ -30,7 +30,7 @@ class Wanderlist extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'creator_name': creatorName,
+      'author_name': creatorName,
       'activities': activities.map((activity) => activity.toJson()),
     };
   }

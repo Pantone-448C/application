@@ -91,7 +91,7 @@ class _Activity extends StatelessWidget {
                   Expanded(
                       flex: 5,
                       child: SmallSquareImage(this.width, this.height,
-                          CachedNetworkImageProvider(activity.thumbUrl))),
+                          CachedNetworkImageProvider(activity.imageUrl))),
                   Spacer(flex: 1),
                   Expanded(flex: 32, child: _ActivityName(activity.name)),
                 ])));
