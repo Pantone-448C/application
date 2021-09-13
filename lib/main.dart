@@ -118,6 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Container(child: WanQrPage()),
+            Container(child: UserWanderlistsPage()),
           ],
         ),
       ),

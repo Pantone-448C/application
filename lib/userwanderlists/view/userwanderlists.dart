@@ -24,7 +24,51 @@ class UserWanderlists extends StatelessWidget {
           numCompleted: 0,
           numTotal: 1,
           wanderlist: UserWanderlistItem (
-            id: 0,
+            id: 10,
+            name: "Cool Item",
+            image: 'https://topost.net/deco/media/img0.png',
+            creatorName: 'David Smith',
+          )
+      ),
+      UserWanderlist(
+          userId: 0,
+          numCompleted: 0,
+          numTotal: 1,
+          wanderlist: UserWanderlistItem (
+            id: 20,
+            name: "Cool Item",
+            image: 'https://topost.net/deco/media/img0.png',
+            creatorName: 'David Smith',
+          )
+      ),
+      UserWanderlist(
+          userId: 0,
+          numCompleted: 0,
+          numTotal: 1,
+          wanderlist: UserWanderlistItem (
+            id: 30,
+            name: "Cool Item",
+            image: 'https://topost.net/deco/media/img0.png',
+            creatorName: 'David Smith',
+          )
+      ),
+      UserWanderlist(
+          userId: 0,
+          numCompleted: 0,
+          numTotal: 1,
+          wanderlist: UserWanderlistItem (
+            id: 40,
+            name: "Cool Item",
+            image: 'https://topost.net/deco/media/img0.png',
+            creatorName: 'David Smith',
+          )
+      ),
+      UserWanderlist(
+          userId: 0,
+          numCompleted: 0,
+          numTotal: 1,
+          wanderlist: UserWanderlistItem (
+            id: 401,
             name: "Cool Item",
             image: 'https://topost.net/deco/media/img0.png',
             creatorName: 'David Smith',
@@ -35,7 +79,7 @@ class UserWanderlists extends StatelessWidget {
           numCompleted: 0,
           numTotal: 1,
           wanderlist: UserWanderlistItem (
-            id: 0,
+            id: 51,
             name: "Cool Item 2",
             image: 'https://topost.net/deco/media/img0.png',
             creatorName: 'David Smith',
@@ -46,7 +90,7 @@ class UserWanderlists extends StatelessWidget {
           numCompleted: 0,
           numTotal: 1,
           wanderlist: UserWanderlistItem (
-            id: 2,
+            id: 292,
             name: "Cool Item 3",
             image: 'https://topost.net/deco/media/img0.png',
             creatorName: 'David Smith',
@@ -69,28 +113,30 @@ class _WanderlistsView extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         if (state is UserWanderlistsLoaded) {
-          return Column(
-          children: <Widget>[
-            Padding (
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-              child: TextField(
-                keyboardType: TextInputType.text,
-                onChanged: (value) {context.read<UserWanderlistsCubit>().filter_search(value);},
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Search',
+            return ReorderableListView (
+              header: Padding (
+                // search bar
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  keyboardType: TextInputType.text,
+                  onChanged: (value) {context.read<UserWanderlistsCubit>().filter_search(value);},
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Search Your Wanderlists',
+                  ),
                 ),
               ),
-            ),
-            ReorderableListView (
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
+              primary: true,
               padding: EdgeInsets.all(8),
+              physics: ClampingScrollPhysics(),
               onReorder: (int o, int n) { context.read<UserWanderlistsCubit>().swap(o,n); },
               children: [
                 for (int index = 0; index < state.wanderlists.length; index++)
                   Container (
-                   key: ValueKey(state.wanderlists[index].wanderlist.name),
+                    margin: EdgeInsets.only(bottom:8),
+                   key: ValueKey(state.wanderlists[index].wanderlist.id),
                     child: WanderlistSummaryItem(
                     imageUrl: state.wanderlists[index].wanderlist.image,
                     authorName: state.wanderlists[index].wanderlist.creatorName,
@@ -99,7 +145,6 @@ class _WanderlistsView extends StatelessWidget {
                     numTotalItems: 11,
                   ) )
               ]
-          )]
           );
         } else {
           return Container();
@@ -110,4 +155,14 @@ class _WanderlistsView extends StatelessWidget {
   }
 }
 
+class UserWanderlistsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(left:8, right:8),
+      child: UserWanderlists(),
+    );
+  }
+
+}
 
