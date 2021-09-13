@@ -60,17 +60,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: WanTheme.colors.offWhite,
       appBar: Titlebar(),
-      body: Center(
-        child: ListView(
-          padding: EdgeInsets.only(
-            left: 20,
-            right: 20,
-          ),
-          children: <Widget>[
-            Container(child: HomePage()),
-          ],
-        ),
-      ),
+      body: Center(child: HomePage()),
+      //   child: ListView(
+      //     padding: EdgeInsets.only(
+      //       left: 20,
+      //       right: 20,
+      //     ),
+      //     children: <Widget>[
+      //       Container(child: HomePage()),
+      //     ],
+      //   ),
+      // ),
       bottomNavigationBar: Navbar(),
     );
   }
