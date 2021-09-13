@@ -57,12 +57,10 @@ class _QRViewExampleState extends State<_QRViewExample> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-        print("GOT DATA WOOHOOO SHIT no\n");
 
         if (scanData != null) {
-          var d = String.fromCharCodes(scanData.rawBytes!.toList());
-          print("GOT DATA WOOHOOO SHIT $d\n");
-          context.read<QrCubit>().gotCode(d);
+          String s = scanData.code;
+          context.read<QrCubit>().gotCode(s);
         }
       });
     });
