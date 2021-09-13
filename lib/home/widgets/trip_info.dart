@@ -89,18 +89,19 @@ class _LeftDetails extends StatelessWidget {
           ),
           Text("this trip", style: TextStyle(fontSize: 14, color: Colors.grey))
         ]),
-        Row(children: [
-          Expanded(
-            flex: 4, child: _BigSmallText(this.points.toString(), " points")
+        Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+          Container (
+            padding: EdgeInsets.only(right:10),
+            child: _BigSmallText(this.points.toString(), " points")
           ),
-          Spacer(flex: 1),
-          Expanded(
-            flex: 4,
+          Container (
             child: _BigSmallText(
               this.numWanderlists.toString(), " wanderlists"
             )
           ),
-          Spacer(flex: 3),
         ])
       ],
     ));
@@ -141,9 +142,9 @@ class _BigSmallText extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.baseline,
         textBaseline: TextBaseline.alphabetic,
         children: [
-          Text(this.bigText, style: TextStyle(fontSize: 20)),
-          Text(this.smallText,
-              style: TextStyle(fontSize: 12, color: Colors.grey))
+          Container(child: Text(this.bigText, style: TextStyle(fontSize: 20))),
+          Container(child:Text(this.smallText,
+              style: TextStyle(fontSize: 12, color: Colors.grey)))
         ]);
   }
 }
@@ -156,6 +157,6 @@ class _ProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 384, height: 5, child: LinearProgressIndicator(value: 0.66));
+        width: 384, height: 5, child: LinearProgressIndicator(value: this.percentageComplete/100.0));
   }
 }

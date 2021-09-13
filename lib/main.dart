@@ -77,46 +77,11 @@ class _MyHomePageState extends State<MyHomePage> {
           onPageChanged: (page) => setState(() => _selectedIndex = page),
           controller: _pageController,
           children: <Widget>[
-            Container(child: HomePage()),
-            UserWanderlists(),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: (Colors.grey[500])!,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                child: TextButton(
-                  child: Text(
-                    "Sign in",
-                  ),
-                  onPressed: () {
-                    checkSignedIn();
-                  },
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: (Colors.grey[500])!,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                child: TextButton(
-                  child: Text(
-                    "Sign out",
-                  ),
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
-                  },
-                ),
-              ),
-            ),
+            ListView (
+              padding: EdgeInsets.only(left:20, right:20),
+                children: <Widget>[
+              Container(child: HomePage())]),
+            Container(child: Text("Search Page")),
             Container(child: WanQrPage()),
             Container(child: UserWanderlistsPage()),
           ],
