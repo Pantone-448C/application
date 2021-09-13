@@ -1,12 +1,11 @@
 import 'package:application/titlebar.dart';
+import 'package:application/userwanderlists/view/userwanderlists.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:application/apptheme.dart';
 
 import 'home/view/home_page.dart';
-import 'components/activity_summary_item_large.dart';
-import 'components/activity_summary_item_small.dart';
 import 'login/view/login.dart';
 import 'navbar.dart';
 import 'titlebar.dart';
@@ -68,6 +67,45 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           children: <Widget>[
             Container(child: HomePage()),
+            UserWanderlists(),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: (Colors.grey[500])!,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                child: TextButton(
+                  child: Text(
+                    "Sign in",
+                  ),
+                  onPressed: () {
+                    checkSignedIn();
+                  },
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: (Colors.grey[500])!,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(40)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                child: TextButton(
+                  child: Text(
+                    "Sign out",
+                  ),
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                  },
+                ),
+              ),
+            )
           ],
         ),
       ),
