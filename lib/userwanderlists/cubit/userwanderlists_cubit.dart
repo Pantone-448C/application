@@ -1,12 +1,26 @@
+import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/userwanderlists.dart';
+import 'package:application/repositories/user/i_user_repository.dart';
+import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
+  final IUserRepository userRepository;
 
-  UserWanderlistsCubit(wanderlists) : super(UserWanderlistsLoaded(wanderlists));
+  UserWanderlistsCubit(this.userRepository) : super(UserWanderlistsInitial()){
+
+    var l = userRepository.getUserWanderlists();
+    _loadLists();
+
+  }
+
+  Future<void> _loadLists() async {
+    List<UserWanderlist> w = (await userRepository.getUserWanderlists()).toList();
+    emit(UserWanderlistsLoaded(w));
+  }
 
   void swap(int old, int n) {
     if (state is UserWanderlistsLoaded) {
@@ -62,10 +76,10 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
     Set<int> added = Set<int> ();
     for (var word in words) {
       for (var list in original) {
-        if (!added.contains(list.wanderlist.id)) {
+        if (!added.contains(list.wanderlist.hashCode)) {
           if (list.wanderlist.name.contains(word)
            || list.wanderlist.creatorName.contains(word)) {
-            added.add(list.wanderlist.id);
+            added.add(list.wanderlist.hashCode);
             matches.add(list);
           }
         }
@@ -76,24 +90,6 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
 
   }
 
-  void load() {
-    final List<UserWanderlist> l = [
-      UserWanderlist(
-          userId: 0,
-          numCompleted: 0,
-          numTotal: 1,
-          wanderlist: UserWanderlistItem (
-            id: 0,
-            name: "Cool Item",
-            image: 'https://topost.net/deco/media/img0.png',
-            creatorName: 'David Smith',
-          )
-      )
-    ];
-
-    emit(UserWanderlistsLoaded(l));
-
-  }
 
 
 //  reorder()

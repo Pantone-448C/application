@@ -1,6 +1,7 @@
 
 import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/userwanderlists.dart';
+import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,89 +18,8 @@ class UserWanderlists extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final List<UserWanderlist> l = [
-      UserWanderlist(
-          userId: 0,
-          numCompleted: 0,
-          numTotal: 1,
-          wanderlist: UserWanderlistItem (
-            id: 10,
-            name: "Cool Item",
-            image: 'https://topost.net/deco/media/img0.png',
-            creatorName: 'David Smith',
-          )
-      ),
-      UserWanderlist(
-          userId: 0,
-          numCompleted: 0,
-          numTotal: 1,
-          wanderlist: UserWanderlistItem (
-            id: 20,
-            name: "Cool Item",
-            image: 'https://topost.net/deco/media/img0.png',
-            creatorName: 'David Smith',
-          )
-      ),
-      UserWanderlist(
-          userId: 0,
-          numCompleted: 0,
-          numTotal: 1,
-          wanderlist: UserWanderlistItem (
-            id: 30,
-            name: "Cool Item",
-            image: 'https://topost.net/deco/media/img0.png',
-            creatorName: 'David Smith',
-          )
-      ),
-      UserWanderlist(
-          userId: 0,
-          numCompleted: 0,
-          numTotal: 1,
-          wanderlist: UserWanderlistItem (
-            id: 40,
-            name: "Cool Item",
-            image: 'https://topost.net/deco/media/img0.png',
-            creatorName: 'David Smith',
-          )
-      ),
-      UserWanderlist(
-          userId: 0,
-          numCompleted: 0,
-          numTotal: 1,
-          wanderlist: UserWanderlistItem (
-            id: 401,
-            name: "Cool Item",
-            image: 'https://topost.net/deco/media/img0.png',
-            creatorName: 'David Smith',
-          )
-      ),
-      UserWanderlist(
-          userId: 1,
-          numCompleted: 0,
-          numTotal: 1,
-          wanderlist: UserWanderlistItem (
-            id: 51,
-            name: "Cool Item 2",
-            image: 'https://topost.net/deco/media/img0.png',
-            creatorName: 'David Smith',
-          )
-      ),
-      UserWanderlist(
-          userId: 0,
-          numCompleted: 0,
-          numTotal: 1,
-          wanderlist: UserWanderlistItem (
-            id: 292,
-            name: "Cool Item 3",
-            image: 'https://topost.net/deco/media/img0.png',
-            creatorName: 'David Smith',
-          )
-      ),
-    ];
-
     return BlocProvider(
-        create: (context) => UserWanderlistsCubit(l),
+        create: (context) => UserWanderlistsCubit(UserRepository()),
         child: _WanderlistsView(),
     );
   }
@@ -136,9 +56,9 @@ class _WanderlistsView extends StatelessWidget {
                 for (int index = 0; index < state.wanderlists.length; index++)
                   Container (
                     margin: EdgeInsets.only(bottom:8),
-                   key: ValueKey(state.wanderlists[index].wanderlist.id),
+                   key: ValueKey(state.wanderlists[index].wanderlist.hashCode),
                     child: WanderlistSummaryItem(
-                    imageUrl: state.wanderlists[index].wanderlist.image,
+                    imageUrl: state.wanderlists[index].wanderlist.icon,
                     authorName: state.wanderlists[index].wanderlist.creatorName,
                     listName:  state.wanderlists[index].wanderlist.name,
                     numCompletedItems: 10,
