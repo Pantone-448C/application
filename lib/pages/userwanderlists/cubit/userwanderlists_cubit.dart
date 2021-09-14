@@ -1,21 +1,19 @@
 import 'package:application/models/user_wanderlist.dart';
+import 'package:application/pages/userwanderlists/cubit/userwanderlists_state.dart';
 import 'package:application/repositories/user/i_user_repository.dart';
-import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
   final IUserRepository userRepository;
 
-  UserWanderlistsCubit(this.userRepository) : super(UserWanderlistsInitial()){
-
+  UserWanderlistsCubit(this.userRepository) : super(UserWanderlistsInitial()) {
     var l = userRepository.getUserWanderlists();
     _loadLists();
-
   }
 
   Future<void> _loadLists() async {
-    List<UserWanderlist> w = (await userRepository.getUserWanderlists()).toList();
+    List<UserWanderlist> w =
+        (await userRepository.getUserWanderlists()).toList();
     emit(UserWanderlistsLoaded(w));
   }
 
@@ -42,26 +40,23 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
     emit(state);
   }
 
-    void finish_search() {
-      if (state is UserWanderlistsSearch) {
-        var c = state as UserWanderlistsSearch;
-        List<UserWanderlist> original = List.of(c.original_wanderlists);
-        emit(UserWanderlistsLoaded(original));
-      }
-
+  void finish_search() {
+    if (state is UserWanderlistsSearch) {
+      var c = state as UserWanderlistsSearch;
+      List<UserWanderlist> original = List.of(c.original_wanderlists);
+      emit(UserWanderlistsLoaded(original));
     }
+  }
 
-    void filter_search(String query) {
-
-
-      List<UserWanderlist> original;
-      if (state is UserWanderlistsSearch) {
-        var c = state as UserWanderlistsSearch;
-        original = List.of(c.original_wanderlists);
-      } else {
-        var c = state as UserWanderlistsLoaded;
-        original = List.of(c.wanderlists);
-      }
+  void filter_search(String query) {
+    List<UserWanderlist> original;
+    if (state is UserWanderlistsSearch) {
+      var c = state as UserWanderlistsSearch;
+      original = List.of(c.original_wanderlists);
+    } else {
+      var c = state as UserWanderlistsLoaded;
+      original = List.of(c.wanderlists);
+    }
 
     if (query == "") {
       emit(UserWanderlistsLoaded(original));
@@ -70,12 +65,12 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
 
     List<UserWanderlist> matches = [];
     List<String> words = query.split(" ");
-    Set<int> added = Set<int> ();
+    Set<int> added = Set<int>();
     for (var word in words) {
       for (var list in original) {
         if (!added.contains(list.wanderlist.hashCode)) {
-          if (list.wanderlist.name.contains(word)
-           || list.wanderlist.creatorName.contains(word)) {
+          if (list.wanderlist.name.contains(word) ||
+              list.wanderlist.creatorName.contains(word)) {
             added.add(list.wanderlist.hashCode);
             matches.add(list);
           }
@@ -84,10 +79,7 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
     }
 
     emit(UserWanderlistsSearch(original, matches));
-
   }
-
-
 
 //  reorder()
 

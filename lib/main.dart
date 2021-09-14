@@ -1,13 +1,13 @@
-import 'package:application/qr/view/qr_view.dart';
+import 'package:application/pages/qr/view/qr_view.dart';
 import 'package:application/titlebar.dart';
-import 'package:application/userwanderlists/view/userwanderlists.dart';
+import 'package:application/pages/userwanderlists/view/userwanderlists.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:application/apptheme.dart';
 
-import 'home/view/home_page.dart';
-import 'login/view/login.dart';
+import 'pages/home/view/home_page.dart';
+import 'pages/login/view/login.dart';
 import 'titlebar.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -36,13 +36,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
     );
   }
-
 }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
-
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -72,15 +70,14 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: WanTheme.colors.offWhite,
       appBar: Titlebar(),
       body: Center(
-        child: PageView (
+        child: PageView(
           // update navbar
           onPageChanged: (page) => setState(() => _selectedIndex = page),
           controller: _pageController,
           children: <Widget>[
-            ListView (
-              padding: EdgeInsets.only(left:20, right:20),
-                children: <Widget>[
-              Container(child: HomePage())]),
+            ListView(
+                padding: EdgeInsets.only(left: 20, right: 20),
+                children: <Widget>[Container(child: HomePage())]),
             Container(child: Text("Search Page")),
             Container(child: WanQrPage()),
             Container(child: UserWanderlistsPage()),
@@ -88,8 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, /* No switching animation */
-        showSelectedLabels: false, /* Remove labels */
+        type: BottomNavigationBarType.fixed,
+        /* No switching animation */
+        showSelectedLabels: false,
+        /* Remove labels */
         showUnselectedLabels: false,
         selectedItemColor: WanTheme.colors.pink,
         unselectedItemColor: WanTheme.colors.grey,

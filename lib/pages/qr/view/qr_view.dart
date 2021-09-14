@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:application/qr/cubit/qr_cubit.dart';
+import 'package:application/pages/qr/cubit/qr_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,14 +25,13 @@ class _QRViewExampleState extends State<_QRViewExample> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      _buildQrView(context);
+    return _buildQrView(context);
   }
 
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
-        MediaQuery.of(context).size.height < 400)
+            MediaQuery.of(context).size.height < 400)
         ? 400.0
         : 400.0;
     // To ensure the Scanner view is properly sizes after rotation
@@ -81,7 +80,6 @@ class _QRViewExampleState extends State<_QRViewExample> {
   }
 }
 
-
 class _QRViewExample extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -97,47 +95,39 @@ class _QRCameraView extends StatelessWidget {
       child: _QRViewExample(),
     );
   }
-
 }
 
 class _QrAddActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QrCubit, QrScannerState> (
-      builder: (context, state) {
-        if (state is AddActivity) {
-          return Text(state.activity);
-        } else {
-          return _QRCameraView();
-        }
+    return BlocBuilder<QrCubit, QrScannerState>(builder: (context, state) {
+      if (state is AddActivity) {
+        return Text(state.activity);
+      } else {
+        return _QRCameraView();
       }
-    );
+    });
   }
 }
 
 class WanQrScanner extends StatelessWidget {
-
   WanQrScanner();
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<QrCubit, QrScannerState> (
+    return BlocListener<QrCubit, QrScannerState>(
       listener: (context, state) {},
       child: _QrAddActivity(),
     );
   }
-
 }
 
 class WanQrPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<QrCubit> (
+    return BlocProvider<QrCubit>(
       create: (BuildContext context) => QrCubit(),
       child: WanQrScanner(),
     );
   }
-
 }
-
-

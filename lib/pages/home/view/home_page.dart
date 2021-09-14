@@ -1,6 +1,6 @@
-import 'package:application/home/cubit/trip_cubit.dart';
-import 'package:application/home/widgets/trip_info.dart';
-import 'package:application/home/widgets/wanderlists_list_view.dart';
+import 'package:application/pages/home/cubit/trip_cubit.dart';
+import 'package:application/pages/home/widgets/trip_info.dart';
+import 'package:application/pages/home/widgets/wanderlists_list_view.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
