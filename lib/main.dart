@@ -1,3 +1,4 @@
+import 'package:application/login/view/signup.dart';
 import 'package:application/titlebar.dart';
 import 'package:application/userwanderlists/view/userwanderlists.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,15 +33,20 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Wanderlist',
       theme: WanTheme.materialTheme,
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return AppContainer(title: 'Wanderlist');
-          }
-          return LoginPage();
+      initialRoute: '/',
+      routes: {
+        '/': (context) {
+          return StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return AppContainer(title: 'Wanderlist');
+              }
+              return LoginPage();
+            },
+          );
         },
-      ),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
