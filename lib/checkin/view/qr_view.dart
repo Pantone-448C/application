@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:application/apptheme.dart';
 import 'package:application/components/activity_summary_item_large.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
 import 'package:application/repositories/user/user_repository.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../sizeconfig.dart';
 import '../cubit/qr_cubit.dart';
 import '../cubit/qr_state.dart';
 
@@ -104,13 +106,48 @@ class _QRCameraView extends StatelessWidget {
 
 }
 
+
+class _InfoOverlay extends StatelessWidget {
+  final String text;
+
+  _InfoOverlay(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Column(children: <Widget>[
+        Expanded(child: Container(), flex:5),
+        ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child:Container(
+                width: SizeConfig(context).wPc * 50,
+                padding: EdgeInsets.all(10),
+                color: WanTheme.colors.white,
+                child: Center(child:
+                Text(text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: "inter",
+                      fontSize: 18,
+                      fontWeight: FontWeight.w200,
+                    ))))),
+        Expanded(child: Container(), flex: 1),
+      ]);
+  }
+
+}
+
+
 class _QrAddActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<QrCubit, QrScannerState> (
       builder: (context, state) {
-        if (state is QrScannerInitial) {
-          return _QRCameraView();
+        if (state is QrScannerError) {
+          return Stack(children: <Widget>[
+            _QRCameraView(),
+            _InfoOverlay(state.errorMsg)
+          ]);
         } else if (state is QrScannerLoading ) {
           return Center(child: CircularProgressIndicator());
         } else if (state is GotActivity) {
@@ -123,11 +160,20 @@ class _QrAddActivity extends StatelessWidget {
         } else if (state is AddedActivity) {
           return  Column(children: <Widget>[
             Container(
-                padding: EdgeInsets.only(left:20, right:20, bottom:50),
+                padding: EdgeInsets.only(top: 20, left:20, right:20, bottom:50),
                 child: ActivitySummaryItemLarge(state.activity)),
             Center(child: Icon(Icons.check_circle_outline_rounded)),
           ]);
+        } else if (state is ActivityAlreadyComplete) {
+          return  Column(children: <Widget>[
+            Container(
+                padding: EdgeInsets.only(top: 20, left:20, right:20, bottom:50),
+                child: ActivitySummaryItemLarge(state.activity)),
+            Center(child: Text("Activity already added.")),
+          ]);
+
         }
+
         throw Exception("oops, fell through");
         return Center(child: CircularProgressIndicator());
       }
@@ -154,7 +200,7 @@ class WanQrPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<QrCubit> (
-      create: (BuildContext context) => QrCubit(UserRepository(), ActivityRepository()),
+      create: (BuildContext context) => QrCubit(UserRepository()),
       child: WanQrScanner(),
     );
   }

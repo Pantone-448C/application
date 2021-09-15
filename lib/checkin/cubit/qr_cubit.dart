@@ -17,9 +17,8 @@ const String ACTIVITY_NOT_IN_LIST = "Activity is not in a list";
 
 class QrCubit extends Cubit<QrScannerState> {
   IUserRepository userRepository;
-  IActivityRepository activityRepository;
-  QrCubit(this.userRepository, this.activityRepository)
-      : super(QrScannerInitial());
+  QrCubit(this.userRepository)
+      : super(QrScannerError("Please Scan an Activity Code"));
 
   void gotCode(String c) {
     emit(QrScannerLoading());
@@ -35,7 +34,7 @@ class QrCubit extends Cubit<QrScannerState> {
       print("Trying to add activity: $activity");
       a = (await userRepository.getActivity(activity));
     } catch (e) {
-      emit(QrScannerInitial());
+      emit(QrScannerError("Invalid Activity Code."));
       return;
     }
 
@@ -45,21 +44,30 @@ class QrCubit extends Cubit<QrScannerState> {
 
     print("$activity exists");
 
+    bool changed = false;
     List<UserWanderlist> lists = user.wanderlists;
     lists.forEach((e) {
-      if (e.inTrip && e.wanderlist.activities.any((elem) {
+      // TODO: if not in trip, add to trip
+      if (e.wanderlist.activities.any((elem) {
           print("$elem.id $activity");
           return elem.id == activity;})) {
-        e.completedActivities.add(a);
+        if (!e.completedActivities.contains(a)) {
+          e.completedActivities.add(a);
+          changed = true;
+        }
         var list = e.wanderlist.id;
         print("Added $activity to list $list");
       }
     });
 
-    print("New user json: $user.toJson()");
-    await userRepository.updateUserData(user);
+    if (!changed) {
+      emit(ActivityAlreadyComplete(a));
+      return;
+    }
 
-    print("synced db");
+    await userRepository.updateUserData(user);
+    print("Sent new user json to complete activity: $user.toJson()");
+
     emit(AddedActivity(a));
   }
 

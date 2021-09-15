@@ -29,13 +29,19 @@ class AddActivity extends QrScannerState {
 }
 
 class GotActivity extends QrScannerState {
-  ActivityDetails activity;
+  final ActivityDetails activity;
 
   GotActivity(this.activity);
 }
 
+class ActivityAlreadyComplete extends QrScannerState {
+  final ActivityDetails activity;
+
+  ActivityAlreadyComplete(this.activity);
+}
+
 class AddedActivity extends QrScannerState {
-  ActivityDetails activity;
+  final ActivityDetails activity;
 
   AddedActivity(this.activity);
 }
