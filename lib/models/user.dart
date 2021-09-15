@@ -27,17 +27,24 @@ class UserDetails extends Equatable {
   final String email;
   final String firstName;
   final String lastName;
-  final List<UserWanderlist> wanderlists;
+  List<UserWanderlist> wanderlists;
 
   @override
   List<Object?> get props => [email, firstName, lastName, wanderlists];
 
   Map<String, dynamic> toJson() {
+
+    List<Map<String, dynamic>> jsonWanderLists = List.empty(growable: true);
+
+    wanderlists.forEach((element) {
+      jsonWanderLists.add(element.toJson());
+    });
+
     return {
       'email': email,
       'first_name': firstName,
       'last_name': lastName,
-      'wanderlists': wanderlists.map((wanderlist) => wanderlist.toJson()),
+      'wanderlists': jsonWanderLists,
     };
   }
 

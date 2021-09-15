@@ -4,11 +4,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ActivityRepository implements IActivityRepository {
   final CollectionReference _activities =
-      FirebaseFirestore.instance.collection('activity');
+      FirebaseFirestore.instance.collection('activities');
 
   @override
   Future<ActivityDetails> getActivity(String id) async {
     DocumentSnapshot snapshot = await _activities.doc(id).get();
-    return ActivityDetails.fromJson(snapshot.data() as Map<String, dynamic>);
+    if (snapshot.exists) {
+      var data = snapshot.data() as Map<String, dynamic>;
+      data["doc_id"] = id;
+      return ActivityDetails.fromJson(data);
+    }
+    else {
+      throw Exception(["Failed to get activity $id"]);
+    }
   }
 }

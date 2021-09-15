@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 @immutable
 class Wanderlist extends Equatable {
-  Wanderlist(this.name, this.creatorName, this.activities, this.icon);
+  Wanderlist(this.id, this.name, this.creatorName, this.activities, this.icon);
 
   factory Wanderlist.fromJson(Map<String, dynamic> json) {
     List<ActivityDetails>? activities = List<ActivityDetails>.from(
@@ -14,20 +14,23 @@ class Wanderlist extends Equatable {
             .map((activity) => ActivityDetails.fromJson(activity))
             .toList());
     return Wanderlist(
+      json['doc_ref'],
       json['name'],
       json['author_name'],
-      activities ?? [],
+      activities,
       json['icon'],
     );
   }
 
+  final String id;
   final String name;
   final String creatorName;
   final List<ActivityDetails> activities;
   final String icon;
 
   @override
-  List<Object?> get props => [name, creatorName, activities, icon];
+  List<Object?> get props => [id, name, creatorName, activities, icon];
+
 
   Map<String, dynamic> toJson() {
     return {
@@ -39,12 +42,14 @@ class Wanderlist extends Equatable {
   }
 
   Wanderlist copyWith({
+    String? id,
     String? name,
     String? creatorName,
     List<ActivityDetails>? activities,
     String? icon,
   }) {
     return Wanderlist(
+      id ?? this.id,
       name ?? this.name,
       creatorName ?? this.creatorName,
       activities ?? this.activities,

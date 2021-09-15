@@ -9,6 +9,8 @@ class WanderlistRepository implements IWanderlistRepository {
   @override
   Future<Wanderlist> getWanderlist(String id) async {
     DocumentSnapshot snapshot = await _wanderlists.doc(id).get();
-    return Wanderlist.fromJson(snapshot.data() as Map<String, dynamic>);
+    var data = snapshot.data() as Map<String, dynamic>;
+    data["doc_id"] = id;
+    return Wanderlist.fromJson(data);
   }
 }

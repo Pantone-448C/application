@@ -1,3 +1,4 @@
+import 'package:application/models/activity.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,7 @@ import '../apptheme.dart';
 import '../sizeconfig.dart';
 
 class ActivitySummaryItemLarge extends ActivitySummaryItemSmall {
+  final ActivityDetails activity;
   final double height;
   final double width;
   final String activityName;
@@ -15,7 +17,7 @@ class ActivitySummaryItemLarge extends ActivitySummaryItemSmall {
   final String imageUrl;
   final bool complete;
 
-  ActivitySummaryItemLarge(
+  ActivitySummaryItemLarge(this.activity,
       {Key? key,
       this.activityName = "",
       this.activityDescription = "",
@@ -40,13 +42,13 @@ class ActivitySummaryItemLarge extends ActivitySummaryItemSmall {
               Expanded(
                   flex: 0,
                   child:
-                      _ImageComponent(this.width, this.height, this.imageUrl)),
+                      _ImageComponent(this.width, this.height, activity.imageUrl)),
               Row(children: <Widget>[
                 Expanded(
                     child: Container(
                         padding: const EdgeInsets.all(8),
                         child:
-                            _TextComponent(activityName, activityDescription))),
+                            _TextComponent(activity.name, activity.about))),
                 Container (
                   padding: EdgeInsets.only(right: 8),
                     child: Icon(Icons.chevron_right, color: Colors.grey)),
