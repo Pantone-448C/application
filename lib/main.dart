@@ -1,3 +1,4 @@
+import 'package:application/login/view/signup.dart';
 import 'package:application/titlebar.dart';
 import 'package:application/userwanderlists/view/userwanderlists.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,31 +23,44 @@ Future<void> main() async {
       print('User is signed in!');
     }
   });
-  runApp(MyApp());
+  runApp(App());
 }
 
-class MyApp extends StatelessWidget {
+class App extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'WanderLists',
+      title: 'Wanderlist',
       theme: WanTheme.materialTheme,
-      home: MyHomePage(title: 'WanderList'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) {
+          return StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return AppContainer(title: 'Wanderlist');
+              }
+              return LoginPage();
+            },
+          );
+        },
+      },
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class AppContainer extends StatefulWidget {
+  AppContainer({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _AppContainerState createState() => _AppContainerState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _AppContainerState extends State<AppContainer> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
 
@@ -59,13 +73,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _gotoWanderlistsPage() {
     _pageController.jumpToPage(3);
-  }
-
-  void checkSignedIn() {
-    if (true || FirebaseAuth.instance.currentUser == null) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
-    }
   }
 
   @override
