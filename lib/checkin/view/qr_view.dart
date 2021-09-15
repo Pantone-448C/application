@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:application/qr/cubit/qr_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+import '../cubit/qr_cubit.dart';
 import '../cubit/qr_state.dart';
 
 class _QRViewExampleState extends State<_QRViewExample> {

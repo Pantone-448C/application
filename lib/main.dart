@@ -1,4 +1,3 @@
-import 'package:application/qr/view/qr_view.dart';
 import 'package:application/titlebar.dart';
 import 'package:application/userwanderlists/view/userwanderlists.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +8,7 @@ import 'package:application/apptheme.dart';
 import 'home/view/home_page.dart';
 import 'login/view/login.dart';
 import 'titlebar.dart';
+import 'package:application/checkin/view/qr_view.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
