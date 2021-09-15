@@ -44,10 +44,11 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Sign Up"),
-        ),
-        body: ListView(children: [
+      appBar: AppBar(
+        title: Text("Sign Up"),
+      ),
+      body: ListView(
+        children: [
           Container(
             height: 200,
             width: 350,
@@ -56,10 +57,11 @@ class _SignupPageState extends State<SignupPage> {
               borderRadius: BorderRadius.circular(200),
             ),
             child: Center(
-                child: Text("Tell us about yourself",
-                    style: TextStyle(
-                      fontSize: 25,
-                    ))),
+              child: Text(
+                "Tell us about yourself",
+                style: TextStyle(fontSize: 25),
+              ),
+            ),
           ),
           Padding(
             padding: EdgeInsets.all(10),
@@ -109,8 +111,10 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
             ),
-          )
-        ]));
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -130,9 +134,11 @@ class _SignupPasswordPageState extends State<SignupPasswordPage> {
 
   Future<void> signup() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: widget.email, password: password.text);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: widget.email,
+        password: password.text,
+      );
       var users = FirebaseFirestore.instance.collection('users');
       users.doc(userCredential.user!.uid).set({
         'first_name': widget.firstName,
@@ -154,10 +160,11 @@ class _SignupPasswordPageState extends State<SignupPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Sign Up"),
-        ),
-        body: ListView(children: [
+      appBar: AppBar(
+        title: Text("Sign Up"),
+      ),
+      body: ListView(
+        children: [
           Container(
             height: 200,
             width: 350,
@@ -211,7 +218,9 @@ class _SignupPasswordPageState extends State<SignupPasswordPage> {
                 ),
               ),
             ),
-          )
-        ]));
+          ),
+        ],
+      ),
+    );
   }
 }
