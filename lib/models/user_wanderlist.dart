@@ -1,15 +1,19 @@
 import 'package:application/models/activity.dart';
 import 'package:application/models/wanderlist.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 
 @immutable
 class UserWanderlist extends Equatable {
+
   UserWanderlist(
     this.wanderlist,
     this.completedActivities,
     this.inTrip,
     this.numCompletions,
+    this.id,
   );
 
   factory UserWanderlist.fromJson(Map<String, dynamic> json) {
@@ -23,9 +27,10 @@ class UserWanderlist extends Equatable {
     }
 
     return UserWanderlist(
-        wanderlist, activities, json['in_trip'], json['num_completions']);
+        wanderlist, activities, json['in_trip'], json['num_completions'], wanderlist.id);
   }
 
+  final String id;
   final Wanderlist wanderlist;
   final List<ActivityDetails> completedActivities;
   final bool inTrip;
@@ -37,20 +42,29 @@ class UserWanderlist extends Equatable {
 
   @override
   Map<String, dynamic> toJson() {
-    // TODO: implement toJson
-    throw UnimplementedError();
+    return {
+      'in_trip': inTrip as bool,
+      'num_completions': numCompletions as num,
+      'wanderlist': FirebaseFirestore.instance.collection("wanderlists").doc(id),
+      'completed_activities': completedActivities.map((activity)
+        => FirebaseFirestore.instance.collection("activities").doc(activity.id)).toList(),
+    };
   }
+
 
   UserWanderlist copyWith(
     Wanderlist? wanderlist,
     List<ActivityDetails>? activities,
     bool? inTrip,
     int? numCompletions,
+    String ? id,
   ) {
     return UserWanderlist(
         wanderlist ?? this.wanderlist,
         activities ?? this.completedActivities,
         inTrip ?? this.inTrip,
-        numCompletions ?? this.numCompletions);
+        numCompletions ?? this.numCompletions,
+        id ?? this.id,
+    );
   }
 }
