@@ -73,7 +73,7 @@ class WanderlistSummaryItem extends StatelessWidget {
         height: this.height,
         width: this.width,
         color: Colors.transparent,
-        child: Container(
+        child: Container (
             padding: EdgeInsets.symmetric(
                 vertical: height / 7.5, horizontal: width / 37.5),
             decoration: BoxDecoration(
