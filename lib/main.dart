@@ -57,6 +57,10 @@ class _MyHomePageState extends State<MyHomePage> {
     _pageController.jumpToPage(index);
   }
 
+  void _gotoWanderlistsPage() {
+    _pageController.jumpToPage(3);
+  }
+
   void checkSignedIn() {
     if (true || FirebaseAuth.instance.currentUser == null) {
       Navigator.push(
@@ -75,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           onPageChanged: (page) => setState(() => _selectedIndex = page),
           controller: _pageController,
           children: <Widget>[
-            Container(child: HomePage()),
+            Container(child: HomePage(_gotoWanderlistsPage)),
             Container(child: Text("Search Page")),
             Container(child: WanQrPage()),
             Container(child: UserWanderlistsPage()),

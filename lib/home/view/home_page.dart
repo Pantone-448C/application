@@ -4,17 +4,22 @@ import 'package:application/home/widgets/trip_info.dart';
 import 'package:application/home/widgets/wanderlists_list_view.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/sizeconfig.dart';
+import 'package:application/userwanderlists/view/userwanderlists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Widget _emptyOrFilledHomePage(numWanderlists) {
+Widget _emptyOrFilledHomePage(numWanderlists, gotoWanderlistsPage) {
   if (numWanderlists > 0) {
     return _FilledHomePage();
   }
-  return _EmptyHomePage();
+  return _EmptyHomePage(gotoWanderlistsPage);
 }
 
 class HomePage extends StatelessWidget {
+  HomePage(this.gotoWanderlistsPage);
+
+  final Function() gotoWanderlistsPage;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -36,7 +41,10 @@ class HomePage extends StatelessWidget {
                 alignment: Alignment.center,
                 children: <Widget>[
                   ListView(),
-                  _emptyOrFilledHomePage(state.numWanderlists),
+                  _emptyOrFilledHomePage(
+                    state.numWanderlists,
+                    gotoWanderlistsPage,
+                  ),
                 ],
               ),
             );
@@ -54,9 +62,9 @@ class HomePage extends StatelessWidget {
 
 /// An empty home page with a button asking the user to add wanderlists
 class _EmptyHomePage extends StatelessWidget {
-  void _initiateAddWanderlistFlow(BuildContext context) {
-    // Navigator.of(context).pushReplacement();
-  }
+  _EmptyHomePage(this.gotoWanderlistsPage);
+
+  final Function() gotoWanderlistsPage;
 
   @override
   Widget build(BuildContext context) {
@@ -78,9 +86,9 @@ class _EmptyHomePage extends StatelessWidget {
               color: WanTheme.colors.pink,
               borderRadius: BorderRadius.circular(20)),
           child: TextButton(
-            onPressed: () => _initiateAddWanderlistFlow(context),
+            onPressed: () => gotoWanderlistsPage(),
             child: Text(
-              "Add Wanderlists",
+              "Go to your Wanderlists",
               style: TextStyle(
                   fontSize: 18,
                   color: WanTheme.colors.white,
