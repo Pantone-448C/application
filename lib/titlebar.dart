@@ -1,71 +1,69 @@
-
 import 'package:application/apptheme.dart';
+import 'package:application/profile/view/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'login/view/login.dart';
 
-
-
 class Titlebar extends StatelessWidget implements PreferredSizeWidget {
-  void checkSignedIn(BuildContext context) {
-    if (true || FirebaseAuth.instance.currentUser == null) {
+  void handleProfileButton(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser == null) {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => LoginPage()
-          )
-      );
+            builder: (context) => LoginPage(),
+          ));
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(),
+          ));
     }
   }
+
   static const titleSize = 30.0;
-  static const barHeight= 60.0;
+  static const barHeight = 60.0;
   @override
   Size get preferredSize => Size.fromHeight(barHeight);
   @override
   Widget build(BuildContext context) {
     /* Transparent status bar on android -- not sure about apple */
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: WanTheme.colors.white,
-        statusBarIconBrightness: Brightness.dark,
-      )
-    );
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: WanTheme.colors.white,
+      statusBarIconBrightness: Brightness.dark,
+    ));
     /* Ignore notch and status bar */
     return Container(
       child: SafeArea(
-        child: AppBar(
-          actions: [
-            IconButton(
+          child: AppBar(
+        actions: [
+          IconButton(
+            color: WanTheme.colors.grey,
+            icon: Icon(
+              Icons.close_outlined,
+            ),
+            onPressed: () => FirebaseAuth.instance.signOut(),
+          ),
+          IconButton(
               color: WanTheme.colors.grey,
               icon: Icon(
-                Icons.close_outlined,
+                Icons.account_circle_outlined,
               ),
-              onPressed: () => FirebaseAuth.instance.signOut(),
-            ),
-              IconButton(
-                color: WanTheme.colors.grey,
-                icon: Icon(
-                  Icons.account_circle_outlined,
-                ),
-                onPressed: () {
-                  checkSignedIn(context);
-                }
-              ),
-          ],
-          title: Text(
-            'wanderlist',
+              onPressed: () {
+                handleProfileButton(context);
+              }),
+        ],
+        title: Text('wanderlist',
             style: TextStyle(
               color: WanTheme.colors.pink,
               fontFamily: 'Pacifico',
               fontSize: titleSize,
-            )
-          ),
-          backgroundColor: WanTheme.colors.white,
-          elevation: 0,
-        )
-      ),
+            )),
+        backgroundColor: WanTheme.colors.white,
+        elevation: 0,
+      )),
     );
   }
 }
