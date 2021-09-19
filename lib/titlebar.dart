@@ -25,8 +25,10 @@ class Titlebar extends StatelessWidget implements PreferredSizeWidget {
 
   static const titleSize = 30.0;
   static const barHeight = 60.0;
+
   @override
   Size get preferredSize => Size.fromHeight(barHeight);
+
   @override
   Widget build(BuildContext context) {
     /* Transparent status bar on android -- not sure about apple */
@@ -42,18 +44,12 @@ class Titlebar extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
             color: WanTheme.colors.grey,
             icon: Icon(
-              Icons.close_outlined,
+              Icons.account_circle_outlined,
             ),
-            onPressed: () => FirebaseAuth.instance.signOut(),
+            onPressed: () {
+              handleProfileButton(context);
+            },
           ),
-          IconButton(
-              color: WanTheme.colors.grey,
-              icon: Icon(
-                Icons.account_circle_outlined,
-              ),
-              onPressed: () {
-                handleProfileButton(context);
-              }),
         ],
         title: Text('wanderlist',
             style: TextStyle(
