@@ -18,12 +18,21 @@ class UserDetails extends Equatable {
               (wanderlist) => UserWanderlist.fromJson(wanderlist))
           .toList();
     }
+
+    List<ActivityDetails> completedActivities = [];
+    if (json['completed_activities'] != null) {
+      completedActivities = json['completed_activities']
+          .map<ActivityDetails>((completedActivities) =>
+              ActivityDetails.fromJson(completedActivities))
+          .toList();
+    }
+
     return UserDetails(
       json['email'],
       json['first_name'],
       json['last_name'],
       wanderlists,
-      json['completed_activities'],
+      completedActivities,
     );
   }
 
@@ -31,7 +40,7 @@ class UserDetails extends Equatable {
   final String firstName;
   final String lastName;
   List<UserWanderlist> wanderlists;
-  final List<ActivityDetails> completedActivities;
+  List<ActivityDetails> completedActivities;
 
   @override
   List<Object?> get props => [email, firstName, lastName, wanderlists];
