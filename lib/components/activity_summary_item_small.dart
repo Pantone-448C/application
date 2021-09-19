@@ -12,7 +12,7 @@ class ActivitySummaryItemSmall extends StatelessWidget {
   final String documentName;
   final String imageUrl;
   final bool complete;
-  final IconData rightIcon;
+  final Widget? rightWidget;
   final bool smallIcon;
 
   ActivitySummaryItemSmall(
@@ -24,7 +24,7 @@ class ActivitySummaryItemSmall extends StatelessWidget {
       this.width = 375.0,
       this.height = 75.0,
       this.complete = false,
-      this.rightIcon = Icons.chevron_right,
+      this.rightWidget = const Icon(Icons.chevron_right, color: Colors.grey),
       this.smallIcon = false});
 
   @override
@@ -50,7 +50,7 @@ class ActivitySummaryItemSmall extends StatelessWidget {
                           _TextComponent(activityName, activityDescription))),
               Container(
                   padding: EdgeInsets.only(right: 8),
-                  child: Icon(this.rightIcon, color: Colors.grey)),
+                  child: this.rightWidget),
             ])));
   }
 }

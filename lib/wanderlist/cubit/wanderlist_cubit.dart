@@ -63,6 +63,16 @@ class WanderlistCubit extends Cubit<WanderlistState> {
     }
   }
 
+  addActivity(UserWanderlist wanderlist, ActivityDetails activity) {
+    if (state is Editing) {
+      (state as Editing).wanderlist.wanderlist.activities.add(activity);
+      final original = (state as Editing).original;
+      emit(Editing(wanderlist, original));
+    } else {
+      emit(state);
+    }
+  }
+
   Future<void> _save(Wanderlist wanderlist) async {
     await wanderlistRepository.setWanderlist(wanderlist);
   }

@@ -1,3 +1,4 @@
+import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
 import 'package:equatable/equatable.dart';
@@ -39,7 +40,19 @@ class Editing implements WanderlistState {
   final UserWanderlist original;
 
   @override
-  List<Object?> get props => [wanderlist];
+  List<Object?> get props => [wanderlist, original];
+
+  @override
+  bool? get stringify => null;
+}
+
+class AddingActivity implements WanderlistState {
+  AddingActivity({this.newActivity});
+
+  final ActivityDetails? newActivity;
+
+  @override
+  List<Object?> get props => [newActivity];
 
   @override
   bool? get stringify => null;

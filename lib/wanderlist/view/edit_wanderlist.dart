@@ -5,6 +5,7 @@ import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/wanderlist/cubit/wanderlist_cubit.dart';
 import 'package:application/wanderlist/cubit/wanderlist_state.dart';
+import 'package:application/wanderlist/view/add_activity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,12 +19,20 @@ class EditWanderlistPage extends StatelessWidget {
     return BlocConsumer<WanderlistCubit, WanderlistState>(
       builder: (context, state) {
         if (state is Editing) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          return Stack(
             children: [
-              _TopRow(state.wanderlist.wanderlist.name),
-              Padding(padding: EdgeInsets.only(top: 10)),
-              _EditableActivityList(state.wanderlist.wanderlist.activities),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _TopRow(state.wanderlist.wanderlist.name),
+                  Padding(padding: EdgeInsets.only(top: 10)),
+                  _EditableActivityList(state.wanderlist.wanderlist.activities),
+                Padding(padding: EdgeInsets.only(top: 10)),
+
+                  // _AddActivityButton(),
+                ],
+              ),
+              AddActivityOverlay(),
             ],
           );
         }
@@ -192,10 +201,38 @@ class _EditableActivityListItem extends StatelessWidget {
             activityName: activity.name,
             activityDescription: activity.about,
             imageUrl: activity.imageUrl,
-            rightIcon: Icons.drag_handle,
+            rightWidget: Icon(Icons.drag_handle, color: Colors.grey),
             smallIcon: true,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _AddActivityButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: WanTheme.colors.pink,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      height: 50,
+      width: 200,
+      child: TextButton(
+        onPressed: () {
+          Overlay.of(context)!.insert(OverlayEntry(
+            builder: (context) => Positioned(
+              child: AddActivityOverlay(),
+            ),
+          ));
+        },
+        child: Text(
+          'Add Activity',
+          style:
+              TextStyle(fontSize: 16, fontFamily: 'Inter', color: Colors.white),
+        ),
       ),
     );
   }
