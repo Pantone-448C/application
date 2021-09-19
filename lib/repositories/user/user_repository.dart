@@ -35,18 +35,6 @@ class UserRepository implements IUserRepository {
   }
 
   @override
-  Future<UserDetails> getUserDataAndWanderlists() async {
-    DocumentSnapshot snapshot = await _users.doc(_uid).get();
-    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-    print("User json in: $data");
-    data['wanderlists'] = null;
-    data['completed_activities'] = null;
-    var details = UserDetails.fromJson(data);
-    details.wanderlists = (await getUserWanderlists()).toList();
-    return details;
-  }
-
-  @override
   Future<void> addNewUser(UserDetails details) async {
     // TODO: Implement this
     throw UnimplementedError(
@@ -58,17 +46,23 @@ class UserRepository implements IUserRepository {
     _users.doc(_uid).update(details.toJson());
   }
 
-  Future<void> updateUserWanderlists(UserDetails details) async {
-    try {
-      _users.doc(_uid).set(details.toJson());
-    } catch (e) {
-      print("Exception $e");
-    }
+  @override
+  Future<void> updateUserWanderlists(List<UserWanderlist> list) async {
+    _users.doc(_uid).update({
+      "wanderlists": list.map((wanderlist) => wanderlist.toJson()).toList(),
+    });
+  }
+
+  @override
+  Future<void> updateUserCompletedActivities(List<ActivityDetails> list) async {
+    _users.doc(_uid).update({
+      "completed_activities":
+          list.map((activity) => _activities.doc(activity.id)).toList(),
+    });
   }
 
   Future<ActivityDetails> getActivity(String id) async {
-    DocumentSnapshot snapshot =
-        await FirebaseFirestore.instance.collection('activities').doc(id).get();
+    DocumentSnapshot snapshot = await _activities.doc(id).get();
     var data = snapshot.data() as Map<String, dynamic>;
     data["doc_id"] = id;
     return ActivityDetails.fromJson(data);
