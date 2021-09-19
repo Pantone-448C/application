@@ -143,31 +143,32 @@ class _QrAddActivity extends StatelessWidget {
     return BlocBuilder<QrCubit, QrScannerState>(builder: (context, state) {
       if (state is QrScannerError) {
         return Stack(
-            children: <Widget>[_QRCameraView(), _InfoOverlay(state.errorMsg)]);
+          children: <Widget>[_QRCameraView(), _InfoOverlay(state.errorMsg)],
+        );
       } else if (state is QrScannerLoading) {
         return Center(child: CircularProgressIndicator());
       } else if (state is GotActivity) {
         return Column(children: <Widget>[
           Container(
-              padding:
-                  EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 50),
-              child: ActivitySummaryItemLarge(state.activity)),
+            padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 50),
+            child: ActivitySummaryItemLarge(state.activity),
+          ),
           Center(child: CircularProgressIndicator()),
         ]);
       } else if (state is AddedActivity) {
         return Column(children: <Widget>[
           Container(
-              padding:
-                  EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 50),
-              child: ActivitySummaryItemLarge(state.activity)),
+            padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 50),
+            child: ActivitySummaryItemLarge(state.activity),
+          ),
           Center(child: Icon(Icons.check_circle_outline_rounded)),
         ]);
       } else if (state is ActivityAlreadyComplete) {
         return Column(children: <Widget>[
           Container(
-              padding:
-                  EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 50),
-              child: ActivitySummaryItemLarge(state.activity)),
+            padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 50),
+            child: ActivitySummaryItemLarge(state.activity),
+          ),
           Center(child: Text("Activity already added.")),
         ]);
       }
