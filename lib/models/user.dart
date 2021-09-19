@@ -54,6 +54,7 @@ class UserDetails extends Equatable {
     });
 
     var jsonCompletedActivities = List.empty(growable: true);
+    print("XD $completedActivities");
     completedActivities.forEach((activity) {
       var activityReference =
           FirebaseFirestore.instance.collection("activities").doc(activity.id);

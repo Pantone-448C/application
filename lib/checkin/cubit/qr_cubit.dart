@@ -60,7 +60,10 @@ class QrCubit extends Cubit<QrScannerState> {
     });
 
     /* Add activity to user's completed activity, for points tracking */
-    user.completedActivities.add(a);
+    var completed =
+        (await userRepository.getUserCompletedActivities()).toList();
+    completed.add(a);
+    user.completedActivities = completed;
     changed = true; // TODO: Add condition on frequency of earning points
 
     if (!changed) {

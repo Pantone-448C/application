@@ -40,6 +40,7 @@ class UserRepository implements IUserRepository {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
     print("User json in: $data");
     data['wanderlists'] = null;
+    data['completed_activities'] = null;
     var details = UserDetails.fromJson(data);
     details.wanderlists = (await getUserWanderlists()).toList();
     return details;
