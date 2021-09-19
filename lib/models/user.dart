@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -22,8 +23,8 @@ class UserDetails extends Equatable {
     List<ActivityDetails> completedActivities = [];
     if (json['completed_activities'] != null) {
       completedActivities = json['completed_activities']
-          .map<ActivityDetails>((completedActivities) =>
-              ActivityDetails.fromJson(completedActivities))
+          .map<ActivityDetails>(
+              (activity) => ActivityDetails.fromJson(activity))
           .toList();
     }
 
@@ -52,11 +53,19 @@ class UserDetails extends Equatable {
       jsonWanderLists.add(element.toJson());
     });
 
+    var jsonCompletedActivities = List.empty(growable: true);
+    completedActivities.forEach((activity) {
+      var activityReference =
+          FirebaseFirestore.instance.collection("activities").doc(activity.id);
+      jsonCompletedActivities.add(activityReference);
+    });
+
     return {
       'email': email,
       'first_name': firstName,
       'last_name': lastName,
       'wanderlists': jsonWanderLists,
+      'completed_activities': jsonCompletedActivities,
     };
   }
 
