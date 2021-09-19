@@ -1,12 +1,14 @@
 import 'dart:developer';
 
+import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 @immutable
 class UserDetails extends Equatable {
-  UserDetails(this.email, this.firstName, this.lastName, this.wanderlists);
+  UserDetails(this.email, this.firstName, this.lastName, this.wanderlists,
+      this.completedActivities);
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     List<UserWanderlist> wanderlists = [];
@@ -21,6 +23,7 @@ class UserDetails extends Equatable {
       json['first_name'],
       json['last_name'],
       wanderlists,
+      json['completed_activities'],
     );
   }
 
@@ -28,12 +31,12 @@ class UserDetails extends Equatable {
   final String firstName;
   final String lastName;
   List<UserWanderlist> wanderlists;
+  final List<ActivityDetails> completedActivities;
 
   @override
   List<Object?> get props => [email, firstName, lastName, wanderlists];
 
   Map<String, dynamic> toJson() {
-
     List<Map<String, dynamic>> jsonWanderLists = List.empty(growable: true);
 
     wanderlists.forEach((element) {
@@ -53,12 +56,14 @@ class UserDetails extends Equatable {
     String? firstName,
     String? lastName,
     List<UserWanderlist>? wanderlists,
+    List<ActivityDetails>? completedActivities,
   }) {
     return UserDetails(
       email ?? this.email,
       firstName ?? this.firstName,
       lastName ?? this.lastName,
       wanderlists ?? this.wanderlists,
+      completedActivities ?? this.completedActivities,
     );
   }
 }
