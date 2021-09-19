@@ -24,11 +24,9 @@ class QrCubit extends Cubit<QrScannerState> {
     emit(QrScannerLoading());
     var code = jsonDecode(c);
     addActivity(code["activity"]);
-
   }
 
   Future<void> addActivity(String activity) async {
-
     ActivityDetails a;
     try {
       print("Trying to add activity: $activity");
@@ -49,8 +47,9 @@ class QrCubit extends Cubit<QrScannerState> {
     lists.forEach((e) {
       // TODO: if not in trip, add to trip
       if (e.wanderlist.activities.any((elem) {
-          print("$elem.id $activity");
-          return elem.id == activity;})) {
+        print("$elem.id $activity");
+        return elem.id == activity;
+      })) {
         if (!e.completedActivities.contains(a)) {
           e.completedActivities.add(a);
           changed = true;
@@ -65,14 +64,12 @@ class QrCubit extends Cubit<QrScannerState> {
       return;
     }
 
+    /* Add activity to user's completed activity, for points tracking */
+    user.completedActivities.add(a);
+
     await userRepository.updateUserData(user);
     print("Sent new user json to complete activity: $user.toJson()");
 
     emit(AddedActivity(a));
   }
-
 }
-
-
-
-
