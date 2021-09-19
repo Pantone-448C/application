@@ -30,6 +30,7 @@ class UserRepository implements IUserRepository {
     DocumentSnapshot snapshot = await _users.doc(_uid).get();
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
     data['wanderlists'] = null;
+    data['completed_activities'] = null;
     return UserDetails.fromJson(data);
   }
 
@@ -44,8 +45,6 @@ class UserRepository implements IUserRepository {
     return details;
   }
 
-
-
   @override
   Future<void> addNewUser(UserDetails details) async {
     // TODO: Implement this
@@ -55,7 +54,7 @@ class UserRepository implements IUserRepository {
 
   @override
   Future<void> updateUserData(UserDetails details) async {
-      _users.doc(_uid).update(details.toJson());
+    _users.doc(_uid).update(details.toJson());
   }
 
   Future<void> updateUserWanderlists(UserDetails details) async {
@@ -67,18 +66,32 @@ class UserRepository implements IUserRepository {
   }
 
   Future<ActivityDetails> getActivity(String id) async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('activities').doc(id).get();
+    DocumentSnapshot snapshot =
+        await FirebaseFirestore.instance.collection('activities').doc(id).get();
     var data = snapshot.data() as Map<String, dynamic>;
     data["doc_id"] = id;
     return ActivityDetails.fromJson(data);
-
-
   }
 
   @override
   Future<Iterable<UserWanderlist>> getActiveWanderlists() async {
     Iterable<UserWanderlist> wanderlists = await getUserWanderlists();
     return wanderlists.where((wanderlist) => wanderlist.inTrip);
+  }
+
+  @override
+  Future<Iterable<ActivityDetails>> getUserCompletedActivities() async {
+    var snapshot = await _users.doc(_uid).get();
+    var data = snapshot.data() as Map<String, dynamic>;
+    if (data['completed_activities'] != null) {
+      var completedActivities = hydrateReferences(
+              List<DocumentReference>.from(data['completed_activities']))
+          .then((activities) {
+        return activities.map((activity) => ActivityDetails.fromJson(activity));
+      });
+      return completedActivities;
+    }
+    return [];
   }
 
   @override
@@ -96,7 +109,6 @@ class UserRepository implements IUserRepository {
 
           Map<String, dynamic> wanderlistData =
               wanderlist.data() as Map<String, dynamic>;
-
 
           List<Map<String, dynamic>> completedActivities =
               await hydrateReferences(List<DocumentReference>.from(
@@ -128,7 +140,8 @@ class UserRepository implements IUserRepository {
     List<Map<String, dynamic>> data = [];
     for (DocumentReference ref in refs) {
       DocumentSnapshot refDocument = await ref.get();
-      Map<String, dynamic> document = refDocument.data() as Map<String, dynamic>;
+      Map<String, dynamic> document =
+          refDocument.data() as Map<String, dynamic>;
       document["doc_id"] = ref.id;
       data.add(document);
     }
