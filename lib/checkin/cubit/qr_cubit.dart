@@ -59,16 +59,16 @@ class QrCubit extends Cubit<QrScannerState> {
       }
     });
 
-    if (!changed) {
-      emit(ActivityAlreadyComplete(a));
-      return;
-    }
-
     /* Add activity to user's completed activity, for points tracking */
     user.completedActivities.add(a);
+    changed = true; // TODO: Add condition on frequency of earning points
+
+    if (!changed) {
+      emit(ActivityAlreadyComplete(a));
+    }
 
     await userRepository.updateUserData(user);
-    print("Sent new user json to complete activity: $user.toJson()");
+    print("Sent new user json to complete activity: ${user.toJson()}");
 
     emit(AddedActivity(a));
   }
