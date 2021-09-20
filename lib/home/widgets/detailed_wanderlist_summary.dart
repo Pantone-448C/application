@@ -1,6 +1,8 @@
+import 'package:application/activity/view/activity_info.dart';
 import 'package:application/components/small_square_image.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
+import 'package:application/repositories/activity/activity_repository.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -83,18 +85,24 @@ class _Activity extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
         flex: 5,
-        child: Container(
-            alignment: Alignment.centerLeft,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                      flex: 5,
-                      child: SmallSquareImage(this.width, this.height,
-                          CachedNetworkImageProvider(activity.imageUrl))),
-                  Spacer(flex: 1),
-                  Expanded(flex: 32, child: _ActivityName(activity.name)),
-                ])));
+        child: InkWell(
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ActivityInfo(activity.id))),
+          child: Container(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                        flex: 5,
+                        child: SmallSquareImage(this.width, this.height,
+                            CachedNetworkImageProvider(activity.imageUrl))),
+                    Spacer(flex: 1),
+                    Expanded(flex: 32, child: _ActivityName(activity.name)),
+                  ])),
+        ));
   }
 }
 
