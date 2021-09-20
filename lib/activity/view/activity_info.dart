@@ -10,9 +10,13 @@ const _sectionSize1 = 75.0;
 const _sectionSize2 = 125.0;
 
 class ActivityInfo extends StatelessWidget {
+  ActivityInfo(this.id, {Key? key}) : super(key: key);
+
+  final String id;
+
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ActivityCubit(ActivityRepository(), "lone_pine"),
+      create: (context) => ActivityCubit(ActivityRepository(), id),
       child: Scaffold(
         backgroundColor: WanTheme.colors.offWhite,
         body: ListView(
