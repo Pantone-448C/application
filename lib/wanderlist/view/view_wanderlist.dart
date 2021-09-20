@@ -44,7 +44,7 @@ class ViewWanderlistPage extends StatelessWidget {
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   _AppBar();
 
-  static const barHeight = 40.0;
+  static const barHeight = WanTheme.TITLEBAR_HEIGHT;
   @override
   Size get preferredSize => Size.fromHeight(barHeight);
 
@@ -129,9 +129,7 @@ class _UneditableActivityList extends StatelessWidget {
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return ActivitySummaryItemSmall(
-            activityName: activities[index].name,
-            activityDescription: activities[index].about,
-            imageUrl: activities[index].imageUrl,
+            activity: activities[index],
             smallIcon: true,
           );
         },

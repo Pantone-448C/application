@@ -1,3 +1,5 @@
+import 'package:application/activity/view/activity_info.dart';
+import 'package:application/models/activity.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,27 +11,32 @@ class ActivitySummaryItemSmall extends StatelessWidget {
   final double width;
   final String activityName;
   final String activityDescription;
-  final String documentName;
   final String imageUrl;
-  final bool complete;
+  final bool? complete;
   final Widget? rightWidget;
   final bool smallIcon;
+  final ActivityDetails activity;
 
   ActivitySummaryItemSmall(
       {Key? key,
-      this.activityName = "",
-      this.activityDescription = "",
-      this.documentName = "",
-      this.imageUrl = "",
+        required this.activity,
       this.width = 375.0,
       this.height = 75.0,
-      this.complete = false,
       this.rightWidget = const Icon(Icons.chevron_right, color: Colors.grey),
-      this.smallIcon = false});
+      this.smallIcon = false,
+        this.complete})
+  : activityName = activity.name,
+    imageUrl = activity.imageUrl,
+    activityDescription = activity.about;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector  (
+      onTap:() => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ActivityInfo(activity.id))),
+    child: Container(
         height: this.height,
         width: this.width,
         color: Colors.transparent,
@@ -51,7 +58,7 @@ class ActivitySummaryItemSmall extends StatelessWidget {
               Container(
                   padding: EdgeInsets.only(right: 8),
                   child: this.rightWidget),
-            ])));
+            ]))));
   }
 }
 
@@ -71,7 +78,7 @@ class _ImageComponent extends StatelessWidget {
         bottomLeft: Radius.circular(WanTheme.CARD_CORNER_RADIUS));
     double iconHeight = this.parentHeight;
     if (this.smallIcon) {
-      borderRadius = BorderRadius.circular(WanTheme.CARD_CORNER_RADIUS);
+      borderRadius = BorderRadius.circular(WanTheme.THUMB_CORNER_RADIUS);
       iconHeight = this.parentHeight * 0.8;
     }
 
@@ -108,11 +115,14 @@ class _TextComponent extends StatelessWidget {
           Container(
               padding: const EdgeInsets.only(bottom: 3),
               child: new Text(activityName,
-                  style: WanTheme.materialTheme.textTheme.headline5)),
+                  style: WanTheme.text.cardTitle,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1),
+                ),
           Container(
               child: Text(
             activityDescription,
-            style: WanTheme.materialTheme.textTheme.bodyText2,
+            style: Theme.of(context).textTheme.caption,
             overflow: TextOverflow.ellipsis,
             softWrap: true,
             maxLines: 2,

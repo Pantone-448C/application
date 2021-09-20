@@ -3,8 +3,11 @@ import 'package:application/components/small_square_image.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
+import 'package:application/wanderlist/view/wanderlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import '../../apptheme.dart';
 
 class DetailedWanderlistSummary extends StatelessWidget {
   final double width;
@@ -31,7 +34,9 @@ class DetailedWanderlistSummary extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(CORNER_RADIUS))),
       child: Column(
         children: [
-          _TopSummary(this.width, 60, name, total, completed),
+          GestureDetector(onTap: () => Navigator.push(context,
+              MaterialPageRoute<void>(builder: (context) => WanderlistPage(userWanderlist))),
+            child: _TopSummary(this.width, 60, name, total, completed)),
           Divider(color: Colors.grey),
           _Activity(this.width, 70, nextActivity),
           _NMoreItems(total - 1),
@@ -58,13 +63,13 @@ class _TopSummary extends StatelessWidget {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(this.wanderlistName, style: TextStyle(fontSize: 18)),
+            Text(this.wanderlistName, style: WanTheme.text.cardTitle),
             Text(
                 this.numCompleteActivities.toString() +
                     " out of " +
                     this.numTotalActivities.toString() +
                     " complete",
-                style: TextStyle(fontSize: 12, color: Colors.grey))
+                style: Theme.of(context).textTheme.caption)
           ]),
           Icon(
             Icons.chevron_right_outlined,
@@ -118,7 +123,7 @@ class _ActivityName extends StatelessWidget {
           flex: 100,
           child: Container(
               alignment: Alignment.centerLeft,
-              child: Text(this.activityName, style: TextStyle(fontSize: 16)))),
+              child: Text(this.activityName, style: WanTheme.text.cardTitle))),
       Expanded(flex: 1, child: Divider(color: Colors.grey))
     ]);
   }

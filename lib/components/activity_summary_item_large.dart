@@ -1,3 +1,4 @@
+import 'package:application/activity/view/activity_info.dart';
 import 'package:application/models/activity.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,25 +12,22 @@ class ActivitySummaryItemLarge extends ActivitySummaryItemSmall {
   final ActivityDetails activity;
   final double height;
   final double width;
-  final String activityName;
-  final String activityDescription;
-  final String documentName;
-  final String imageUrl;
-  final bool complete;
+  final bool? complete;
 
   ActivitySummaryItemLarge(this.activity,
       {Key? key,
-      this.activityName = "",
-      this.activityDescription = "",
-      this.documentName = "",
-      this.imageUrl = "",
+        this.complete,
       this.width = 375,
-      this.height = 75.0 * 3.4,
-      this.complete = false});
+      this.height = 75.0 * 3.4}) : super(activity: activity);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector (
+        onTap:() => Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ActivityInfo(activity.id))),
+    child: Container(
         height: SizeConfig(context).w / 2 + 75,
         width: SizeConfig(context).w,
         color: Colors.transparent,
@@ -53,7 +51,7 @@ class ActivitySummaryItemLarge extends ActivitySummaryItemSmall {
                   padding: EdgeInsets.only(right: 8),
                     child: Icon(Icons.chevron_right, color: Colors.grey)),
               ]),
-            ])));
+            ]))));
   }
 }
 
