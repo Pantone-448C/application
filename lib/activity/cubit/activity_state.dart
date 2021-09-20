@@ -1,10 +1,19 @@
-import 'package:equatable/equatable.dart';
+part of 'activity_cubit.dart';
 
-class ActivityState extends Equatable {
-  ActivityState(this.name, this.address, this.points, this.about);
+abstract class ActivityState {}
 
-  String name;
-  String address;
-  int points;
-  String about;
+class ActivityInitial implements ActivityState {}
+
+class ActivityLoading implements ActivityState {}
+
+class ActivityLoaded extends Equatable implements ActivityState {
+  const ActivityLoaded(this.name, this.address, this.points, this.about);
+
+  final String name;
+  final String address;
+  final int points;
+  final String about;
+
+  @override
+  List<Object> get props => [name, address, points, about];
 }
