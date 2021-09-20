@@ -5,7 +5,8 @@ import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/wanderlist/cubit/wanderlist_cubit.dart';
 import 'package:application/wanderlist/cubit/wanderlist_state.dart';
-import 'package:application/wanderlist/view/add_activity.dart';
+import 'package:application/wanderlist/widgets/add_activity.dart';
+import 'package:application/wanderlist/widgets/empty_activity_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -171,6 +172,10 @@ class _EditableActivityList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (activities.isEmpty) {
+      return _EmptyActivityList();
+    }
+
     return BlocConsumer<WanderlistCubit, WanderlistState>(
         builder: (context, state) {
           if (state is Editing) {
@@ -243,6 +248,23 @@ class _EditableActivityListItem extends StatelessWidget {
             smallIcon: true,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _EmptyActivityList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text(
+          "There's nothing here yet. Find some activities below!",
+          textAlign: TextAlign.center,
+          style:
+              TextStyle(fontSize: 16, color: Colors.grey, fontFamily: "Inter"),
+        ),
       ),
     );
   }
