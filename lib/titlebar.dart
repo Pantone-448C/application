@@ -1,4 +1,5 @@
 import 'package:application/apptheme.dart';
+import 'package:application/activity/view/activity_info.dart';
 import 'package:application/profile/view/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
