@@ -1,3 +1,4 @@
+import 'package:application/components/searchfield.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/user/user_repository.dart';
@@ -40,10 +41,9 @@ class _WanderlistsView extends StatelessWidget {
                   onChanged: (value) {
                     context.read<UserWanderlistsCubit>().filter_search(value);
                   },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Search Your Wanderlists',
-                  ),
+                  decoration: SearchField.defaultDecoration.copyWith(
+                    hintText: "Search Your Wanderlists",
+                  )
                 ),
               ),
               scrollDirection: Axis.vertical,
