@@ -115,11 +115,14 @@ class _TextComponent extends StatelessWidget {
           Container(
               padding: const EdgeInsets.only(bottom: 3),
               child: new Text(activityName,
-                  style: WanTheme.materialTheme.textTheme.headline5)),
+                  style: WanTheme.materialTheme.textTheme.headline5,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1),
+                ),
           Container(
               child: Text(
             activityDescription,
-            style: WanTheme.materialTheme.textTheme.bodyText2,
+            style: Theme.of(context).textTheme.caption,
             overflow: TextOverflow.ellipsis,
             softWrap: true,
             maxLines: 2,

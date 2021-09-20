@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../apptheme.dart';
 import '../cubit/userwanderlists_cubit.dart';
 import '../cubit/userwanderlists_state.dart';
 
@@ -32,7 +33,8 @@ class _WanderlistsView extends StatelessWidget {
           return ReorderableListView(
               header: Padding(
                 // search bar
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding: EdgeInsets.symmetric(horizontal: WanTheme.CARD_PADDING,
+                    vertical: 2 * WanTheme.CARD_PADDING),
                 child: TextField(
                   keyboardType: TextInputType.text,
                   onChanged: (value) {
@@ -47,7 +49,7 @@ class _WanderlistsView extends StatelessWidget {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               primary: true,
-              padding: EdgeInsets.all(8),
+              padding: EdgeInsets.all(WanTheme.CARD_PADDING),
               physics: ClampingScrollPhysics(),
               onReorder: (int o, int n) {
                 context.read<UserWanderlistsCubit>().swap(o, n);
@@ -81,7 +83,7 @@ class _TappableWanderlistCard extends StatelessWidget {
         ),
       ),
       child: Container(
-          margin: EdgeInsets.only(bottom: 8),
+          margin: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
           key: ValueKey(userWanderlist.wanderlist.hashCode),
           child: WanderlistSummaryItem(
             imageUrl: userWanderlist.wanderlist.icon,
@@ -98,7 +100,6 @@ class UserWanderlistsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 8, right: 8),
       child: UserWanderlists(),
     );
   }

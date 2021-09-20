@@ -115,7 +115,13 @@ class _FilledHomePage extends StatelessWidget {
     return BlocConsumer<TripCubit, TripState>(
       listener: (context, state) {},
       builder: (context, state) {
-        return Column(
+        return
+        ListView(children: <Widget>[
+            Container (
+              height: SizeConfig(context).h,
+          padding: EdgeInsets.only(left: WanTheme.CARD_PADDING,
+              right: WanTheme.CARD_PADDING),
+            child: Column(
           children: [
             Container(
               padding: EdgeInsets.only(top: 50),
@@ -132,7 +138,7 @@ class _FilledHomePage extends StatelessWidget {
               child: _Wanderlists(width, wanderlistHeight),
             ),
           ],
-        );
+        ))]);
       },
     );
   }

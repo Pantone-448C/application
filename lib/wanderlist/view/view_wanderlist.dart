@@ -44,7 +44,7 @@ class ViewWanderlistPage extends StatelessWidget {
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   _AppBar();
 
-  static const barHeight = 40.0;
+  static const barHeight = WanTheme.TITLEBAR_HEIGHT;
   @override
   Size get preferredSize => Size.fromHeight(barHeight);
 

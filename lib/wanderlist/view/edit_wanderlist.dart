@@ -23,13 +23,15 @@ class EditWanderlistPage extends StatelessWidget {
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   _AppBar();
 
-  static const barHeight = 40.0;
+  static const barHeight = WanTheme.TITLEBAR_HEIGHT;
   @override
   Size get preferredSize => Size.fromHeight(barHeight);
 
   Widget _cancelButton(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.close_outlined),
+
+      icon: Icon(Icons.close_rounded,
+        color: Theme.of(context).accentColor),
       onPressed: () {
         context.read<WanderlistCubit>().cancelEdit();
       },
@@ -37,18 +39,12 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _saveButton(BuildContext context) {
-    return Container(
-      width: 50,
-      height: 20,
-      decoration: BoxDecoration(
-          color: Colors.pink, borderRadius: BorderRadius.circular(10)),
-      child: TextButton(
+    return
+      ElevatedButton (
         onPressed: () {
           context.read<WanderlistCubit>().endEdit();
         },
-        child:
-            Text("Save", style: TextStyle(fontSize: 10, color: Colors.white)),
-      ),
+        child: Text("Save")
     );
   }
 
@@ -180,9 +176,9 @@ class _EditableActivityList extends StatelessWidget {
           if (state is Editing) {
             return Container(
               width: MediaQuery.of(context).size.width * 0.95,
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(WanTheme.CARD_PADDING),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
+                  borderRadius: BorderRadius.circular(WanTheme.CARD_CORNER_RADIUS),
                   color: Colors.white),
               child: ReorderableListView.builder(
                 shrinkWrap: true,
@@ -228,7 +224,6 @@ class _EditableActivityListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white),
       child: Row(
         children: [
           IconButton(
