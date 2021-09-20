@@ -78,7 +78,7 @@ class _ImageComponent extends StatelessWidget {
         bottomLeft: Radius.circular(WanTheme.CARD_CORNER_RADIUS));
     double iconHeight = this.parentHeight;
     if (this.smallIcon) {
-      borderRadius = BorderRadius.circular(WanTheme.CARD_CORNER_RADIUS);
+      borderRadius = BorderRadius.circular(WanTheme.THUMB_CORNER_RADIUS);
       iconHeight = this.parentHeight * 0.8;
     }
 
@@ -115,7 +115,7 @@ class _TextComponent extends StatelessWidget {
           Container(
               padding: const EdgeInsets.only(bottom: 3),
               child: new Text(activityName,
-                  style: WanTheme.materialTheme.textTheme.headline5,
+                  style: WanTheme.text.cardTitle,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1),
                 ),

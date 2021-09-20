@@ -17,7 +17,8 @@ class WanTextTheme {
 
   var errorLabel = TextStyle(color: Colors.red);
 
-  var cardTitle = TextStyle(fontSize: 18);
+  var heading = TextStyle(fontSize: 18);
+  var cardTitle = TextStyle(fontSize: 14);
   var cardBody = TextStyle(color: WanColors().grey, fontSize: 12);
 
   var loginButton = TextStyle(
@@ -57,6 +58,7 @@ Color tintColor(Color color, double factor) => Color.fromRGBO(
 
 class WanTheme {
   static const double CARD_CORNER_RADIUS = 15.0;
+  static const double THUMB_CORNER_RADIUS = 5.0;
   static const double BORDER_RADIUS = 15.0;
   static const double PAGE_MARGIN = 20;
   static const double CARD_PADDING = 8;

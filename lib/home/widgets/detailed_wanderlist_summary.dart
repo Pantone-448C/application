@@ -7,6 +7,8 @@ import 'package:application/wanderlist/view/wanderlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../apptheme.dart';
+
 class DetailedWanderlistSummary extends StatelessWidget {
   final double width;
   final double height;
@@ -61,13 +63,13 @@ class _TopSummary extends StatelessWidget {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(this.wanderlistName, style: TextStyle(fontSize: 18)),
+            Text(this.wanderlistName, style: WanTheme.text.cardTitle),
             Text(
                 this.numCompleteActivities.toString() +
                     " out of " +
                     this.numTotalActivities.toString() +
                     " complete",
-                style: TextStyle(fontSize: 12, color: Colors.grey))
+                style: Theme.of(context).textTheme.caption)
           ]),
           Icon(
             Icons.chevron_right_outlined,
@@ -121,7 +123,7 @@ class _ActivityName extends StatelessWidget {
           flex: 100,
           child: Container(
               alignment: Alignment.centerLeft,
-              child: Text(this.activityName, style: TextStyle(fontSize: 16)))),
+              child: Text(this.activityName, style: WanTheme.text.cardTitle))),
       Expanded(flex: 1, child: Divider(color: Colors.grey))
     ]);
   }
