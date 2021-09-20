@@ -16,6 +16,76 @@ class EditWanderlistPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(appBar: _AppBar(), body: _EditWanderlistBody());
+  }
+}
+
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  _AppBar();
+
+  static const barHeight = 40.0;
+  @override
+  Size get preferredSize => Size.fromHeight(barHeight);
+
+  Widget _cancelButton(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.close_outlined),
+      onPressed: () {
+        context.read<WanderlistCubit>().cancelEdit();
+      },
+    );
+  }
+
+  Widget _saveButton(BuildContext context) {
+    return Container(
+      width: 50,
+      height: 20,
+      decoration: BoxDecoration(
+          color: Colors.pink, borderRadius: BorderRadius.circular(10)),
+      child: TextButton(
+        onPressed: () {
+          context.read<WanderlistCubit>().endEdit();
+        },
+        child:
+            Text("Save", style: TextStyle(fontSize: 10, color: Colors.white)),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<WanderlistCubit, WanderlistState>(
+      builder: (context, state) {
+        return Container(
+          child: SafeArea(
+            child: AppBar(
+              backgroundColor: Colors.white12,
+              foregroundColor: Colors.black,
+              elevation: 0,
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: _saveButton(context),
+                )
+              ],
+              leading: _cancelButton(context),
+              title: Text("Editing Wanderlist",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontStyle: FontStyle.normal,
+                      fontFamily: "Inter")),
+            ),
+          ),
+        );
+      },
+      listener: (context, state) => {},
+    );
+  }
+}
+
+class _EditWanderlistBody extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return BlocConsumer<WanderlistCubit, WanderlistState>(
       builder: (context, state) {
         if (state is Editing) {
@@ -24,12 +94,13 @@ class EditWanderlistPage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _TopRow(state.wanderlist.wanderlist.name),
+                  Padding(
+                    padding: EdgeInsets.only(left: 48.0, right: 48.0),
+                    child: _EditNameTextfield(state.wanderlist.wanderlist.name),
+                  ),
                   Padding(padding: EdgeInsets.only(top: 10)),
                   _EditableActivityList(state.wanderlist.wanderlist.activities),
-                Padding(padding: EdgeInsets.only(top: 10)),
-
-                  // _AddActivityButton(),
+                  Padding(padding: EdgeInsets.only(top: 10)),
                 ],
               ),
               AddActivityOverlay(),
@@ -44,8 +115,8 @@ class EditWanderlistPage extends StatelessWidget {
   }
 }
 
-class _TopRow extends StatelessWidget {
-  _TopRow(this.name) {
+class _EditNameTextfield extends StatelessWidget {
+  _EditNameTextfield(this.name) {
     _controller.text = name;
   }
 
@@ -61,52 +132,19 @@ class _TopRow extends StatelessWidget {
     context.read<WanderlistCubit>().madeEdit(newNameWanderlist);
   }
 
-  Widget _cancelButton(BuildContext context, Editing state) {
-    return Expanded(
-      flex: 5,
-      child: IconButton(
-        icon: Icon(Icons.close_outlined),
-        onPressed: () {
-          context.read<WanderlistCubit>().cancelEdit(state.original);
-        },
-      ),
-    );
-  }
-
-  Widget _saveButton(BuildContext context, Editing state) {
-    return Expanded(
-      flex: 5,
-      child: IconButton(
-        icon: Icon(Icons.done, color: WanTheme.colors.pink),
-        onPressed: () {
-          context.read<WanderlistCubit>().endEdit(state.wanderlist);
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<WanderlistCubit, WanderlistState>(
       builder: (context, WanderlistState state) {
         if (state is Editing) {
-          return Row(
-            children: [
-              _cancelButton(context, state),
-              Expanded(
-                flex: 15,
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  controller: _controller,
-                  onTap: () => _controller.selection = TextSelection(
-                    baseOffset: 0,
-                    extentOffset: _controller.value.text.length,
-                  ),
-                  onSubmitted: (text) => _submitNewName(context, state, text),
-                ),
-              ),
-              _saveButton(context, state),
-            ],
+          return TextField(
+            textAlign: TextAlign.center,
+            controller: _controller,
+            onTap: () => _controller.selection = TextSelection(
+              baseOffset: 0,
+              extentOffset: _controller.value.text.length,
+            ),
+            onSubmitted: (text) => _submitNewName(context, state, text),
           );
         }
         return Container();
@@ -205,34 +243,6 @@ class _EditableActivityListItem extends StatelessWidget {
             smallIcon: true,
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _AddActivityButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: WanTheme.colors.pink,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      height: 50,
-      width: 200,
-      child: TextButton(
-        onPressed: () {
-          Overlay.of(context)!.insert(OverlayEntry(
-            builder: (context) => Positioned(
-              child: AddActivityOverlay(),
-            ),
-          ));
-        },
-        child: Text(
-          'Add Activity',
-          style:
-              TextStyle(fontSize: 16, fontFamily: 'Inter', color: Colors.white),
-        ),
       ),
     );
   }

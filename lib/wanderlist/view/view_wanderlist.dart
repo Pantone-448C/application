@@ -24,51 +24,86 @@ class ViewWanderlistPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _TopRow(userWanderlist.wanderlist.name, _onEditPress, _onBackPress),
-        _UneditableActivityList(userWanderlist.wanderlist.activities,
-            userWanderlist.completedActivities),
-      ],
+    return Scaffold(
+      appBar: _AppBar(),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _TopRow(userWanderlist.wanderlist.name, _onEditPress),
+            Padding(padding: EdgeInsets.only(top: 10)),
+            _UneditableActivityList(userWanderlist.wanderlist.activities,
+                userWanderlist.completedActivities),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class _TopRow extends StatelessWidget {
-  _TopRow(this.name, this.edit, this.back);
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  _AppBar();
 
-  final String name;
-  final Function(BuildContext) edit;
-  final Function(BuildContext) back;
+  static const barHeight = 40.0;
+  @override
+  Size get preferredSize => Size.fromHeight(barHeight);
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<WanderlistCubit, WanderlistState>(
       builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: () => back(context),
-              child:
-                  Text("back", style: TextStyle(color: WanTheme.colors.pink)),
+        return Container(
+          child: SafeArea(
+            child: AppBar(
+              backgroundColor: Colors.white12,
+              foregroundColor: Colors.black,
+              elevation: 0,
+              actions: [],
             ),
-            Text(name,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                  fontFamily: 'Inter',
-                )),
-            TextButton(
-              onPressed: () => edit(context),
-              child:
-                  Text("edit", style: TextStyle(color: WanTheme.colors.pink)),
-            ),
-          ],
+          ),
         );
       },
       listener: (context, state) => {},
+    );
+  }
+}
+
+class _TopRow extends StatelessWidget {
+  _TopRow(this.name, this.edit);
+
+  final String name;
+  final Function(BuildContext) edit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          name,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 24,
+            fontFamily: 'Inter',
+          ),
+        ),
+        Padding(padding: EdgeInsets.only(left: 10)),
+        Container(
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+              color: WanTheme.colors.pink,
+              borderRadius: BorderRadius.circular(10.0)),
+          child: IconButton(
+            iconSize: 15,
+            onPressed: () => edit(context),
+            icon: Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

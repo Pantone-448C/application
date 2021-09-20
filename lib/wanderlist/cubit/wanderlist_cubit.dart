@@ -37,19 +37,20 @@ class WanderlistCubit extends Cubit<WanderlistState> {
     }
   }
 
-  endEdit(UserWanderlist wanderlist) {
+  endEdit() {
     if (state is Editing) {
+      UserWanderlist userWanderlist = (state as Editing).wanderlist;
       emit(Saving());
-      _save(wanderlist.wanderlist);
-      emit(Viewing(wanderlist));
+      _save(userWanderlist.wanderlist);
+      emit(Viewing(userWanderlist));
     } else {
       emit(state);
     }
   }
 
-  cancelEdit(UserWanderlist wanderlist) {
+  cancelEdit() {
     if (state is Editing) {
-      emit(Viewing(wanderlist));
+      emit(Viewing((state as Editing).original));
     } else {
       emit(state);
     }
