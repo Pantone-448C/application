@@ -17,7 +17,12 @@ class UserWanderlists extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => UserWanderlistsCubit(UserRepository()),
-      child: _WanderlistsView(),
+      child: Column(
+        children: [
+          _WanderlistsView(),
+          _CreateWanderlistButton(),
+        ],
+      ),
     );
   }
 }
@@ -90,6 +95,27 @@ class _TappableWanderlistCard extends StatelessWidget {
             numCompletedItems: userWanderlist.completedActivities.length,
             numTotalItems: userWanderlist.wanderlist.activities.length,
           )),
+    );
+  }
+}
+
+class _CreateWanderlistButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.pink, borderRadius: BorderRadius.circular(15.0)),
+      child: TextButton(
+        onPressed: () {},
+        child: Text(
+          "Create Wanderlist",
+          style: TextStyle(
+            fontFamily: "Inter",
+            fontSize: 18,
+            color: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 }

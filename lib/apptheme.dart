@@ -37,6 +37,10 @@ class WanTheme {
       headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
 
       headline4: TextStyle(fontSize: 18.0, color: Colors.black),
+<<<<<<< Updated upstream
+=======
+      headline5: TextStyle(fontSize: 16.0, color: Colors.black),
+>>>>>>> Stashed changes
 
       //subtitle1: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
       //subtitle2: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
