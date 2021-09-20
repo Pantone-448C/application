@@ -33,7 +33,7 @@ class Titlebar extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
             color: WanTheme.colors.grey,
             icon: Icon(
-              Icons.close_outlined,
+              Icons.cable_sharp,
             ),
             onPressed: () {
               Navigator.push(context,
