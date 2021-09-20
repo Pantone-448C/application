@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../apptheme.dart';
+
 class GetListSummary extends StatelessWidget {
   final String activity;
 
@@ -54,8 +56,6 @@ class WanderlistSummaryItem extends StatelessWidget {
   final int numCompletedItems;
   final String imageUrl;
 
-  static const double CORNER_RADIUS = 15.0;
-
   WanderlistSummaryItem({
     Key? key,
     this.width = 375.0,
@@ -78,7 +78,7 @@ class WanderlistSummaryItem extends StatelessWidget {
                 vertical: height / 7.5, horizontal: width / 37.5),
             decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(CORNER_RADIUS))),
+                borderRadius: BorderRadius.all(Radius.circular(WanTheme.CARD_CORNER_RADIUS))),
             child: Row(children: <Widget>[
               Expanded(
                   flex: 17,
@@ -102,8 +102,6 @@ class _ImageComponent extends StatelessWidget {
   final double parentHeight;
   final String imageUrl;
 
-  static const double CORNER_RADIUS = 18.0;
-
   _ImageComponent(this.parentWidth, this.parentHeight, this.imageUrl);
 
   @override
@@ -113,7 +111,7 @@ class _ImageComponent extends StatelessWidget {
         aspectRatio: 1 / 1,
         child: new Container(
           decoration: new BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(CORNER_RADIUS)),
+              borderRadius: BorderRadius.all(Radius.circular(WanTheme.THUMB_CORNER_RADIUS)),
               image: new DecorationImage(
                 fit: BoxFit.fitHeight,
                 alignment: FractionalOffset.topCenter,
@@ -148,12 +146,12 @@ class _TextComponent extends StatelessWidget {
           Expanded(
               flex: 5,
               child: Container(
-                  child: new Text(listName, style: TextStyle(fontSize: 18)))),
+                  child: new Text(listName, style: WanTheme.text.cardTitle))),
           Expanded(
               flex: 3,
               child: Container(
                   child: new Text("by " + this.authorName,
-                      style: TextStyle(fontSize: 12, color: Colors.grey)))),
+                      style: Theme.of(context).textTheme.caption))),
           Expanded(
               flex: 3,
               child: Container(

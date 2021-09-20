@@ -25,7 +25,7 @@ class Titlebar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   static const titleSize = 30.0;
-  static const barHeight = 60.0;
+  static const barHeight = WanTheme.TITLEBAR_HEIGHT;
 
   @override
   Size get preferredSize => Size.fromHeight(barHeight);

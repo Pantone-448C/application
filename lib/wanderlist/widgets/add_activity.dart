@@ -1,4 +1,5 @@
 import 'package:application/components/activity_summary_item_small.dart';
+import 'package:application/components/searchfield.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/wanderlist/cubit/suggestions_cubit.dart';
 import 'package:application/wanderlist/cubit/suggestions_state.dart'
@@ -9,6 +10,8 @@ import 'package:application/wanderlist/cubit/wanderlist_state.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+
+import '../../apptheme.dart';
 
 class AddActivityOverlay extends StatelessWidget {
   @override
@@ -21,7 +24,7 @@ class AddActivityOverlay extends StatelessWidget {
         padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0),
         child: Column(
           children: [
-            Icon(Icons.horizontal_rule, color: Colors.grey),
+            Icon(Icons.horizontal_rule, color: WanColors().grey),
             Text("Find Activities",
                 style: TextStyle(
                     fontSize: 24,
@@ -32,7 +35,7 @@ class AddActivityOverlay extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(bottom: 10),
             ),
-            _Search(),
+            SearchField("Search Activities"),
             Padding(
               padding: EdgeInsets.only(bottom: 10),
             ),
@@ -57,31 +60,6 @@ class AddActivityOverlay extends StatelessWidget {
   }
 }
 
-class _Search extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      child: TextField(
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: 15),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25.0),
-            borderSide: BorderSide(
-              width: 0,
-              style: BorderStyle.none,
-            ),
-          ),
-          filled: true,
-          hintStyle: TextStyle(color: Colors.grey[800], height: 1),
-          hintText: "Search activities",
-          fillColor: Colors.grey[300],
-        ),
-        style: TextStyle(height: 1),
-      ),
-    );
-  }
-}
 
 class _Suggestions extends StatelessWidget {
   @override
@@ -165,9 +143,7 @@ class _SuggestionsItem extends StatelessWidget {
               Expanded(
                 flex: 13,
                 child: ActivitySummaryItemSmall(
-                  activityName: activity.name,
-                  activityDescription: activity.about,
-                  imageUrl: activity.imageUrl,
+                  activity: activity,
                   smallIcon: true,
                   rightWidget: Container(
                     height: 20,
@@ -181,7 +157,7 @@ class _SuggestionsItem extends StatelessWidget {
           );
         }
 
-        return Text("Impossible state");
+        throw Exception("Impossible state");
       },
       listener: (context, state) {},
     );
