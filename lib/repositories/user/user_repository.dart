@@ -143,4 +143,11 @@ class UserRepository implements IUserRepository {
 
     return data;
   }
+
+  @override
+  Future<void> addUserWanderlist(UserWanderlist wanderlist) async {
+    List<UserWanderlist> wanderlists = (await getUserWanderlists()).toList();
+    wanderlists.add(wanderlist);
+    await updateUserWanderlists(wanderlists);
+  }
 }
