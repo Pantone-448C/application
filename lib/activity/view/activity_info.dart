@@ -1,6 +1,9 @@
+import 'package:application/activity/cubit/activity_cubit.dart';
 import 'package:application/apptheme.dart';
+import 'package:application/repositories/activity/activity_repository.dart';
 import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 const _buttonSize = 40.0;
 const _sectionSize1 = 75.0;
@@ -8,19 +11,22 @@ const _sectionSize2 = 125.0;
 
 class ActivityInfo extends StatelessWidget {
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: WanTheme.colors.offWhite,
-      body: ListView(
-        children: [
-          LocationImage(),
-          Stack(
-            children: [
-              _PointsTooltip(),
-              _Title(),
-            ],
-          ),
-          AboutBox(),
-        ],
+    return BlocProvider(
+      create: (context) => ActivityCubit(ActivityRepository(), "lone_pine"),
+      child: Scaffold(
+        backgroundColor: WanTheme.colors.offWhite,
+        body: ListView(
+          children: [
+            LocationImage(),
+            Stack(
+              children: [
+                _PointsTooltip(),
+                _Title(),
+              ],
+            ),
+            AboutBox(),
+          ],
+        ),
       ),
     );
   }
@@ -30,13 +36,19 @@ class LocationImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Image(
-          fit: BoxFit.cover,
-          image: NetworkImage(
-              "https://cdn.concreteplayground.com/content/uploads/2021/02/Otto-Brisbane_2021_04_supplied-1920x1440.jpg"),
-          height: MediaQuery.of(context).size.width * 0.8,
-          width: MediaQuery.of(context).size.width,
-        ),
+        BlocConsumer<ActivityCubit, ActivityState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is ActivityLoaded) {
+                return Image(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(state.imgUrl),
+                  height: MediaQuery.of(context).size.width * 0.8,
+                  width: MediaQuery.of(context).size.width,
+                );
+              }
+              return Container();
+            }),
         Container(
           height: MediaQuery.of(context).size.width * 0.8,
           width: MediaQuery.of(context).size.width,
@@ -85,24 +97,34 @@ class _Title extends StatelessWidget {
 class _Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          "Tom's Kitchen",
-          style: TextStyle(
-            fontFamily: 'inter',
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            color: Colors.black,
-          ),
-        ),
-        Text("127 Queen Street, Brisbane",
-            style: TextStyle(
-              fontFamily: 'inter',
-            ))
-      ],
-    );
+    return BlocConsumer<ActivityCubit, ActivityState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is ActivityLoaded) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  state.name,
+                  style: TextStyle(
+                    fontFamily: 'inter',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  state.address,
+                  style: TextStyle(
+                    fontFamily: 'inter',
+                  ),
+                )
+              ],
+            );
+          } else {
+            return Container();
+          }
+        });
   }
 }
 
@@ -119,22 +141,30 @@ class _PointsTooltip extends StatelessWidget {
         height: _sectionSize2,
         color: WanTheme.colors.bgOrange,
         child: Center(
-          child: RichText(
-            text: TextSpan(
-              style: TextStyle(
-                fontFamily: 'inter',
-                color: WanTheme.colors.orange,
-                fontSize: 17.0,
-              ),
-              children: [
-                TextSpan(text: "Earn "),
-                TextSpan(
-                  text: "100 points",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(text: " from this activity")
-              ],
-            ),
+          child: BlocConsumer<ActivityCubit, ActivityState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is ActivityLoaded) {
+                return RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      fontFamily: 'inter',
+                      color: WanTheme.colors.orange,
+                      fontSize: 17.0,
+                    ),
+                    children: [
+                      TextSpan(text: "Earn "),
+                      TextSpan(
+                        text: "${state.points.toString()} points",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(text: " from this activity")
+                    ],
+                  ),
+                );
+              }
+              return Container();
+            },
           ),
         ),
       ),
@@ -237,9 +267,17 @@ class AboutBox extends StatelessWidget {
                   )
                 ],
               ),
-              Text(
-                "Locally sourced seafood and burgers served in a relaxed cafe with modern decor, or to take away.",
-                style: TextStyle(fontSize: 16),
+              BlocConsumer<ActivityCubit, ActivityState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  if (state is ActivityLoaded) {
+                    return Text(
+                      state.about,
+                      style: TextStyle(fontSize: 16),
+                    );
+                  }
+                  return Container();
+                },
               ),
             ],
           ),

@@ -7,6 +7,7 @@ part 'activity_state.dart';
 class ActivityCubit extends Cubit<ActivityState> {
   ActivityCubit(this.activityRepository, this.id) : super(ActivityInitial()) {
     emit(ActivityInitial());
+    getActivityInfo();
   }
 
   final IActivityRepository activityRepository;
@@ -14,6 +15,6 @@ class ActivityCubit extends Cubit<ActivityState> {
 
   Future<void> getActivityInfo() async {
     ActivityDetails a = await activityRepository.getActivity(id);
-    emit(ActivityLoaded(a.name, a.address, 100, a.about));
+    emit(ActivityLoaded(a.name, a.address, 100, a.about, a.imageUrl));
   }
 }
