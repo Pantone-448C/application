@@ -6,7 +6,6 @@ import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/wanderlist/cubit/wanderlist_cubit.dart';
 import 'package:application/wanderlist/cubit/wanderlist_state.dart';
 import 'package:application/wanderlist/view/edit_wanderlist.dart';
-import 'package:application/wanderlist/widgets/empty_activity_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
