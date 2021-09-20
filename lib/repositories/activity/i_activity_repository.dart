@@ -5,4 +5,5 @@ import 'package:application/models/activity.dart';
 /// (and not edit it) there is only a single get method.
 abstract class IActivityRepository {
   Future<ActivityDetails> getActivity(String id);
+  Future<List<ActivityDetails>> getActivities();
 }

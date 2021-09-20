@@ -52,13 +52,13 @@ class UserWanderlist extends Equatable {
   }
 
 
-  UserWanderlist copyWith(
+  UserWanderlist copyWith({
     Wanderlist? wanderlist,
     List<ActivityDetails>? activities,
     bool? inTrip,
     int? numCompletions,
     String ? id,
-  ) {
+  }) {
     return UserWanderlist(
         wanderlist ?? this.wanderlist,
         activities ?? this.completedActivities,
