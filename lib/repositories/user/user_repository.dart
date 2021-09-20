@@ -30,21 +30,9 @@ class UserRepository implements IUserRepository {
     DocumentSnapshot snapshot = await _users.doc(_uid).get();
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
     data['wanderlists'] = null;
+    data['completed_activities'] = null;
     return UserDetails.fromJson(data);
   }
-
-  @override
-  Future<UserDetails> getUserDataAndWanderlists() async {
-    DocumentSnapshot snapshot = await _users.doc(_uid).get();
-    Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-    print("User json in: $data");
-    data['wanderlists'] = null;
-    var details = UserDetails.fromJson(data);
-    details.wanderlists = (await getUserWanderlists()).toList();
-    return details;
-  }
-
-
 
   @override
   Future<void> addNewUser(UserDetails details) async {
@@ -55,30 +43,50 @@ class UserRepository implements IUserRepository {
 
   @override
   Future<void> updateUserData(UserDetails details) async {
-      _users.doc(_uid).update(details.toJson());
+    _users.doc(_uid).update(details.toJson());
   }
 
-  Future<void> updateUserWanderlists(UserDetails details) async {
-    try {
-      _users.doc(_uid).set(details.toJson());
-    } catch (e) {
-      print("Exception $e");
-    }
+  @override
+  Future<void> updateUserWanderlists(List<UserWanderlist> list) async {
+    _users.doc(_uid).update({
+      "wanderlists": list.map((wanderlist) => wanderlist.toJson()).toList(),
+    });
+  }
+
+  @override
+  Future<void> updateUserCompletedActivities(List<ActivityDetails> list) async {
+    _users.doc(_uid).update({
+      "completed_activities":
+          list.map((activity) => _activities.doc(activity.id)).toList(),
+    });
   }
 
   Future<ActivityDetails> getActivity(String id) async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('activities').doc(id).get();
+    DocumentSnapshot snapshot = await _activities.doc(id).get();
     var data = snapshot.data() as Map<String, dynamic>;
     data["doc_id"] = id;
     return ActivityDetails.fromJson(data);
-
-
   }
 
   @override
   Future<Iterable<UserWanderlist>> getActiveWanderlists() async {
     Iterable<UserWanderlist> wanderlists = await getUserWanderlists();
     return wanderlists.where((wanderlist) => wanderlist.inTrip);
+  }
+
+  @override
+  Future<Iterable<ActivityDetails>> getUserCompletedActivities() async {
+    var snapshot = await _users.doc(_uid).get();
+    var data = snapshot.data() as Map<String, dynamic>;
+    if (data['completed_activities'] != null) {
+      var completedActivities = hydrateReferences(
+              List<DocumentReference>.from(data['completed_activities']))
+          .then((activities) {
+        return activities.map((activity) => ActivityDetails.fromJson(activity));
+      });
+      return completedActivities;
+    }
+    return [];
   }
 
   @override
@@ -96,7 +104,6 @@ class UserRepository implements IUserRepository {
 
           Map<String, dynamic> wanderlistData =
               wanderlist.data() as Map<String, dynamic>;
-
 
           List<Map<String, dynamic>> completedActivities =
               await hydrateReferences(List<DocumentReference>.from(
@@ -128,7 +135,8 @@ class UserRepository implements IUserRepository {
     List<Map<String, dynamic>> data = [];
     for (DocumentReference ref in refs) {
       DocumentSnapshot refDocument = await ref.get();
-      Map<String, dynamic> document = refDocument.data() as Map<String, dynamic>;
+      Map<String, dynamic> document =
+          refDocument.data() as Map<String, dynamic>;
       document["doc_id"] = ref.id;
       data.add(document);
     }

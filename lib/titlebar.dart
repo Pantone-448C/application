@@ -1,5 +1,6 @@
-import 'package:application/activity/view/activity_info.dart';
 import 'package:application/apptheme.dart';
+import 'package:application/activity/view/activity_info.dart';
+import 'package:application/profile/view/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,17 +8,28 @@ import 'package:flutter/services.dart';
 import 'login/view/login.dart';
 
 class Titlebar extends StatelessWidget implements PreferredSizeWidget {
-  void checkSignedIn(BuildContext context) {
-    if (true || FirebaseAuth.instance.currentUser == null) {
+  void handleProfileButton(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser == null) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ));
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(),
+          ));
     }
   }
 
   static const titleSize = 30.0;
   static const barHeight = 60.0;
+
   @override
   Size get preferredSize => Size.fromHeight(barHeight);
+
   @override
   Widget build(BuildContext context) {
     /* Transparent status bar on android -- not sure about apple */
@@ -33,18 +45,12 @@ class Titlebar extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
             color: WanTheme.colors.grey,
             icon: Icon(
-              Icons.cable_sharp,
+              Icons.account_circle_outlined,
             ),
-            onPressed: () {},
+            onPressed: () {
+              handleProfileButton(context);
+            },
           ),
-          IconButton(
-              color: WanTheme.colors.grey,
-              icon: Icon(
-                Icons.account_circle_outlined,
-              ),
-              onPressed: () {
-                checkSignedIn(context);
-              }),
         ],
         title: Text('wanderlist',
             style: TextStyle(
