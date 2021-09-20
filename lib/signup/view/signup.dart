@@ -11,13 +11,6 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final firstName = TextEditingController();
-  final lastName = TextEditingController();
-  final email = TextEditingController();
-
-  /**
-   * Checks if email is available.
-   */
 
   Future<bool> emailAvailable() async {
     var val =
@@ -36,9 +29,8 @@ class _SignupPageState extends State<SignupPage> {
     }
     Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) =>
-                SignupPasswordPage(firstName.text, lastName.text, email.text)));
+        MaterialPageRoute(builder: (context) => SignupPasswordPage()),
+    )
   }
 
   @override
@@ -118,45 +110,7 @@ class _SignupPageState extends State<SignupPage> {
   }
 }
 
-class SignupPasswordPage extends StatefulWidget {
-  SignupPasswordPage(this.firstName, this.lastName, this.email);
-
-  final String firstName;
-  final String lastName;
-  final String email;
-
-  _SignupPasswordPageState createState() => _SignupPasswordPageState();
-}
-
-class _SignupPasswordPageState extends State<SignupPasswordPage> {
-  final password = TextEditingController();
-  final confirmation = TextEditingController();
-
-  Future<void> signup() async {
-    try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: widget.email,
-        password: password.text,
-      );
-      var users = FirebaseFirestore.instance.collection('users');
-      users.doc(userCredential.user!.uid).set({
-        'first_name': widget.firstName,
-        'last_name': widget.lastName,
-        'email': widget.email,
-      });
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
-    Navigator.popUntil(context, ModalRoute.withName('/'));
-  }
-
+class SignupPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

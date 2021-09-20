@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
-import 'signup.dart';
+import '../../signup/view/signup.dart';
 import 'package:application/apptheme.dart';
 import 'package:application/sizeconfig.dart';
-
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,18 +14,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold (
+    return Scaffold(
       body: BlocProvider(
         create: (_) => LoginCubit(),
         child: LoginForm(),
-      )
+      ),
     );
   }
 }
-
 
 class LoginForm extends StatelessWidget {
   static const horizontalInset = 30.0;
@@ -36,8 +33,7 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       child: ListView(
         children: [
           Logo(),
@@ -50,8 +46,8 @@ class LoginForm extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(
-                left: horizontalInset,
-                right: horizontalInset,
+              left: horizontalInset,
+              right: horizontalInset,
             ),
             child: _PasswordInput(),
           ),
@@ -63,42 +59,35 @@ class LoginForm extends StatelessWidget {
   }
 }
 
-
 InputDecoration inputDecoration(String label) {
   const roundedness = 10.0;
   return InputDecoration(
     border: OutlineInputBorder(
         borderRadius: const BorderRadius.all(
-          const Radius.circular(roundedness),
-        )
-    ),
+      const Radius.circular(roundedness),
+    )),
     labelText: label,
     helperText: '',
   );
 }
 
-
 class Logo extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     var size = SizeConfig(context);
     var logoHeight = size.hPc * 33;
-    return KeyboardVisibilityBuilder(
-      builder: (context, isKeyboardVisible) {
-        return Container(
-          height: logoHeight,
-          alignment: Alignment.center,
-          child: Text(
-            "wanderlist",
-            style: WanTheme.text.logo,
-          ),
-        );
-      }
-    );
+    return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
+      return Container(
+        height: logoHeight,
+        alignment: Alignment.center,
+        child: Text(
+          "wanderlist",
+          style: WanTheme.text.logo,
+        ),
+      );
+    });
   }
 }
-
 
 class _EmailInput extends StatelessWidget {
   @override
@@ -117,6 +106,7 @@ class _EmailInput extends StatelessWidget {
     );
   }
 }
+
 class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -138,29 +128,16 @@ class _PasswordInput extends StatelessWidget {
 class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
-        return Padding(
-          padding: EdgeInsets.only(
-            left: 100,
-            right: 100,
-          ),
+        return Center(
           child: Container(
-            decoration : BoxDecoration(
-              color: WanTheme.colors.pink,
-              borderRadius: BorderRadius.circular(15),
+            child: ElevatedButton(
+              child: Text("Sign In", style: TextStyle(fontSize: 20)),
+              onPressed: () =>
+                  context.read<LoginCubit>().logInWithCredentials(),
             ),
-            height: 50,
-            child: TextButton(
-              key: const Key('loginForm_continue_raisedButton'),
-              onPressed: () => context.read<LoginCubit>().logInWithCredentials(),
-              child: Text(
-                'LOGIN',
-                style: WanTheme.text.loginButton,
-              ),
-            ),
-          )
+          ),
         );
       },
     );
@@ -170,30 +147,27 @@ class _LoginButton extends StatelessWidget {
 class _SignupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-        builder: (context, state) {
-          return Padding(
-            padding: EdgeInsets.only(
-              left: 100,
-              right: 100,
-            ),
-            child: TextButton(
-              key: const Key('loginForm_continue_raisedButton'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SignupPage(),
-                  )
-                );
-              },
-              child: Text(
-                'SIGN UP',
-                style: WanTheme.text.signupButton,
-              ),
-            ),
-          );
-        }
-    );
+    return BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
+      return Padding(
+        padding: EdgeInsets.only(
+          left: 100,
+          right: 100,
+        ),
+        child: TextButton(
+          key: const Key('loginForm_continue_raisedButton'),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignupPage(),
+                ));
+          },
+          child: Text(
+            "Sign up",
+            style: WanTheme.text.signupButton,
+          ),
+        ),
+      );
+    });
   }
 }

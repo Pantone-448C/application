@@ -1,11 +1,8 @@
 part of 'login_cubit.dart';
 
 class LoginState extends Equatable {
-  const LoginState({
-    this.email = "",
-    this.password = "",
-    this.isKeyboardOpen = false
-  });
+  const LoginState(
+      {this.email = "", this.password = "", this.isKeyboardOpen = false});
 
   final String email;
   final String password;
