@@ -129,9 +129,7 @@ class _UneditableActivityList extends StatelessWidget {
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return ActivitySummaryItemSmall(
-            activityName: activities[index].name,
-            activityDescription: activities[index].about,
-            imageUrl: activities[index].imageUrl,
+            activity: activities[index],
             smallIcon: true,
           );
         },

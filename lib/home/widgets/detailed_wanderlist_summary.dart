@@ -3,6 +3,7 @@ import 'package:application/components/small_square_image.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
+import 'package:application/wanderlist/view/wanderlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,9 @@ class DetailedWanderlistSummary extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(CORNER_RADIUS))),
       child: Column(
         children: [
-          _TopSummary(this.width, 60, name, total, completed),
+          GestureDetector(onTap: () => Navigator.push(context,
+              MaterialPageRoute<void>(builder: (context) => WanderlistPage(userWanderlist))),
+            child: _TopSummary(this.width, 60, name, total, completed)),
           Divider(color: Colors.grey),
           _Activity(this.width, 70, nextActivity),
           _NMoreItems(total - 1),

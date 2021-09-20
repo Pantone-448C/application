@@ -240,9 +240,7 @@ class _EditableActivityListItem extends StatelessWidget {
           ),
           ActivitySummaryItemSmall(
             width: MediaQuery.of(context).size.width * 0.75,
-            activityName: activity.name,
-            activityDescription: activity.about,
-            imageUrl: activity.imageUrl,
+            activity: activity,
             rightWidget: Icon(Icons.drag_handle, color: Colors.grey),
             smallIcon: true,
           ),

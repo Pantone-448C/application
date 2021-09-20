@@ -165,9 +165,7 @@ class _SuggestionsItem extends StatelessWidget {
               Expanded(
                 flex: 13,
                 child: ActivitySummaryItemSmall(
-                  activityName: activity.name,
-                  activityDescription: activity.about,
-                  imageUrl: activity.imageUrl,
+                  activity: activity,
                   smallIcon: true,
                   rightWidget: Container(
                     height: 20,
