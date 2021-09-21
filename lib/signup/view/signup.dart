@@ -1,37 +1,113 @@
 import 'package:application/apptheme.dart';
+import 'package:application/signup/cubit/signup_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignupPage extends StatefulWidget {
-  @override
-  _SignupPageState createState() => _SignupPageState();
+InputDecoration inputDecoration(String label) {
+  const roundedness = 10.0;
+  return InputDecoration(
+    border: OutlineInputBorder(
+        borderRadius: const BorderRadius.all(
+      const Radius.circular(roundedness),
+    )),
+    labelText: label,
+    helperText: '',
+  );
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _InputBox extends StatelessWidget {
+  _InputBox(this.onChanged, this._labelText, {Key? key}) : super(key: key);
 
-  Future<bool> emailAvailable() async {
-    var val =
-        await FirebaseAuth.instance.fetchSignInMethodsForEmail(email.text);
-    return val.isEmpty;
+  String _labelText;
+  var onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
+      child: TextField(
+        onChanged: onChanged,
+        decoration: inputDecoration(_labelText),
+      ),
+    );
   }
+}
 
+class SignupPage extends StatelessWidget {
   /**
    * Navigate to the next page
    * TODO: Move all the verification logic somewhere else
    */
-  void navigateNextPage() async {
-    if (!await emailAvailable()) {
-      print("Email not available");
-      return;
-    }
+  void navigateNextPage(BuildContext context) {
     Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => SignupPasswordPage()),
-    )
+      context,
+      MaterialPageRoute(builder: (context) => Container()),
+    );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => SignupCubit(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Sign Up"),
+        ),
+        body: ListView(
+          children: [
+            Container(
+              height: 200,
+              width: 350,
+              padding: EdgeInsets.only(top: 40),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(200),
+              ),
+              child: Center(
+                child: Text(
+                  "Tell us about yourself",
+                  style: TextStyle(fontSize: 25),
+                ),
+              ),
+            ),
+            BlocBuilder<SignupCubit, SignupState>(
+              builder: (context, state) {
+                return _InputBox(
+                  (value) => context.read<SignupCubit>().emailChanged(value),
+                  "Email address",
+                );
+              },
+            ),
+            BlocBuilder<SignupCubit, SignupState>(
+              builder: (context, state) {
+                return _InputBox(
+                  (value) =>
+                      context.read<SignupCubit>().firstNameChanged(value),
+                  "First name",
+                );
+              },
+            ),
+            BlocBuilder<SignupCubit, SignupState>(
+              builder: (context, state) {
+                return _InputBox(
+                  (value) => context.read<SignupCubit>().lastNameChanged(value),
+                  "Last name",
+                );
+              },
+            ),
+            _NextButton(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SignupPasswordPage extends StatelessWidget {
+  const SignupPasswordPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,131 +126,81 @@ class _SignupPageState extends State<SignupPage> {
             ),
             child: Center(
               child: Text(
-                "Tell us about yourself",
+                "Enter a new password",
                 style: TextStyle(fontSize: 25),
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              controller: firstName,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'First name',
-              ),
-            ),
+          BlocBuilder<SignupCubit, SignupState>(
+            builder: (context, state) {
+              return _InputBox(
+                (value) => context.read<SignupCubit>().passwordChanged(value),
+                "Password",
+              );
+            },
           ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              controller: lastName,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Last name',
-              ),
-            ),
+          BlocBuilder<SignupCubit, SignupState>(
+            builder: (context, state) {
+              return _InputBox(
+                (value) =>
+                    context.read<SignupCubit>().passwordConfirmChanged(value),
+                "Confirm Password",
+              );
+            },
           ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              controller: email,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Email address',
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                  color: WanTheme.colors.pink,
-                  borderRadius: BorderRadius.circular(15)),
-              child: TextButton(
-                onPressed: () {
-                  navigateNextPage();
-                },
-                child: Text(
-                  'Continue',
-                  style: WanTheme.text.loginButton,
-                ),
-              ),
-            ),
-          ),
+          _FinishButton(),
         ],
       ),
     );
   }
 }
 
-class SignupPasswordPage extends StatelessWidget {
+class _NextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Sign Up"),
-      ),
-      body: ListView(
-        children: [
-          Container(
-            height: 200,
-            width: 350,
-            padding: EdgeInsets.only(top: 40),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(200)),
-            child: Center(
-              child: Text(
-                "Choose a new password",
-                style: TextStyle(fontSize: 25),
-              ),
+    var bloc = BlocProvider.of<SignupCubit>(context);
+    return BlocBuilder<SignupCubit, SignupState>(
+      builder: (context, state) {
+        return Center(
+          child: Container(
+            child: ElevatedButton(
+              child: Text("Next", style: TextStyle(fontSize: 20)),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return BlocProvider<SignupCubit>.value(
+                        value: bloc, child: SignupPasswordPage());
+                  }),
+                );
+              },
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              obscureText: true,
-              controller: password,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
+        );
+      },
+    );
+  }
+}
+
+class _FinishButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SignupCubit, SignupState>(
+      builder: (context, state) {
+        return Center(
+          child: Container(
+            child: ElevatedButton(
+              child: Text("Create account", style: TextStyle(fontSize: 20)),
+              onPressed: () {
+                print(state.email);
+                return;
+                context.read<SignupCubit>().signupWithCredentials();
+                Navigator.popUntil(context, ModalRoute.withName('/'));
+              },
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              controller: confirmation,
-              obscureText: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Confirm password',
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                color: WanTheme.colors.pink,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  signup();
-                },
-                child: Text(
-                  'Create Account',
-                  style: WanTheme.text.loginButton,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
