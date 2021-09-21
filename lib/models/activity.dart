@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 @immutable
 class ActivityDetails extends Equatable {
-  ActivityDetails(
-      this.id, this.name, this.about, this.thumbUrl, this.imageUrl, this.address);
+  ActivityDetails(this.id, this.name, this.about, this.thumbUrl, this.imageUrl,
+      this.address, this.points);
 
   factory ActivityDetails.fromJson(Map<String, dynamic> json) =>
       ActivityDetails(
@@ -14,6 +14,7 @@ class ActivityDetails extends Equatable {
         json['thumb_url'],
         json['image_url'],
         json['address'],
+        json['points'],
       );
 
   final String id;
@@ -22,9 +23,11 @@ class ActivityDetails extends Equatable {
   final String thumbUrl;
   final String imageUrl;
   final String address;
+  final int points;
 
   @override
-  List<Object?> get props => [id, name, about, thumbUrl, imageUrl, address];
+  List<Object?> get props =>
+      [id, name, about, thumbUrl, imageUrl, address, points];
 
   Map<String, dynamic> toJson() {
     return {
@@ -43,6 +46,7 @@ class ActivityDetails extends Equatable {
     String? thumbUrl,
     String? imageUrl,
     String? address,
+    int? points,
   }) {
     return ActivityDetails(
       id ?? this.id,
@@ -51,6 +55,7 @@ class ActivityDetails extends Equatable {
       thumbUrl ?? this.thumbUrl,
       imageUrl ?? this.imageUrl,
       address ?? this.address,
+      points ?? this.points,
     );
   }
 }
