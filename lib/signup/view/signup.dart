@@ -192,8 +192,6 @@ class _FinishButton extends StatelessWidget {
             child: ElevatedButton(
               child: Text("Create account", style: TextStyle(fontSize: 20)),
               onPressed: () {
-                print(state.email);
-                return;
                 context.read<SignupCubit>().signupWithCredentials();
                 Navigator.popUntil(context, ModalRoute.withName('/'));
               },

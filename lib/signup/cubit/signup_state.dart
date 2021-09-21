@@ -18,7 +18,7 @@ class SignupState extends Equatable {
 
   @override
   List<Object> get props =>
-      [email, firstName, lastName, password, isKeyboardOpen];
+      [email, firstName, lastName, password, passwordConfirm, isKeyboardOpen];
 
   SignupState copyWith({
     String? email,

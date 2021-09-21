@@ -29,7 +29,6 @@ class WanTextTheme {
   var signupButton = TextStyle(color: WanTheme.colors.pink, fontSize: 15);
 }
 
-
 // Source
 // https://gist.github.com/moritzmorgenroth/5602102d855efde2d686b0c7c5a095ad
 MaterialColor generateMaterialColor(Color color) {
@@ -65,24 +64,27 @@ class WanTheme {
   static const double TITLEBAR_HEIGHT = 60;
 
   static ColorScheme defaultCols = ColorScheme(
-  background: Colors.white,
-  brightness: Brightness.light,
-  primary: WanColors().pink,
-  onPrimary: Colors.white,
-  primaryVariant: WanColors().bgOrange,
-  surface: WanColors().offWhite,
-  onBackground: Colors.black,
-  secondary: WanColors().bgOrange,
-  onSecondary: WanColors().orange,
-  secondaryVariant: WanColors().bgOrange,
-  onSurface: Colors.black,
-  error: Colors.red,
-  onError: Colors.white,
+    background: Colors.white,
+    brightness: Brightness.light,
+    primary: WanColors().pink,
+    onPrimary: Colors.white,
+    primaryVariant: WanColors().bgOrange,
+    surface: WanColors().offWhite,
+    onBackground: Colors.black,
+    secondary: WanColors().bgOrange,
+    onSecondary: WanColors().orange,
+    secondaryVariant: WanColors().bgOrange,
+    onSurface: Colors.black,
+    error: Colors.red,
+    onError: Colors.white,
   );
 
   static ThemeData materialTheme = ThemeData(
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.white,
+      elevation: 0,
+    ),
     primarySwatch: generateMaterialColor(WanColors().pink),
-
     colorScheme: defaultCols,
     iconTheme: IconThemeData(color: WanColors().pink),
     primaryIconTheme: IconThemeData(color: WanColors().pink),
@@ -107,12 +109,7 @@ class WanTheme {
 
   static WanTextTheme text = WanTextTheme();
   static WanColors colors = WanColors();
-
-
 }
-
-
-
 
 class WanColors {
   var pink = Color(0xFFFE4165);
