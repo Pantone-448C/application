@@ -41,7 +41,7 @@ class UserWanderlistsLoaded extends Equatable implements UserWanderlistsState {
   UserWanderlistsLoaded copyWith ({List<UserWanderlist> ? wanderlists}) {
     return UserWanderlistsLoaded(wanderlists ?? this.wanderlists);
   }
-
-
 }
+
+class UserWanderlistsCreating implements UserWanderlistsState {}
 

@@ -27,4 +27,17 @@ class WanderlistRepository implements IWanderlistRepository {
       'name': wanderlist.name
     });
   }
+
+  @override
+  Future<DocumentReference> addWanderlist(Wanderlist wanderlist) async {
+    DocumentReference id = await _wanderlists.add({
+      "author_name": wanderlist.creatorName,
+      "icon": wanderlist.icon,
+      "name": wanderlist.name,
+      "activities":
+          wanderlist.activities.map((activity) => activity.id).toList(),
+    });
+
+    return id;
+  }
 }
