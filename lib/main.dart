@@ -1,4 +1,4 @@
-import 'package:application/login/view/signup.dart';
+import 'package:application/signup/view/signup.dart';
 import 'package:application/titlebar.dart';
 import 'package:application/userwanderlists/view/userwanderlists.dart';
 import 'package:firebase_auth/firebase_auth.dart';

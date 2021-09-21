@@ -32,15 +32,11 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> logInWithCredentials() async {
-    print(state.email);
-    print(state.password);
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: state.email,
         password: state.password,
       );
-    } catch (_) {
-    }
+    } catch (_) {}
   }
-
 }
