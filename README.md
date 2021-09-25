@@ -9,9 +9,9 @@ Note that this requires the `flutter` command line utility to be installed.
 git clone https://www.github.com/Pantone-448C/application.git && cd application
 ```
 #### Dependencies
-Install dependencies
+Install dependencies & relevant package commands
 ```bash
-flutter pub get
+flutter pub get && flutter pub run flutter_launcher_icons:main
 ```
 
 #### IDE
