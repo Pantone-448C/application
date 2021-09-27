@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dev.flutter.wanderlist">
-   <application
-        android:label="wanderlist"
+    <!-- Label: App name -->
+    <application
+        android:label="Wanderlist"
         android:icon="@mipmap/ic_launcher"
         android:networkSecurityConfig="@xml/network_security_config">
         <activity
