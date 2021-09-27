@@ -38,11 +38,15 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.9.2"
   flutter_test:
     sdk: flutter
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+# Config for icons for the app (on home screen)
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/wanderlist_logo-256x256.png"
 
 # The following section is specific to Flutter.
 flutter:
