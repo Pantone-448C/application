@@ -1,0 +1,153 @@
+import 'package:application/activity/view/activity_info.dart';
+import 'package:application/components/activity_summary_item_small.dart';
+import 'package:application/components/searchfield.dart';
+import 'package:application/components/wanderlist_summary_item.dart';
+import 'package:application/models/activity.dart';
+import 'package:application/models/user_wanderlist.dart';
+import 'package:application/repositories/search/search_repository.dart';
+import 'package:application/repositories/user/user_repository.dart';
+import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
+import 'package:application/search/cubit/search_cubit.dart';
+import 'package:application/search/cubit/search_state.dart';
+import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
+import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
+import 'package:application/userwanderlists/widgets/new_wanderlist_dialog.dart';
+import 'package:application/wanderlist/view/view_wanderlist.dart';
+import 'package:application/wanderlist/view/wanderlist.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../apptheme.dart';
+
+class SearchPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SearchCubit(SearchRepository()),
+      child: _SearchPage(),
+    );
+  }
+}
+
+class _SearchPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SearchCubit, SearchState>(
+      buildWhen: (p, s) => p != s,
+      builder: (context, state) {
+        if (state is SearchSuggest) {
+          return _ActivityPage( suggestions: state.suggestion, results: []);
+        }
+        if (state is SearchLoading) {
+          return _ActivityPage( suggestions: state.suggestion, results: [], loading: true);
+        }
+        if (state is SearchResults) {
+          return _ActivityPageResults( suggestions: state.suggestion, results: state.results);
+        }
+
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+}
+
+class _SearchBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container (
+      // search bar
+      padding: EdgeInsets.symmetric(horizontal: WanTheme.CARD_PADDING,
+          vertical: 2 * WanTheme.CARD_PADDING),
+      child: TextField(
+          keyboardType: TextInputType.text,
+          onChanged: (value) {
+            context.read<SearchCubit>().search(value);
+          },
+          decoration: SearchField.defaultDecoration.copyWith(
+            hintText: "Search Activities",
+          )
+      ),
+    );
+  }
+}
+
+class _ActivityPage extends StatelessWidget {
+  final List<ActivityDetails> results;
+  final List<ActivityDetails> suggestions;
+  final bool loading;
+
+  const _ActivityPage({Key? key, required this.results, required this.suggestions, this.loading = false}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var toShow;
+    if (!loading) {
+      toShow = List.of(this.results, growable: true);
+    }
+
+    toShow.addAll(suggestions);
+    var resultList;
+    if (loading)
+      resultList = Expanded(child: Center(child: CircularProgressIndicator()));
+    else
+      resultList = Expanded(child: _ActivityList(activities: suggestions));
+
+
+    return Container (
+        padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+        child: Column (
+        children: <Widget>[
+          _SearchBar(),
+          resultList
+        ]));
+  }
+}
+class _ActivityPageResults extends StatelessWidget {
+  final List<ActivityDetails> results;
+  final List<ActivityDetails> suggestions;
+
+  const _ActivityPageResults({Key? key, required this.results, required this.suggestions}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var toShow;
+    toShow = List.of(results, growable: true);
+    toShow.addAll(suggestions);
+    var res;
+    if (results.length == 0) {
+      res = Expanded(child: Center(child: Text("No Results :(")));
+    } else {
+      res = Expanded(child: _ActivityList(activities: toShow));
+    }
+
+    return Container (
+        padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+        child: Column (
+            children: <Widget>[
+              _SearchBar(),
+              res,
+            ]));
+  }
+}
+
+
+
+
+class _ActivityList extends StatelessWidget {
+
+  final activities;
+
+  const _ActivityList({Key? key, this.activities}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return (
+    ListView.builder(
+    itemCount: activities.length,
+    itemBuilder: (BuildContext context, int index) =>
+      ActivitySummaryItemSmall(activity: activities[index]))
+    );
+  }
+}
+

@@ -56,6 +56,8 @@ Color tintColor(Color color, double factor) => Color.fromRGBO(
     1);
 
 class WanTheme {
+  static const scrollPhysics = const BouncingScrollPhysics(
+      parent: AlwaysScrollableScrollPhysics());
   static const double CARD_CORNER_RADIUS = 15.0;
   static const double THUMB_CORNER_RADIUS = 5.0;
   static const double BORDER_RADIUS = 15.0;

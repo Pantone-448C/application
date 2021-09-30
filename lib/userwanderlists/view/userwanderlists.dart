@@ -81,8 +81,8 @@ class _WanderlistsView extends StatelessWidget {
             ),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-            physics: ClampingScrollPhysics(),
+            padding: const EdgeInsets.all(WanTheme.CARD_PADDING),
+            physics: WanTheme.scrollPhysics,
             onReorder: (int o, int n) {
               BlocProvider.of<UserWanderlistsCubit>(context).swap(o, n);
             },

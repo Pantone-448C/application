@@ -1,3 +1,4 @@
+import 'package:application/search/view/search.dart';
 import 'package:application/signup/view/signup.dart';
 import 'package:application/titlebar.dart';
 import 'package:application/userwanderlists/view/userwanderlists.dart';
@@ -87,7 +88,7 @@ class _AppContainerState extends State<AppContainer> {
           controller: _pageController,
           children: <Widget>[
             Container(child: HomePage(_gotoWanderlistsPage)),
-            Container(child: Text("Search Page")),
+            Container(child: SearchPage()),
             Container(child: WanQrPage()),
             Container(child: UserWanderlistsPage()),
           ],
