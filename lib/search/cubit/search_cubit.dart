@@ -1,16 +1,9 @@
 import 'dart:async';
-import 'dart:developer';
 
-import 'package:application/models/user.dart';
-import 'package:application/models/user_wanderlist.dart';
-import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/search/i_search_repository.dart';
-import 'package:application/repositories/user/i_user_repository.dart';
-import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
 import 'package:application/search/cubit/search_state.dart';
-import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 
 class SearchCubit extends Cubit<SearchState> {
   final ISearchRepository searchRepository;
@@ -26,6 +19,36 @@ class SearchCubit extends Cubit<SearchState> {
 
   void _showLoading() {
     emit(SearchLoading(state.suggestion));
+  }
+
+  Future<void> suggestNearby() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    var pos = await Geolocator.getCurrentPosition();
+
+    var res = searchRepository.getNear(pos.latitude, pos.longitude, range: 500);
+
+
+
   }
 
   Future<void> search(String query) async {

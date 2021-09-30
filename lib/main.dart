@@ -80,7 +80,6 @@ class _AppContainerState extends State<AppContainer> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: WanTheme.colors.offWhite,
-      appBar: Titlebar(),
       body: Center(
         child: PageView(
           // update navbar

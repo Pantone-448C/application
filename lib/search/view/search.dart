@@ -1,22 +1,13 @@
-import 'package:application/activity/view/activity_info.dart';
 import 'package:application/components/activity_summary_item_small.dart';
 import 'package:application/components/searchfield.dart';
-import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/activity.dart';
-import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/search/search_repository.dart';
-import 'package:application/repositories/user/user_repository.dart';
-import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/search/cubit/search_cubit.dart';
 import 'package:application/search/cubit/search_state.dart';
-import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
-import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
-import 'package:application/userwanderlists/widgets/new_wanderlist_dialog.dart';
-import 'package:application/wanderlist/view/view_wanderlist.dart';
-import 'package:application/wanderlist/view/wanderlist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../apptheme.dart';
 
@@ -25,10 +16,16 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SearchCubit(SearchRepository()),
-      child: _SearchPage(),
+      child: Column (children: <Widget> [
+        Expanded(child: Text("Map View")),
+        SlidingUpPanel(
+          panel: _SearchPage(),
+        )
+      ]),
     );
   }
 }
+
 
 class _SearchPage extends StatelessWidget {
   @override
