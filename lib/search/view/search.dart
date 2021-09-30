@@ -7,25 +7,45 @@ import 'package:application/search/cubit/search_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:bottom_drawer/bottom_drawer.dart';
+
 
 import '../../apptheme.dart';
+import '../../sizeconfig.dart';
 
-class SearchPage extends StatelessWidget {
+
+class _Drawer extends StatelessWidget {
+  BottomDrawerController controller = BottomDrawerController();
+
+  _Drawer(bool open) {
+    if (open) controller.open();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SearchCubit(SearchRepository()),
-      child: Column (children: <Widget> [
-        Expanded(child: Text("Map View")),
-        SlidingUpPanel(
-          panel: _SearchPage(),
-        )
-      ]),
+    return BottomDrawer(
+      body: _SearchPage(),
+      header: Container(),
+      headerHeight: 87,
+      drawerHeight: 400,
+      controller: controller,
     );
   }
 }
 
+class SearchPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final qb = SearchCubit(SearchRepository());
+    return BlocProvider(
+      create: (context) => qb,
+      child:
+          Stack(children: <Widget> [
+        Expanded(child: Center(child: Text("Map View"))),
+          _Drawer(true)] ),
+    );
+  }
+}
 
 class _SearchPage extends StatelessWidget {
   @override
@@ -58,6 +78,7 @@ class _SearchBar extends StatelessWidget {
           vertical: 2 * WanTheme.CARD_PADDING),
       child: TextField(
           keyboardType: TextInputType.text,
+          onTap: () => context.read<SearchCubit>(),
           onChanged: (value) {
             context.read<SearchCubit>().search(value);
           },
