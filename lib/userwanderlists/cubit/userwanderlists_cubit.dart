@@ -41,7 +41,8 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
       l.insert(n, elem);
 
       len = l.length;
-      print('$old to $n whyyy len: $len\n\n');
+
+      userRepository.updateUserWanderlists(l);
 
       emit(UserWanderlistsLoaded(l));
     }

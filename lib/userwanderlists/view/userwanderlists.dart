@@ -22,8 +22,7 @@ class UserWanderlists extends StatelessWidget {
     return BlocProvider(
       create: (context) => UserWanderlistsCubit(
         UserRepository(),
-        WanderlistRepository(),
-      ),
+        WanderlistRepository()),
       child: _UserWanderlistsContainer(),
     );
   }
@@ -32,15 +31,12 @@ class UserWanderlists extends StatelessWidget {
 class _UserWanderlistsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserWanderlistsCubit, UserWanderlistsState>(
-      listener: (context, state) {},
+    return BlocBuilder<UserWanderlistsCubit, UserWanderlistsState>(
+      buildWhen: (p, s) => p != s,
       builder: (context, state) {
         if (state is UserWanderlistsLoaded) {
-          return Column(
-            children: [
-              _WanderlistsView(),
-              _CreateWanderlistButton(),
-            ],
+          return _WanderlistsView(wanderlists: state.wanderlists,
+            cubloc: BlocProvider.of<UserWanderlistsCubit>(context),
           );
         } else {
           return Center(child: CircularProgressIndicator());
@@ -51,18 +47,29 @@ class _UserWanderlistsContainer extends StatelessWidget {
 }
 
 class _WanderlistsView extends StatelessWidget {
+  final wanderlists;
+  final cubloc;
+
+  const _WanderlistsView({Key? key, this.wanderlists, this.cubloc}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserWanderlistsCubit, UserWanderlistsState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is UserWanderlistsLoaded) {
-          return ReorderableListView(
-              header: Padding(
-                // search bar
-                padding: EdgeInsets.symmetric(horizontal: WanTheme.CARD_PADDING,
-                    vertical: 2 * WanTheme.CARD_PADDING),
-                child: TextField(
+      return Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) => NewWanderlistDialog(cubloc));
+        },
+          backgroundColor: WanTheme.colors.pink,
+          foregroundColor: WanTheme.colors.white,
+          child: const Icon(Icons.add),
+        ),
+        body: ReorderableListView(
+            header: Padding(
+              // search bar
+              padding: EdgeInsets.symmetric(horizontal: WanTheme.CARD_PADDING,
+                  vertical: 2 * WanTheme.CARD_PADDING),
+              child: TextField(
                   keyboardType: TextInputType.text,
                   onChanged: (value) {
                     context.read<UserWanderlistsCubit>().filter_search(value);
@@ -70,26 +77,20 @@ class _WanderlistsView extends StatelessWidget {
                   decoration: SearchField.defaultDecoration.copyWith(
                     hintText: "Search Your Wanderlists",
                   )
-                ),
               ),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              primary: true,
-              padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-              physics: ClampingScrollPhysics(),
-              onReorder: (int o, int n) {
-                context.read<UserWanderlistsCubit>().swap(o, n);
-              },
-              children: [
-                for (int index = 0; index < state.wanderlists.length; index++)
-                  _TappableWanderlistCard(
-                      Key('$index'), state.wanderlists[index])
-              ]);
-        } else {
-          return Container();
-        }
-      },
-    );
+            ),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+            physics: ClampingScrollPhysics(),
+            onReorder: (int o, int n) {
+              BlocProvider.of<UserWanderlistsCubit>(context).swap(o, n);
+            },
+            children: [
+              for (int index = 0; index < wanderlists.length; index++)
+                _TappableWanderlistCard(
+                    Key('$index'), wanderlists[index])
+            ]));
   }
 }
 
