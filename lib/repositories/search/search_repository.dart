@@ -25,13 +25,13 @@ class SearchRepository implements ISearchRepository {
 
   @override
   Future<List<ActivityDetails>> getNear(double lat, double lon, {double range=50}) async {
-    final response = await http.get(Uri(
+    final uri = Uri(
       scheme: API_SCHEME,
       host: API_HOST,
       path: API_BASE_PATH + "/near",
       port: API_PORT,
-      queryParameters: {"lat": lat.toString(), "lon": lon.toString(), "range": range.toString()},
-    ));
+      queryParameters: {"lat": lat.toString(), "lon": lon.toString(), "range": range.toString()});
+    final response = await http.get(uri);
 
     if (response.statusCode == 200) {
       return _responseToActivityList(response.body);

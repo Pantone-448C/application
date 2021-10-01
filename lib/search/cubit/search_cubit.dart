@@ -13,13 +13,9 @@ class SearchCubit extends Cubit<SearchState> {
   static const timeout = Duration(seconds: 1);
 
   SearchCubit(this.searchRepository) : super(SearchInitial()) {
-    _getUserPosition();
-    suggest();
+    suggestNearby();
   }
 
-  Future<void> suggest() async {
-    emit(SearchSuggest([]));
-  }
 
   Future<void> _getUserPosition() async {
     var currentState = state;
@@ -32,7 +28,8 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
   Future<void> suggestNearby() async {
-    var res = await searchRepository.getNear(userPosition.latitude, userPosition.longitude, range: 500);
+    await _getUserPosition();
+    var res = await searchRepository.getNear(userPosition.latitude, userPosition.longitude, range: 50);
     emit(SearchSuggest(res));
   }
 
@@ -44,10 +41,14 @@ class SearchCubit extends Cubit<SearchState> {
 
   Future<void> selectActivity(ActivityDetails a) async {
     if (state is SelectedActivity) {
-      emit(NoActivitySelected());
-    } else {
-      emit(SelectedActivity(a));
+      SelectedActivity s = state as SelectedActivity;
+      if (s.activity == a) {
+        emit(NoActivitySelected());
+        return;
+      }
     }
+
+    emit(SelectedActivity(a));
   }
 // delete()
 

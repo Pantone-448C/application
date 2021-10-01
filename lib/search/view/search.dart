@@ -1,21 +1,35 @@
-import 'dart:async';
 
 import 'package:application/components/activity_summary_item_small.dart';
 import 'package:application/components/searchfield.dart';
-import 'package:application/models/activity.dart';
 import 'package:application/repositories/search/search_repository.dart';
 import 'package:application/search/cubit/search_cubit.dart';
 import 'package:application/search/cubit/search_state.dart';
-import 'package:application/search/view/widgets.dart';
+import 'package:application/search/view/mapwidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bottom_drawer/bottom_drawer.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-
 import '../../apptheme.dart';
-import '../../sizeconfig.dart';
+
+class SearchPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final qb = SearchCubit(SearchRepository());
+    return BlocProvider(
+      create: (context) => qb,
+      child:
+          Scaffold (
+          backgroundColor: Colors.transparent,
+          drawerScrimColor: Colors.transparent,
+          body: Stack(children: <Widget> [
+            MapSample(),
+            _Drawer(),
+            _ActivityPreview(),
+          ] )),
+    );
+  }
+}
+
 
 
 class _Drawer extends StatelessWidget {
@@ -33,25 +47,6 @@ class _Drawer extends StatelessWidget {
   }
 }
 
-class SearchPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final qb = SearchCubit(SearchRepository());
-    return BlocProvider(
-      create: (context) => qb,
-      child:
-          Scaffold (
-          backgroundColor: Colors.transparent,
-          drawerScrimColor: Colors.transparent,
-          body: Stack(children: <Widget> [
-            MapSample(),
-          _Drawer(),
-            _ActivityPreview(),
-
-          ] )),
-    );
-  }
-}
 
 class _ActivityPreview extends StatelessWidget {
   @override
@@ -75,8 +70,6 @@ class _ActivityPreview extends StatelessWidget {
 class _SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-
     return Container (
         padding: EdgeInsets.all(WanTheme.CARD_PADDING),
         child: Column (
@@ -97,12 +90,22 @@ class _SearchBar extends StatelessWidget {
       child: TextField(
           keyboardType: TextInputType.text,
           onTap: () => context.read<SearchCubit>(),
-          onChanged: (value) {
-            context.read<SearchCubit>().search(value);
+          onChanged: (value) => context.read<SearchCubit>().search(value),
+          onSubmitted: (value) {
+            if (value.isNotEmpty) {
+              context.read<SearchCubit>().search(value);
+            } else {
+              context.read<SearchCubit>().suggestNearby();
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            }
           },
           decoration: SearchField.defaultDecoration.copyWith(
             hintText: "Search Activities",
-          )
+          ),
+
       ),
     );
   }
@@ -126,12 +129,17 @@ class _ActivityPage extends StatelessWidget {
         return Expanded(child: _ActivityList(activities: state.results));
       }
 
+      if (state is SearchSuggest) {
+        return Expanded(child: Column(children: [
+          Text("Nearby Activities"),
+          Expanded(child: _ActivityList(activities: state.suggestion))
+        ]));
+      }
+
       return Expanded(child: Center(child: CircularProgressIndicator()));
     });
   }
 }
-
-
 
 
 class _ActivityList extends StatelessWidget {
@@ -146,8 +154,11 @@ class _ActivityList extends StatelessWidget {
     ListView.builder(
     itemCount: activities.length,
     itemBuilder: (BuildContext context, int index) =>
-      ActivitySummaryItemSmall(activity: activities[index]))
-    );
+      Container(
+        padding: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
+          child:ActivitySummaryItemSmall(activity: activities[index])
+      )
+    ));
   }
 }
 

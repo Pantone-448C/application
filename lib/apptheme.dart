@@ -114,6 +114,8 @@ class WanTheme {
 }
 
 class WanColors {
+  double pinkHue = 349;
+  double orangeHue = 24;
   var pink = Color(0xFFFE4165);
   var grey = Color.fromRGBO(0x42, 0x42, 0x42, 0.9);
   var offWhite = Color.fromRGBO(0xF6, 0xF6, 0xF6, 1);

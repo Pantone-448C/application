@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../apptheme.dart';
+
 class MapSample extends StatefulWidget {
   @override
   State<MapSample> createState() => MapSampleState();
 }
 
 class MapSampleState extends State<MapSample> {
-  static const _zoom = 14.47;
+  static const _zoom = 12.47;
   GoogleMapController? _controller;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -42,6 +44,32 @@ class MapSampleState extends State<MapSample> {
                 state.userPosition.longitude));
           }
 
+
+
+          if (state is SearchSuggest) {
+            var markerIdCounter = 1;
+            var getMarkerId = (int i) {
+              return 'marker_id_$i';
+            };
+            final newMarkers = Map<MarkerId, Marker>();
+            state.suggestion.forEach((element) {
+              final markerIdVal = getMarkerId(markerIdCounter++);
+              final MarkerId markerId = MarkerId(markerIdVal);
+
+              newMarkers[markerId] = Marker(
+                  markerId: markerId,
+                  position: element.location,
+                  icon: BitmapDescriptor.defaultMarkerWithHue(WanTheme.colors.orangeHue),
+                  alpha: 1.0,
+                  visible: true,
+                  onTap: () => context.read<SearchCubit>().selectActivity(element)
+              );
+            });
+            setState(() {
+              print(markers);
+              markers = newMarkers;
+            });
+          }
           if (state is SearchResults) {
             var markerIdCounter = 1;
             var getMarkerId = (int i) {
@@ -55,14 +83,13 @@ class MapSampleState extends State<MapSample> {
             }
             state.results.forEach((element) {
 
-
               final markerIdVal = getMarkerId(markerIdCounter++);
               final MarkerId markerId = MarkerId(markerIdVal);
 
               newMarkers[markerId] = Marker(
                 markerId: markerId,
                 position: element.location,
-                icon: BitmapDescriptor.defaultMarker,
+                icon: BitmapDescriptor.defaultMarkerWithHue(WanTheme.colors.pinkHue),
                 alpha: 1.0,
                 visible: true,
                 onTap: () => context.read<SearchCubit>().selectActivity(element)
