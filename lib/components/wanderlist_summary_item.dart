@@ -11,14 +11,13 @@ class GetListSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference activities = FirebaseFirestore.instance.collection('wanderlists');
+    CollectionReference activities =
+        FirebaseFirestore.instance.collection('wanderlists');
 
     return FutureBuilder<DocumentSnapshot>(
       future: activities.doc(activity).get(),
-
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
         if (snapshot.hasError) {
           return Text("Something went wrong");
         }
@@ -28,15 +27,15 @@ class GetListSummary extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
 
           return WanderlistSummaryItem(
-            listName: data['name'],
-            authorName: data['author'],
-            numTotalItems: data['activities'].length,
-            numCompletedItems: data['numComplete'],
-            imageUrl: data['icon']
-          );
+              listName: data['name'],
+              authorName: data['author'],
+              numTotalItems: data['activities'].length,
+              numCompletedItems: data['numComplete'],
+              imageUrl: data['icon']);
           return Text("Full Name: ${data['full_name']} ${data['last_name']}");
         }
 
@@ -69,31 +68,38 @@ class WanderlistSummaryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: this.height,
-        width: this.width,
-        color: Colors.transparent,
-        child: Container (
-            padding: EdgeInsets.symmetric(
-                vertical: height / 7.5, horizontal: width / 37.5),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(WanTheme.CARD_CORNER_RADIUS))),
-            child: Row(children: <Widget>[
-              Expanded(
-                  flex: 17,
-                  child:
-                      _ImageComponent(this.width, this.height, this.imageUrl)),
-              Spacer(flex: 4),
-              Expanded(
-                  flex: 79,
-                  child: _TextComponent(
-                    this.listName,
-                    this.authorName,
-                    this.numTotalItems,
-                    this.numCompletedItems,
-                  )),
-            ])));
+    return Ink(
+      height: this.height,
+      width: this.width,
+      padding: EdgeInsets.symmetric(
+        vertical: height / 7.5,
+        horizontal: width / 37.5,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(WanTheme.CARD_CORNER_RADIUS),
+        ),
+      ),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 17,
+            child: _ImageComponent(this.width, this.height, this.imageUrl),
+          ),
+          Spacer(flex: 4),
+          Expanded(
+            flex: 79,
+            child: _TextComponent(
+              this.listName,
+              this.authorName,
+              this.numTotalItems,
+              this.numCompletedItems,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -111,12 +117,15 @@ class _ImageComponent extends StatelessWidget {
         aspectRatio: 1 / 1,
         child: new Container(
           decoration: new BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(WanTheme.THUMB_CORNER_RADIUS)),
-              image: new DecorationImage(
-                fit: BoxFit.fitHeight,
-                alignment: FractionalOffset.topCenter,
-                image: new NetworkImage(this.imageUrl),
-              )),
+            borderRadius: BorderRadius.all(
+              Radius.circular(WanTheme.THUMB_CORNER_RADIUS),
+            ),
+            image: new DecorationImage(
+              fit: BoxFit.fitHeight,
+              alignment: FractionalOffset.topCenter,
+              image: new NetworkImage(this.imageUrl),
+            ),
+          ),
         ),
       ),
     );
@@ -141,23 +150,34 @@ class _TextComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-              flex: 5,
-              child: Container(
-                  child: new Text(listName, style: WanTheme.text.cardTitle))),
-          Expanded(
-              flex: 3,
-              child: Container(
-                  child: new Text("by " + this.authorName,
-                      style: Theme.of(context).textTheme.caption))),
-          Expanded(
-              flex: 3,
-              child: Container(
-                  child: new Text(this.completed,
-                      style: TextStyle(fontSize: 12, color: Colors.grey)))),
-          Expanded(flex: 1, child: Container()),
-        ]);
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          flex: 5,
+          child: Container(
+            child: Text(listName, style: WanTheme.text.cardTitle),
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: Container(
+            child: Text(
+              "by " + this.authorName,
+              style: Theme.of(context).textTheme.caption,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: Container(
+            child: Text(
+              this.completed,
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ),
+        ),
+        Expanded(flex: 1, child: Container()),
+      ],
+    );
   }
 }

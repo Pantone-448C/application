@@ -130,11 +130,14 @@ class _TappableWanderlistCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => onWanderlistTap(this.userWanderlist),
-      child: Container(
-        margin: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
-        key: ValueKey(userWanderlist.wanderlist.hashCode),
+    return Container(
+      margin: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
+      key: ValueKey(userWanderlist.wanderlist.hashCode),
+      child: InkWell(
+        borderRadius: BorderRadius.all(
+          Radius.circular(WanTheme.CARD_CORNER_RADIUS),
+        ),
+        onTap: () => print("test"),
         child: WanderlistSummaryItem(
           imageUrl: userWanderlist.wanderlist.icon,
           authorName: userWanderlist.wanderlist.creatorName,
