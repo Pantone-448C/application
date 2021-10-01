@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:application/components/activity_summary_item_small.dart';
 import 'package:application/components/searchfield.dart';
 import 'package:application/models/activity.dart';
@@ -8,11 +10,50 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bottom_drawer/bottom_drawer.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 import '../../apptheme.dart';
 import '../../sizeconfig.dart';
 
+class MapSample extends StatefulWidget {
+  @override
+  State<MapSample> createState() => MapSampleState();
+}
+
+class MapSampleState extends State<MapSample> {
+  GoogleMapController? _controller;
+  static const _zoom = 14.47;
+
+  static final CameraPosition _brisbane = CameraPosition(
+    target: LatLng(-27.5125, 152.9812),
+    zoom: _zoom,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<SearchCubit, SearchState> (
+      listener: (context, state) {
+        if (state is GotUserPosition) {
+          final p = CameraPosition(target: LatLng(
+              state.userPosition.latitude,
+              state.userPosition.longitude),
+          zoom: _zoom);
+          _controller?.moveCamera(CameraUpdate.newCameraPosition(p));
+        }
+
+      },
+        builder: (BuildContext context, state) {
+      return GoogleMap(
+      mapType: MapType.terrain,
+      initialCameraPosition: _brisbane,
+      onMapCreated: (GoogleMapController controller) {
+        _controller = controller;
+      },
+        );
+    });
+  }
+}
 
 class _Drawer extends StatelessWidget {
   BottomDrawerController controller = BottomDrawerController();
@@ -41,7 +82,7 @@ class SearchPage extends StatelessWidget {
       create: (context) => qb,
       child:
           Stack(children: <Widget> [
-        Expanded(child: Center(child: Text("Map View"))),
+            MapSample(),
           _Drawer(true)] ),
     );
   }
@@ -51,19 +92,22 @@ class _SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SearchCubit, SearchState>(
-      buildWhen: (p, s) => p != s,
+      buildWhen: (p, s) {
+        return (p != s) && !(s is GotUserPosition);
+      } ,
       builder: (context, state) {
         if (state is SearchSuggest) {
-          return _ActivityPage( suggestions: state.suggestion, results: []);
+          return _ActivityPage(suggestions: state.suggestion, results: []);
         }
         if (state is SearchLoading) {
-          return _ActivityPage( suggestions: state.suggestion, results: [], loading: true);
+          return _ActivityPage(suggestions: state.suggestion, results: [], loading: true);
         }
         if (state is SearchResults) {
-          return _ActivityPageResults( suggestions: state.suggestion, results: state.results);
+          return _ActivityPageResults(suggestions: state.suggestion, results: state.results);
         }
 
         return Center(child: CircularProgressIndicator());
+
       },
     );
   }

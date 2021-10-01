@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:application/repositories/position/position.dart';
 import 'package:application/repositories/search/i_search_repository.dart';
 import 'package:application/search/cubit/search_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +8,11 @@ import 'package:geolocator/geolocator.dart';
 
 class SearchCubit extends Cubit<SearchState> {
   final ISearchRepository searchRepository;
+  late Position userPosition;
   static const timeout = Duration(seconds: 1);
 
   SearchCubit(this.searchRepository) : super(SearchInitial()) {
+    _getUserPosition();
     suggest();
   }
 
@@ -17,38 +20,19 @@ class SearchCubit extends Cubit<SearchState> {
     emit(SearchSuggest([]));
   }
 
+  Future<void> _getUserPosition() async {
+    var currentState = state;
+    userPosition = await GPSPosition().getPosition();
+    emit(GotUserPosition(userPosition));
+  }
+
   void _showLoading() {
     emit(SearchLoading(state.suggestion));
   }
 
   Future<void> suggestNearby() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    var pos = await Geolocator.getCurrentPosition();
-
-    var res = searchRepository.getNear(pos.latitude, pos.longitude, range: 500);
-
-
-
+    var res = await searchRepository.getNear(userPosition.latitude, userPosition.longitude, range: 500);
+    emit(SearchSuggest(res));
   }
 
   Future<void> search(String query) async {

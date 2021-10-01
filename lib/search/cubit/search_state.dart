@@ -1,11 +1,6 @@
 import 'package:application/models/activity.dart';
-import 'package:application/models/user_wanderlist.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'package:geolocator/geolocator.dart';
 
-import 'search_cubit.dart';
 
 abstract class SearchState{
   const SearchState();
@@ -26,8 +21,18 @@ class SearchLoading implements SearchState {
 }
 
 
+class GotUserPosition implements SearchState {
+  final Position userPosition;
+
+  GotUserPosition(this.userPosition);
+
+  @override
+  List<ActivityDetails> get suggestion => [];
+}
+
 class SearchSuggest implements SearchState {
   final List<ActivityDetails> suggestion;
+
   SearchSuggest(this.suggestion);
 }
 
