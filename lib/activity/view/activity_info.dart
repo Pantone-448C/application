@@ -1,5 +1,6 @@
 import 'package:application/activity/cubit/activity_cubit.dart';
 import 'package:application/apptheme.dart';
+import 'package:application/components/list_of_wanderlists.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
 import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';

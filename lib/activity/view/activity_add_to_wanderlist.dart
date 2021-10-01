@@ -10,5 +10,10 @@ class _AddActivityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container();
+    //return BlocBuilder<ActivityCubit, ActivityState>(
+    //  builder: (context, state) {
+    //    return ListOfWanderlists(onReorder: () {}, readOnly: true, );
+    //  }
+    //)
   }
 }

@@ -59,7 +59,7 @@ class _WanderlistsView extends StatelessWidget {
         if (state is UserWanderlistsLoaded) {
           print(state.wanderlists);
           return ListOfWanderlists(
-            readOnly: true,
+            readOnly: false,
             wanderlists: state.wanderlists,
             onReorder: (int original, int next) {
               context.read<UserWanderlistsCubit>().swap(original, next);

@@ -34,35 +34,57 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
       displayedWanderlists = widget.wanderlists;
     }
 
-    return ReorderableListView(
-      header: Padding(
-        // search bar
-        padding: EdgeInsets.symmetric(
-            horizontal: WanTheme.CARD_PADDING,
-            vertical: 2 * WanTheme.CARD_PADDING),
-        child: TextField(
-          keyboardType: TextInputType.text,
-          onChanged: (value) => filterSearch(value),
-          decoration: SearchField.defaultDecoration.copyWith(
-            hintText: "Search Your Wanderlists",
-          ),
+    var searchBar = Padding(
+      // search bar
+      padding: EdgeInsets.symmetric(
+          horizontal: WanTheme.CARD_PADDING,
+          vertical: 2 * WanTheme.CARD_PADDING),
+      child: TextField(
+        keyboardType: TextInputType.text,
+        onChanged: (value) => filterSearch(value),
+        decoration: SearchField.defaultDecoration.copyWith(
+          hintText: "Search Your Wanderlists",
         ),
       ),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      primary: true,
-      padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-      physics: ClampingScrollPhysics(),
-      onReorder: widget.onReorder,
-      children: [
-        for (int index = 0; index < displayedWanderlists.length; index++)
-          _TappableWanderlistCard(
-            key: Key('$index'),
-            userWanderlist: displayedWanderlists[index],
-            onWanderlistTap: widget.onWanderlistTap,
-          )
-      ],
     );
+
+    // TODO: Factor out more arguments somehow
+    if (widget.readOnly) {
+      return ListView(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        primary: true,
+        padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+        physics: ClampingScrollPhysics(),
+        children: [
+          searchBar,
+          for (int index = 0; index < displayedWanderlists.length; index++)
+            _TappableWanderlistCard(
+              key: Key('$index'),
+              userWanderlist: displayedWanderlists[index],
+              onWanderlistTap: widget.onWanderlistTap,
+            )
+        ],
+      );
+    } else {
+      return ReorderableListView(
+        header: searchBar,
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        primary: true,
+        padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+        physics: ClampingScrollPhysics(),
+        onReorder: widget.onReorder,
+        children: [
+          for (int index = 0; index < displayedWanderlists.length; index++)
+            _TappableWanderlistCard(
+              key: Key('$index'),
+              userWanderlist: displayedWanderlists[index],
+              onWanderlistTap: widget.onWanderlistTap,
+            )
+        ],
+      );
+    }
   }
 
   void filterSearch(String query) {
