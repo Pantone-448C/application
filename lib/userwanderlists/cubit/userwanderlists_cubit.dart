@@ -48,47 +48,6 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
     emit(state);
   }
 
-  void finish_search() {
-    if (state is UserWanderlistsSearch) {
-      var c = state as UserWanderlistsSearch;
-      List<UserWanderlist> original = List.of(c.original_wanderlists);
-      emit(UserWanderlistsLoaded(original));
-    }
-  }
-
-  void filter_search(String query) {
-    List<UserWanderlist> original;
-    if (state is UserWanderlistsSearch) {
-      var c = state as UserWanderlistsSearch;
-      original = List.of(c.original_wanderlists);
-    } else {
-      var c = state as UserWanderlistsLoaded;
-      original = List.of(c.wanderlists);
-    }
-
-    if (query == "") {
-      emit(UserWanderlistsLoaded(original));
-      return;
-    }
-
-    List<UserWanderlist> matches = [];
-    List<String> words = query.split(" ");
-    Set<int> added = Set<int>();
-    for (var word in words) {
-      for (var list in original) {
-        if (!added.contains(list.wanderlist.hashCode)) {
-          if (list.wanderlist.name.contains(word) ||
-              list.wanderlist.creatorName.contains(word)) {
-            added.add(list.wanderlist.hashCode);
-            matches.add(list);
-          }
-        }
-      }
-    }
-
-    emit(UserWanderlistsSearch(original, matches));
-  }
-
   addEmptyUserWanderlist(String name) async {
     emit(UserWanderlistsCreating());
     UserDetails details = await userRepository.getUserData();

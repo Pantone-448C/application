@@ -1,3 +1,4 @@
+import 'package:application/components/list_of_wanderlists.dart';
 import 'package:application/components/searchfield.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/user_wanderlist.dart';
@@ -53,38 +54,23 @@ class _UserWanderlistsContainer extends StatelessWidget {
 class _WanderlistsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserWanderlistsCubit, UserWanderlistsState>(
-      listener: (context, state) {},
+    return BlocBuilder<UserWanderlistsCubit, UserWanderlistsState>(
       builder: (context, state) {
         if (state is UserWanderlistsLoaded) {
-          return ReorderableListView(
-              header: Padding(
-                // search bar
-                padding: EdgeInsets.symmetric(horizontal: WanTheme.CARD_PADDING,
-                    vertical: 2 * WanTheme.CARD_PADDING),
-                child: TextField(
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {
-                    context.read<UserWanderlistsCubit>().filter_search(value);
-                  },
-                  decoration: SearchField.defaultDecoration.copyWith(
-                    hintText: "Search Your Wanderlists",
-                  )
-                ),
+          print(state.wanderlists);
+          return ListOfWanderlists(
+            readOnly: true,
+            wanderlists: state.wanderlists,
+            onReorder: (int original, int next) {
+              context.read<UserWanderlistsCubit>().swap(original, next);
+            },
+            onWanderlistTap: (userWanderlist) => Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => WanderlistPage(userWanderlist),
               ),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              primary: true,
-              padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-              physics: ClampingScrollPhysics(),
-              onReorder: (int o, int n) {
-                context.read<UserWanderlistsCubit>().swap(o, n);
-              },
-              children: [
-                for (int index = 0; index < state.wanderlists.length; index++)
-                  _TappableWanderlistCard(
-                      Key('$index'), state.wanderlists[index])
-              ]);
+            ),
+          );
         } else {
           return Container();
         }

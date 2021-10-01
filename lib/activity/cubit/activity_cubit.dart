@@ -17,4 +17,5 @@ class ActivityCubit extends Cubit<ActivityState> {
     ActivityDetails a = await activityRepository.getActivity(id);
     emit(ActivityLoaded(a.name, a.address, 100, a.about, a.imageUrl));
   }
+
 }
