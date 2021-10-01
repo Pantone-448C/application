@@ -23,7 +23,7 @@ class ListOfWanderlists extends StatefulWidget {
 
 class _ListOfWanderlistsState extends State<ListOfWanderlists> {
   List<UserWanderlist> matchedWanderlists = [];
-  bool searching = false; /** Whether the searchbar is empty */
+  bool searching = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,32 +35,34 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
     }
 
     return ReorderableListView(
-        header: Padding(
-          // search bar
-          padding: EdgeInsets.symmetric(
-              horizontal: WanTheme.CARD_PADDING,
-              vertical: 2 * WanTheme.CARD_PADDING),
-          child: TextField(
-              keyboardType: TextInputType.text,
-              onChanged: (value) => filterSearch(value),
-              decoration: SearchField.defaultDecoration.copyWith(
-                hintText: "Search Your Wanderlists",
-              )),
+      header: Padding(
+        // search bar
+        padding: EdgeInsets.symmetric(
+            horizontal: WanTheme.CARD_PADDING,
+            vertical: 2 * WanTheme.CARD_PADDING),
+        child: TextField(
+          keyboardType: TextInputType.text,
+          onChanged: (value) => filterSearch(value),
+          decoration: SearchField.defaultDecoration.copyWith(
+            hintText: "Search Your Wanderlists",
+          ),
         ),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        primary: true,
-        padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-        physics: ClampingScrollPhysics(),
-        onReorder: widget.onReorder,
-        children: [
-          for (int index = 0; index < displayedWanderlists.length; index++)
-            _TappableWanderlistCard(
-              key: Key('$index'),
-              userWanderlist: displayedWanderlists[index],
-              onWanderlistTap: widget.onWanderlistTap,
-            )
-        ]);
+      ),
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      primary: true,
+      padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+      physics: ClampingScrollPhysics(),
+      onReorder: widget.onReorder,
+      children: [
+        for (int index = 0; index < displayedWanderlists.length; index++)
+          _TappableWanderlistCard(
+            key: Key('$index'),
+            userWanderlist: displayedWanderlists[index],
+            onWanderlistTap: widget.onWanderlistTap,
+          )
+      ],
+    );
   }
 
   void filterSearch(String query) {
@@ -78,7 +80,7 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
     Set<int> added = Set<int>();
     for (var word in words) {
       for (var list in widget.wanderlists) {
-        if (!added.contains(list.wanderlist.hashCode)) {
+        if (!added.contains(list.wanderlist)) {
           if (list.wanderlist.name.contains(word) ||
               list.wanderlist.creatorName.contains(word)) {
             added.add(list.wanderlist.hashCode);
@@ -109,22 +111,16 @@ class _TappableWanderlistCard extends StatelessWidget {
     return InkWell(
       onTap: () => onWanderlistTap(this.userWanderlist),
       child: Container(
-          margin: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
-          key: ValueKey(userWanderlist.wanderlist.hashCode),
-          child: WanderlistSummaryItem(
-            imageUrl: userWanderlist.wanderlist.icon,
-            authorName: userWanderlist.wanderlist.creatorName,
-            listName: userWanderlist.wanderlist.name,
-            numCompletedItems: userWanderlist.completedActivities.length,
-            numTotalItems: userWanderlist.wanderlist.activities.length,
-          )),
+        margin: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
+        key: ValueKey(userWanderlist.wanderlist.hashCode),
+        child: WanderlistSummaryItem(
+          imageUrl: userWanderlist.wanderlist.icon,
+          authorName: userWanderlist.wanderlist.creatorName,
+          listName: userWanderlist.wanderlist.name,
+          numCompletedItems: userWanderlist.completedActivities.length,
+          numTotalItems: userWanderlist.wanderlist.activities.length,
+        ),
+      ),
     );
   }
 }
-//void finish_search() {
-//  if (state is UserWanderlistsSearch) {
-//    var c = state as UserWanderlistsSearch;
-//    List<UserWanderlist> original = List.of(c.original_wanderlists);
-//    emit(UserWanderlistsLoaded(original));
-//  }
-//}
