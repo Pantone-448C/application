@@ -1,6 +1,4 @@
 import 'package:application/search/view/search.dart';
-import 'package:application/signup/view/signup.dart';
-import 'package:application/titlebar.dart';
 import 'package:application/userwanderlists/view/userwanderlists.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +7,6 @@ import 'package:application/apptheme.dart';
 
 import 'home/view/home_page.dart';
 import 'login/view/login.dart';
-import 'titlebar.dart';
 import 'package:application/checkin/view/qr_view.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -24,7 +21,6 @@ Future<void> main() async {
       print('User is signed in!');
     }
   });
-  runApp(App());
 }
 
 class App extends StatelessWidget {

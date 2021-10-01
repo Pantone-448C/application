@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:application/models/activity.dart';
 import 'package:application/repositories/position/position.dart';
 import 'package:application/repositories/search/i_search_repository.dart';
 import 'package:application/search/cubit/search_state.dart';
@@ -41,7 +42,13 @@ class SearchCubit extends Cubit<SearchState> {
     emit(SearchResults(results, state.suggestion));
   }
 
-
+  Future<void> selectActivity(ActivityDetails a) async {
+    if (state is SelectedActivity) {
+      emit(NoActivitySelected());
+    } else {
+      emit(SelectedActivity(a));
+    }
+  }
 // delete()
 
 // add()

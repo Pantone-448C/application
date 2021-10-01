@@ -21,14 +21,6 @@ class SearchLoading implements SearchState {
 }
 
 
-class GotUserPosition implements SearchState {
-  final Position userPosition;
-
-  GotUserPosition(this.userPosition);
-
-  @override
-  List<ActivityDetails> get suggestion => [];
-}
 
 class SearchSuggest implements SearchState {
   final List<ActivityDetails> suggestion;
@@ -37,9 +29,30 @@ class SearchSuggest implements SearchState {
 }
 
 
+
 class SearchResults implements SearchState {
   final List<ActivityDetails> results;
   final List<ActivityDetails> suggestion;
   SearchResults(this.results, this.suggestion);
 }
 
+abstract class MapState implements SearchState {
+  @override
+  List<ActivityDetails> get suggestion => [];
+}
+
+class GotUserPosition extends MapState {
+  final Position userPosition;
+
+  GotUserPosition(this.userPosition);
+}
+
+class NoActivitySelected extends MapState {
+  NoActivitySelected();
+}
+
+class SelectedActivity extends MapState {
+  final ActivityDetails activity;
+
+  SelectedActivity(this.activity);
+}

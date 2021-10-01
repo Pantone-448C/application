@@ -6,6 +6,7 @@ import 'package:application/models/activity.dart';
 import 'package:application/repositories/search/search_repository.dart';
 import 'package:application/search/cubit/search_cubit.dart';
 import 'package:application/search/cubit/search_state.dart';
+import 'package:application/search/view/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,51 +17,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../apptheme.dart';
 import '../../sizeconfig.dart';
 
-class MapSample extends StatefulWidget {
-  @override
-  State<MapSample> createState() => MapSampleState();
-}
-
-class MapSampleState extends State<MapSample> {
-  GoogleMapController? _controller;
-  static const _zoom = 14.47;
-
-  static final CameraPosition _brisbane = CameraPosition(
-    target: LatLng(-27.5125, 152.9812),
-    zoom: _zoom,
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<SearchCubit, SearchState> (
-      listener: (context, state) {
-        if (state is GotUserPosition) {
-          final p = CameraPosition(target: LatLng(
-              state.userPosition.latitude,
-              state.userPosition.longitude),
-          zoom: _zoom);
-          _controller?.moveCamera(CameraUpdate.newCameraPosition(p));
-        }
-
-      },
-        builder: (BuildContext context, state) {
-      return GoogleMap(
-      mapType: MapType.terrain,
-      initialCameraPosition: _brisbane,
-      onMapCreated: (GoogleMapController controller) {
-        _controller = controller;
-      },
-        );
-    });
-  }
-}
 
 class _Drawer extends StatelessWidget {
   BottomDrawerController controller = BottomDrawerController();
-
-  _Drawer(bool open) {
-    if (open) controller.open();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +27,7 @@ class _Drawer extends StatelessWidget {
       body: _SearchPage(),
       header: Container(),
       headerHeight: 87,
-      drawerHeight: 400,
+      drawerHeight: 300,
       controller: controller,
     );
   }
@@ -81,35 +40,50 @@ class SearchPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => qb,
       child:
-          Stack(children: <Widget> [
+          Scaffold (
+          backgroundColor: Colors.transparent,
+          drawerScrimColor: Colors.transparent,
+          body: Stack(children: <Widget> [
             MapSample(),
-          _Drawer(true)] ),
+          _Drawer(),
+            _ActivityPreview(),
+
+          ] )),
     );
   }
+}
+
+class _ActivityPreview extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SearchCubit, SearchState> (
+      builder: (context, state) {
+        if (state is SelectedActivity) {
+          return Container(
+            padding: EdgeInsets.only(left: WanTheme.CARD_PADDING, right: WanTheme.CARD_PADDING, top: 24 + 8),
+              child: ActivitySummaryItemSmall(activity: state.activity));
+        }
+
+        return Container(height: 0);
+      }
+
+    );
+  }
+
 }
 
 class _SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SearchCubit, SearchState>(
-      buildWhen: (p, s) {
-        return (p != s) && !(s is GotUserPosition);
-      } ,
-      builder: (context, state) {
-        if (state is SearchSuggest) {
-          return _ActivityPage(suggestions: state.suggestion, results: []);
-        }
-        if (state is SearchLoading) {
-          return _ActivityPage(suggestions: state.suggestion, results: [], loading: true);
-        }
-        if (state is SearchResults) {
-          return _ActivityPageResults(suggestions: state.suggestion, results: state.results);
-        }
 
-        return Center(child: CircularProgressIndicator());
 
-      },
-    );
+    return Container (
+        padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+        child: Column (
+            children: <Widget>[
+              _SearchBar(),
+              _ActivityPage(),
+            ]));
   }
 }
 
@@ -135,61 +109,25 @@ class _SearchBar extends StatelessWidget {
 }
 
 class _ActivityPage extends StatelessWidget {
-  final List<ActivityDetails> results;
-  final List<ActivityDetails> suggestions;
-  final bool loading;
-
-  const _ActivityPage({Key? key, required this.results, required this.suggestions, this.loading = false}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    var toShow;
-    if (!loading) {
-      toShow = List.of(this.results, growable: true);
-    }
+    return BlocBuilder<SearchCubit, SearchState>(
+      buildWhen: (p, s) => s != p && !(s is MapState),
+        builder: (context, state) {
+      if (state is SearchLoading) {
+        return Expanded(child: Center(child: CircularProgressIndicator()));
+      }
 
-    toShow.addAll(suggestions);
-    var resultList;
-    if (loading)
-      resultList = Expanded(child: Center(child: CircularProgressIndicator()));
-    else
-      resultList = Expanded(child: _ActivityList(activities: suggestions));
+      if (state is SearchInitial) {
+        return Expanded(child: _ActivityList(activities: state.suggestion));
+      }
 
+      if (state is SearchResults) {
+        return Expanded(child: _ActivityList(activities: state.results));
+      }
 
-    return Container (
-        padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-        child: Column (
-        children: <Widget>[
-          _SearchBar(),
-          resultList
-        ]));
-  }
-}
-class _ActivityPageResults extends StatelessWidget {
-  final List<ActivityDetails> results;
-  final List<ActivityDetails> suggestions;
-
-  const _ActivityPageResults({Key? key, required this.results, required this.suggestions}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var toShow;
-    toShow = List.of(results, growable: true);
-    toShow.addAll(suggestions);
-    var res;
-    if (results.length == 0) {
-      res = Expanded(child: Center(child: Text("No Results :(")));
-    } else {
-      res = Expanded(child: _ActivityList(activities: toShow));
-    }
-
-    return Container (
-        padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-        child: Column (
-            children: <Widget>[
-              _SearchBar(),
-              res,
-            ]));
+      return Expanded(child: Center(child: CircularProgressIndicator()));
+    });
   }
 }
 
