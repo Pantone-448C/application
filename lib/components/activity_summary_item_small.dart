@@ -20,7 +20,7 @@ class ActivitySummaryItemSmall extends StatelessWidget {
   ActivitySummaryItemSmall(
       {Key? key,
         required this.activity,
-      this.width = 375.0,
+      this.width = 475.0,
       this.height = 75.0,
       this.rightWidget = const Icon(Icons.chevron_right, color: Colors.grey),
       this.smallIcon = false,

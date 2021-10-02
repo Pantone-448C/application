@@ -45,7 +45,6 @@ class MapSampleState extends State<MapSample> {
           }
 
 
-
           if (state is SearchSuggest) {
             var markerIdCounter = 1;
             var getMarkerId = (int i) {

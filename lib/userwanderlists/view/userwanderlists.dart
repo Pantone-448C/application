@@ -68,7 +68,7 @@ class _WanderlistsView extends StatelessWidget {
             header: Padding(
               // search bar
               padding: EdgeInsets.only(left: WanTheme.CARD_PADDING, right: WanTheme.CARD_PADDING,
-                  top: 4 * WanTheme.CARD_PADDING, bottom: 2 * WanTheme.CARD_PADDING),
+                  top: MediaQuery.of(context).padding.top + 2 * WanTheme.CARD_PADDING, bottom: 2 * WanTheme.CARD_PADDING),
               child: TextField(
                   keyboardType: TextInputType.text,
                   onChanged: (value) {

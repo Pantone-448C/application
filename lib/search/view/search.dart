@@ -21,11 +21,13 @@ class SearchPage extends StatelessWidget {
           Scaffold (
           backgroundColor: Colors.transparent,
           drawerScrimColor: Colors.transparent,
-          body: Stack(children: <Widget> [
+          body: Container(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+              child: Stack(children: <Widget> [
             MapSample(),
             _Drawer(),
             _ActivityPreview(),
-          ] )),
+          ] ))),
     );
   }
 }
@@ -55,7 +57,7 @@ class _ActivityPreview extends StatelessWidget {
       builder: (context, state) {
         if (state is SelectedActivity) {
           return Container(
-            padding: EdgeInsets.only(left: WanTheme.CARD_PADDING, right: WanTheme.CARD_PADDING, top: 24 + 8),
+            padding: EdgeInsets.all(WanTheme.CARD_PADDING),
               child: ActivitySummaryItemSmall(activity: state.activity));
         }
 
