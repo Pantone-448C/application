@@ -1,6 +1,6 @@
 import 'package:application/apptheme.dart';
 import 'package:application/home/cubit/trip_cubit.dart';
-import 'package:application/home/widgets/trip_info.dart';
+import 'package:application/home/widgets/reward_info.dart';
 import 'package:application/home/widgets/wanderlists_list_view.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/sizeconfig.dart';
@@ -176,8 +176,7 @@ class _TripInfo extends StatelessWidget {
           return CircularProgressIndicator();
         } else if (state is TripLoaded) {
           return Container(
-              child: TripInfo(width, height, state.name, state.numWanderlists,
-                  state.percentageComplete, state.points));
+              child: RewardInfo(width, height, 442, 558, 1000, 442 / 1000));
         }
 
         return Container(child: Text("Error!"));
