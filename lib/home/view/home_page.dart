@@ -119,18 +119,23 @@ class _FilledHomePage extends StatelessWidget {
         ListView(children: <Widget>[
             Container (
               height: SizeConfig(context).h,
-          padding: EdgeInsets.only(left: WanTheme.CARD_PADDING,
-              right: WanTheme.CARD_PADDING),
             child: Column(
           children: [
             Container(
-              padding: EdgeInsets.only(top: 30, bottom: 15),
               child: _TripInfo(width, tripInfoHeight),
             ),
             Container(
+              padding: EdgeInsets.only(
+                      left: WanTheme.CARD_PADDING,
+                      right: WanTheme.CARD_PADDING,
+                    ),
               child: _NextRewardsInfo(),
             ),
             Container(
+              padding: EdgeInsets.only(
+                      left: WanTheme.CARD_PADDING,
+                      right: WanTheme.CARD_PADDING,
+                    ),
               child: _Wanderlists(width, wanderlistHeight),
             ),
           ],

@@ -74,8 +74,12 @@ class _InfoPanel extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(
             width / 25, height / 7.5, width / 25, height / 7.5),
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(CORNER_RADIUS))),
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
+            bottomRight: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
