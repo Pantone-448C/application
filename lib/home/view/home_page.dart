@@ -124,10 +124,6 @@ class _FilledHomePage extends StatelessWidget {
             child: Column(
           children: [
             Container(
-              padding: EdgeInsets.only(top: 50),
-              child: _HelloMessage(),
-            ),
-            Container(
               padding: EdgeInsets.only(top: 30, bottom: 15),
               child: _TripInfo(width, tripInfoHeight),
             ),

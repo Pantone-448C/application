@@ -1,7 +1,7 @@
 import 'package:application/models/trip.dart';
 import 'package:flutter/material.dart';
 
-class TripInfo extends StatelessWidget {
+class RewardInfo extends StatelessWidget {
   final double width;
   final double height;
   final String name;
@@ -11,7 +11,7 @@ class TripInfo extends StatelessWidget {
 
   static const double CORNER_RADIUS = 15.0;
 
-  TripInfo(this.width, this.height, this.name, this.numWanderlists,
+  RewardInfo(this.width, this.height, this.name, this.numWanderlists,
       this.percentageComplete, this.points);
 
   @override
