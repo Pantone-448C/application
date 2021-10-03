@@ -1,4 +1,5 @@
 import 'package:application/apptheme.dart';
+import 'package:application/home/widgets/unused_rewards_dropdown.dart';
 import 'package:application/models/trip.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
@@ -24,7 +25,50 @@ class RewardInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Column(children: [
+      _InfoPanel(
+        width,
+        height,
+        points,
+        rewardPoints,
+        pointsUntil,
+        percentagePointsUntil,
+      ),
+      UnusedRewardsDropdown(width, height / 3, 6),
+    ]);
+  }
+}
+
+class _InfoPanel extends StatelessWidget {
+  _InfoPanel(
+    this.width,
+    this.height,
+    this.points,
+    this.pointsUntil,
+    this.rewardPoints,
+    this.percentagePointsUntil,
+  );
+
+  final double width;
+  final double height;
+  final int points;
+  final int rewardPoints;
+  final int pointsUntil;
+  final double percentagePointsUntil;
+
+  static const double CORNER_RADIUS = 15.0;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        color: WanTheme.colors.bgOrange,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(CORNER_RADIUS),
+          topRight: Radius.circular(CORNER_RADIUS),
+        ),
+      ),
+      child: Container(
         width: this.width,
         height: this.height,
         padding: EdgeInsets.fromLTRB(
@@ -46,7 +90,9 @@ class RewardInfo extends StatelessWidget {
               ),
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }
 
@@ -95,7 +141,7 @@ class _ProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 384,
+      width: 384,
       height: 5,
       child: GradientProgressIndicator(
         value: this.percentageComplete,
