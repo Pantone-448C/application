@@ -26,25 +26,18 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
     emit(UserWanderlistsLoaded(w));
   }
 
-  void swap(int old, int n) {
+  void swap(int oldIndex, int newIndex) {
     if (state is UserWanderlistsLoaded) {
       var c = state as UserWanderlistsLoaded;
 
-      int len = c.wanderlists.length;
-      var l = List<UserWanderlist>.from(c.wanderlists);
+      var wanderlists = List<UserWanderlist>.from(c.wanderlists);
 
-      print('$old to $n whlen: $len\n\n');
-      if (old < n) {
-        n -= 1;
+      if (oldIndex < newIndex) {
+        newIndex -= 1;
       }
-
-      final UserWanderlist elem = l.removeAt(old);
-      l.insert(n, elem);
-
-      len = l.length;
-      print('$old to $n whyyy len: $len\n\n');
-
-      emit(UserWanderlistsLoaded(l));
+      final UserWanderlist item = wanderlists.removeAt(oldIndex);
+      wanderlists.insert(newIndex, item);
+      emit(UserWanderlistsLoaded(wanderlists));
     }
     emit(state);
   }
