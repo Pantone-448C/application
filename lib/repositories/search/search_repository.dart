@@ -3,13 +3,15 @@ import 'dart:developer';
 
 import 'package:application/activity/view/activity_info.dart';
 import 'package:application/models/activity.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'i_search_repository.dart';
 import 'package:http/http.dart' as http;
 
 
 class SearchRepository implements ISearchRepository {
   static const API_SCHEME = 'http';
-  static const API_HOST = "189.254.206.35.bc.googleusercontent.com";
+//  static const API_HOST = "189.254.206.35.bc.googleusercontent.com";
+  static const API_HOST = "192.168.0.36";
   static const API_PORT = 8080;
   static const API_BASE_PATH = "/activity";
 
@@ -23,6 +25,10 @@ class SearchRepository implements ISearchRepository {
     return l;
   }
 
+  _getToken() async {
+    return {"authorization": await FirebaseAuth.instance.currentUser!.getIdToken()};
+  }
+
   @override
   Future<List<ActivityDetails>> getNear(double lat, double lon, {double range=50}) async {
     final uri = Uri(
@@ -31,7 +37,8 @@ class SearchRepository implements ISearchRepository {
       path: API_BASE_PATH + "/near",
       port: API_PORT,
       queryParameters: {"lat": lat.toString(), "lon": lon.toString(), "range": range.toString()});
-    final response = await http.get(uri);
+
+    final response = await http.get(uri, headers: _getToken());
 
     if (response.statusCode == 200) {
       return _responseToActivityList(response.body);
@@ -48,7 +55,7 @@ class SearchRepository implements ISearchRepository {
       path: API_BASE_PATH + "/search",
       port: API_PORT,
       queryParameters: {"query": query},
-    ));
+    ), headers: _getToken());
 
     if (response.statusCode == 200) {
       return _responseToActivityList(response.body);
