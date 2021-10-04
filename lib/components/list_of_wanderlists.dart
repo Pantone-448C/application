@@ -1,33 +1,33 @@
 import 'package:application/apptheme.dart';
 import 'package:application/components/searchfield.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
-import 'package:application/models/user_wanderlist.dart';
+import 'package:application/models/wanderlist.dart';
 import 'package:flutter/material.dart';
 
 class ListOfWanderlists extends StatefulWidget {
-  const ListOfWanderlists(
-      {Key? key,
-      required this.onWanderlistTap,
-      required this.onReorder,
-      required this.readOnly,
-      required this.wanderlists})
-      : super(key: key);
-  final void Function(UserWanderlist) onWanderlistTap;
-  final onReorder;
+  const ListOfWanderlists({
+    Key? key,
+    required this.onWanderlistTap,
+    required this.wanderlists,
+    this.readOnly = false,
+    this.onReorder,
+  }) : super(key: key);
+  final void Function(Wanderlist) onWanderlistTap;
+  final void Function(int, int)? onReorder;
   final readOnly;
-  final List<UserWanderlist> wanderlists;
+  final List<Wanderlist> wanderlists;
 
   @override
   _ListOfWanderlistsState createState() => _ListOfWanderlistsState();
 }
 
 class _ListOfWanderlistsState extends State<ListOfWanderlists> {
-  List<UserWanderlist> matchedWanderlists = [];
+  List<Wanderlist> matchedWanderlists = [];
   bool searching = false;
 
   @override
   Widget build(BuildContext context) {
-    List<UserWanderlist> displayedWanderlists;
+    List<Wanderlist> displayedWanderlists;
     if (searching) {
       displayedWanderlists = matchedWanderlists;
     } else {
@@ -61,7 +61,7 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
           for (int index = 0; index < displayedWanderlists.length; index++)
             _TappableWanderlistCard(
               key: Key('$index'),
-              userWanderlist: displayedWanderlists[index],
+              wanderlist: displayedWanderlists[index],
               onWanderlistTap: widget.onWanderlistTap,
             )
         ],
@@ -74,12 +74,12 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
         primary: true,
         padding: EdgeInsets.all(WanTheme.CARD_PADDING),
         physics: ClampingScrollPhysics(),
-        onReorder: widget.onReorder,
+        onReorder: widget.onReorder ?? (_, __) {},
         children: [
           for (int index = 0; index < displayedWanderlists.length; index++)
             _TappableWanderlistCard(
               key: Key('$index'),
-              userWanderlist: displayedWanderlists[index],
+              wanderlist: displayedWanderlists[index],
               onWanderlistTap: widget.onWanderlistTap,
             )
         ],
@@ -97,15 +97,14 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
         searching = true;
       });
     }
-    List<UserWanderlist> matches = [];
+    List<Wanderlist> matches = [];
     List<String> words = query.split(" ");
     Set<int> added = Set<int>();
     for (var word in words) {
       for (var list in widget.wanderlists) {
-        if (!added.contains(list.wanderlist)) {
-          if (list.wanderlist.name.contains(word) ||
-              list.wanderlist.creatorName.contains(word)) {
-            added.add(list.wanderlist.hashCode);
+        if (!added.contains(list)) {
+          if (list.name.contains(word) || list.creatorName.contains(word)) {
+            added.add(list.hashCode);
             matches.add(list);
           }
         }
@@ -120,30 +119,30 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
 class _TappableWanderlistCard extends StatelessWidget {
   _TappableWanderlistCard({
     required this.key,
-    required this.userWanderlist,
+    required this.wanderlist,
     required this.onWanderlistTap,
   });
 
   final Key key;
-  final UserWanderlist userWanderlist;
+  final Wanderlist wanderlist;
   final onWanderlistTap;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
-      key: ValueKey(userWanderlist.wanderlist.hashCode),
+      key: ValueKey(wanderlist.hashCode),
       child: InkWell(
         borderRadius: BorderRadius.all(
           Radius.circular(WanTheme.CARD_CORNER_RADIUS),
         ),
-        onTap: () => print("test"),
+        onTap: () => onWanderlistTap(wanderlist),
         child: WanderlistSummaryItem(
-          imageUrl: userWanderlist.wanderlist.icon,
-          authorName: userWanderlist.wanderlist.creatorName,
-          listName: userWanderlist.wanderlist.name,
-          numCompletedItems: userWanderlist.completedActivities.length,
-          numTotalItems: userWanderlist.wanderlist.activities.length,
+          imageUrl: wanderlist.icon,
+          authorName: wanderlist.creatorName,
+          listName: wanderlist.name,
+          numCompletedItems: 0,
+          numTotalItems: wanderlist.activities.length,
         ),
       ),
     );
