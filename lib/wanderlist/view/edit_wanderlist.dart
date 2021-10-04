@@ -2,6 +2,7 @@ import 'package:application/apptheme.dart';
 import 'package:application/components/activity_summary_item_small.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
+import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/wanderlist/cubit/wanderlist_cubit.dart';
 import 'package:application/wanderlist/cubit/wanderlist_state.dart';
@@ -10,9 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditWanderlistPage extends StatelessWidget {
-  EditWanderlistPage(this.userWanderlist);
+  EditWanderlistPage(this.wanderlist);
 
-  final UserWanderlist userWanderlist;
+  final Wanderlist wanderlist;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +30,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   Widget _cancelButton(BuildContext context) {
     return IconButton(
-
-      icon: Icon(Icons.close_rounded,
-        color: Theme.of(context).accentColor),
+      icon: Icon(Icons.close_rounded, color: Theme.of(context).accentColor),
       onPressed: () {
         context.read<WanderlistCubit>().cancelEdit();
       },
@@ -39,13 +38,11 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _saveButton(BuildContext context) {
-    return
-      ElevatedButton (
+    return ElevatedButton(
         onPressed: () {
           context.read<WanderlistCubit>().endEdit();
         },
-        child: Text("Save")
-    );
+        child: Text("Save"));
   }
 
   @override
@@ -92,10 +89,10 @@ class _EditWanderlistBody extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 48.0, right: 48.0),
-                    child: _EditNameTextfield(state.wanderlist.wanderlist.name),
+                    child: _EditNameTextfield(state.wanderlist.name),
                   ),
                   Padding(padding: EdgeInsets.only(top: 10)),
-                  _EditableActivityList(state.wanderlist.wanderlist.activities),
+                  _EditableActivityList(state.wanderlist.activities),
                   Padding(padding: EdgeInsets.only(top: 10)),
                 ],
               ),
@@ -120,11 +117,7 @@ class _EditNameTextfield extends StatelessWidget {
   final _controller = TextEditingController();
 
   _submitNewName(BuildContext context, Editing state, String text) {
-    final newNameWanderlist = state.wanderlist.copyWith(
-      wanderlist: state.wanderlist.wanderlist.copyWith(
-        name: text,
-      ),
-    );
+    final newNameWanderlist = state.wanderlist.copyWith(name: text);
     context.read<WanderlistCubit>().madeEdit(newNameWanderlist);
   }
 
@@ -158,10 +151,7 @@ class _EditableActivityList extends StatelessWidget {
   _onRemoveItem(BuildContext context, Editing state, int index) {
     activities.removeAt(index);
     context.read<WanderlistCubit>().madeEdit(
-          state.wanderlist.copyWith(
-            wanderlist:
-                state.wanderlist.wanderlist.copyWith(activities: activities),
-          ),
+          state.wanderlist.copyWith(activities: activities),
         );
   }
 
@@ -178,7 +168,8 @@ class _EditableActivityList extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.95,
               padding: EdgeInsets.all(WanTheme.CARD_PADDING),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(WanTheme.CARD_CORNER_RADIUS),
+                  borderRadius:
+                      BorderRadius.circular(WanTheme.CARD_CORNER_RADIUS),
                   color: Colors.white),
               child: ReorderableListView.builder(
                 shrinkWrap: true,
@@ -192,16 +183,13 @@ class _EditableActivityList extends StatelessWidget {
                 itemCount: activities.length,
                 onReorder: (int oldIndex, int newIndex) {
                   List<ActivityDetails> activities =
-                      state.wanderlist.wanderlist.activities;
+                      state.wanderlist.activities;
                   if (oldIndex < newIndex) {
                     newIndex--;
                   }
                   activities.insert(newIndex, activities.removeAt(oldIndex));
                   context.read<WanderlistCubit>().madeEdit(
-                        state.wanderlist.copyWith(
-                          wanderlist: state.wanderlist.wanderlist
-                              .copyWith(activities: activities),
-                        ),
+                        state.wanderlist.copyWith(activities: activities),
                       );
                 },
               ),

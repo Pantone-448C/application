@@ -1,6 +1,7 @@
 import 'package:application/apptheme.dart';
 import 'package:application/components/searchfield.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
+import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
 import 'package:flutter/material.dart';
 
@@ -125,7 +126,7 @@ class _TappableWanderlistCard extends StatelessWidget {
 
   final Key key;
   final Wanderlist wanderlist;
-  final onWanderlistTap;
+  final void Function(Wanderlist) onWanderlistTap;
 
   @override
   Widget build(BuildContext context) {

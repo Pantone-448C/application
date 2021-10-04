@@ -7,6 +7,7 @@ import 'package:application/repositories/user/i_user_repository.dart';
 import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
@@ -20,7 +21,8 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
   }
 
   Future<void> _loadLists() async {
-    List<Wanderlist> w = (await userRepository.getUserWanderlists()).toList();
+    List<UserWanderlist> w =
+        (await userRepository.getUserWanderlists()).toList();
     emit(UserWanderlistsLoaded(w));
   }
 
@@ -29,7 +31,7 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
       var c = state as UserWanderlistsLoaded;
 
       int len = c.wanderlists.length;
-      var l = List<Wanderlist>.from(c.wanderlists);
+      var l = List<UserWanderlist>.from(c.wanderlists);
 
       print('$old to $n whlen: $len\n\n');
       if (old < n) {

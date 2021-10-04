@@ -11,7 +11,7 @@ class WanderlistCubit extends Cubit<WanderlistState> {
 
   IWanderlistRepository wanderlistRepository;
 
-  loadWanderlists(UserWanderlist wanderlist) async {
+  loadWanderlists(Wanderlist wanderlist) async {
     if (state is Initial) {
       emit(Loading());
       await Future.delayed(Duration(seconds: 0));
@@ -21,15 +21,12 @@ class WanderlistCubit extends Cubit<WanderlistState> {
     }
   }
 
-  UserWanderlist _deepCopyActivityList(UserWanderlist wanderlist) {
-    List<ActivityDetails> copiedActivities = []
-      ..addAll(wanderlist.wanderlist.activities);
-    return wanderlist.copyWith(
-      wanderlist: wanderlist.wanderlist.copyWith(activities: copiedActivities),
-    );
+  Wanderlist _deepCopyActivityList(Wanderlist wanderlist) {
+    List<ActivityDetails> copiedActivities = []..addAll(wanderlist.activities);
+    return wanderlist.copyWith(activities: copiedActivities);
   }
 
-  startEdit(UserWanderlist wanderlist) {
+  startEdit(Wanderlist wanderlist) {
     if (state is Viewing) {
       emit(Editing(wanderlist, _deepCopyActivityList(wanderlist)));
     } else {
@@ -39,10 +36,10 @@ class WanderlistCubit extends Cubit<WanderlistState> {
 
   endEdit() {
     if (state is Editing) {
-      UserWanderlist userWanderlist = (state as Editing).wanderlist;
+      Wanderlist wanderlist = (state as Editing).wanderlist;
       emit(Saving());
-      _save(userWanderlist.wanderlist);
-      emit(Viewing(userWanderlist));
+      _save(wanderlist);
+      emit(Viewing(wanderlist));
     } else {
       emit(state);
     }
@@ -56,7 +53,7 @@ class WanderlistCubit extends Cubit<WanderlistState> {
     }
   }
 
-  madeEdit(UserWanderlist wanderlist) {
+  madeEdit(Wanderlist wanderlist) {
     if (state is Editing) {
       emit(Editing(wanderlist, (state as Editing).original));
     } else {
@@ -64,9 +61,9 @@ class WanderlistCubit extends Cubit<WanderlistState> {
     }
   }
 
-  addActivity(UserWanderlist wanderlist, ActivityDetails activity) {
+  addActivity(Wanderlist wanderlist, ActivityDetails activity) {
     if (state is Editing) {
-      (state as Editing).wanderlist.wanderlist.activities.add(activity);
+      (state as Editing).wanderlist.activities.add(activity);
       final original = (state as Editing).original;
       emit(Editing(wanderlist, original));
     } else {

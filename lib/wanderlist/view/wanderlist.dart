@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:application/models/activity.dart';
-import 'package:application/models/user_wanderlist.dart';
+import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
@@ -16,7 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class WanderlistPage extends StatelessWidget {
   WanderlistPage(this.wanderlist);
 
-  final UserWanderlist wanderlist;
+  final Wanderlist wanderlist;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class WanderlistPage extends StatelessWidget {
 class _PageContent extends StatelessWidget {
   _PageContent(this.wanderlist);
 
-  final UserWanderlist wanderlist;
+  final Wanderlist wanderlist;
 
   @override
   Widget build(BuildContext context) {
