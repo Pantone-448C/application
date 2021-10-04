@@ -1,12 +1,14 @@
 import 'package:application/activity/cubit/activity_cubit.dart';
 import 'package:application/apptheme.dart';
 import 'package:application/components/list_of_wanderlists.dart';
+import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
+import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part "activity_add_to_wanderlist.dart";
+import "add_to.dart";
 
 const _buttonSize = 40.0;
 const _sectionSize1 = 75.0;
@@ -107,40 +109,37 @@ class _Title extends StatelessWidget {
 class _Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ActivityCubit, ActivityState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is ActivityLoaded) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-                    child: Text(
-                      state.name,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    )),
-                Container(
-                    padding: EdgeInsets.only(
-                        left: WanTheme.CARD_PADDING,
-                        bottom: WanTheme.CARD_PADDING),
-                    child: Text(
-                      state.address,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ))
-              ],
-            );
-          } else {
-            return Container();
-          }
-        });
+    return BlocBuilder<ActivityCubit, ActivityState>(builder: (context, state) {
+      if (state is ActivityLoaded) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+                child: Text(
+                  state.name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                )),
+            Container(
+                padding: EdgeInsets.only(
+                    left: WanTheme.CARD_PADDING, bottom: WanTheme.CARD_PADDING),
+                child: Text(
+                  state.address,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ))
+          ],
+        );
+      } else {
+        return Container();
+      }
+    });
   }
 }
 
@@ -204,7 +203,10 @@ class FlagButton extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => _AddActivityPage()),
+                MaterialPageRoute(
+                  builder: (context) =>
+                      AddActivityPage(context.read<ActivityCubit>().id),
+                ),
               );
             },
             icon: Icon(Icons.outlined_flag_rounded),

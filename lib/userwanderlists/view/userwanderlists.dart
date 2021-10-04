@@ -2,6 +2,7 @@ import 'package:application/components/list_of_wanderlists.dart';
 import 'package:application/components/searchfield.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/user_wanderlist.dart';
+import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
@@ -60,14 +61,15 @@ class _WanderlistsView extends StatelessWidget {
           print(state.wanderlists);
           return ListOfWanderlists(
             readOnly: false,
-            wanderlists: state.wanderlists,
+            wanderlists: List.of(state.wanderlists
+                .map((userwanderlist) => userwanderlist.wanderlist)),
             onReorder: (int original, int next) {
               context.read<UserWanderlistsCubit>().swap(original, next);
             },
-            onWanderlistTap: (userWanderlist) => Navigator.push(
+            onWanderlistTap: (Wanderlist wanderlist) => Navigator.push(
               context,
               MaterialPageRoute<void>(
-                builder: (context) => WanderlistPage(userWanderlist),
+                builder: (context) => WanderlistPage(wanderlist),
               ),
             ),
           );
@@ -75,35 +77,6 @@ class _WanderlistsView extends StatelessWidget {
           return Container();
         }
       },
-    );
-  }
-}
-
-class _TappableWanderlistCard extends StatelessWidget {
-  _TappableWanderlistCard(this.key, this.userWanderlist);
-
-  final Key key;
-  final UserWanderlist userWanderlist;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute<void>(
-          builder: (context) => WanderlistPage(userWanderlist),
-        ),
-      ),
-      child: Container(
-          margin: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
-          key: ValueKey(userWanderlist.wanderlist.hashCode),
-          child: WanderlistSummaryItem(
-            imageUrl: userWanderlist.wanderlist.icon,
-            authorName: userWanderlist.wanderlist.creatorName,
-            listName: userWanderlist.wanderlist.name,
-            numCompletedItems: userWanderlist.completedActivities.length,
-            numTotalItems: userWanderlist.wanderlist.activities.length,
-          )),
     );
   }
 }

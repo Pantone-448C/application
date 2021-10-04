@@ -20,8 +20,7 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
   }
 
   Future<void> _loadLists() async {
-    List<UserWanderlist> w =
-        (await userRepository.getUserWanderlists()).toList();
+    List<Wanderlist> w = (await userRepository.getUserWanderlists()).toList();
     emit(UserWanderlistsLoaded(w));
   }
 
@@ -30,7 +29,7 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
       var c = state as UserWanderlistsLoaded;
 
       int len = c.wanderlists.length;
-      var l = List<UserWanderlist>.from(c.wanderlists);
+      var l = List<Wanderlist>.from(c.wanderlists);
 
       print('$old to $n whlen: $len\n\n');
       if (old < n) {
@@ -65,7 +64,6 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
 //  reorder()
 
 // delete()
-
 // add()
 
 }
