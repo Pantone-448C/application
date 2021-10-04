@@ -60,7 +60,6 @@ class AddActivityOverlay extends StatelessWidget {
   }
 }
 
-
 class _Suggestions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -125,7 +124,7 @@ class _SuggestionsItem extends StatelessWidget {
   }
 
   Widget pickItemIcon(BuildContext context, wanderlistState.Editing state) {
-    if (state.wanderlist.wanderlist.activities
+    if (state.wanderlist.activities
         .any((activity) => this.activity.id == activity.id)) {
       return successfullyAddedIcon();
     }

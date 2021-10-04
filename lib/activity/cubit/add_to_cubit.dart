@@ -1,6 +1,7 @@
 import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
+import 'package:application/repositories/activity/i_activity_repository.dart';
 import 'package:application/repositories/user/i_user_repository.dart';
 import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,8 @@ class ActivityAddCubit extends Cubit<ActivityAddState> {
   ActivityAddCubit(
     this.userRepository,
     this.wanderlistRepository,
-    this.activityDetails,
+    this.activityRepository,
+    this.activityId,
   ) : super(ActivityAddInitial()) {
     emit(ActivityAddInitial());
     loadActivityAdd();
@@ -19,16 +21,18 @@ class ActivityAddCubit extends Cubit<ActivityAddState> {
 
   final IUserRepository userRepository;
   final IWanderlistRepository wanderlistRepository;
-  final ActivityDetails activityDetails;
+  final IActivityRepository activityRepository;
+  final String activityId;
 
   Future<void> loadActivityAdd() async {
-    var wanderlists = await userRepository.getUserWanderlists();
-    emit(ActivityAddLoaded(
-        List.of(wanderlists.map((UserWanderlist w) => w.wanderlist))));
+    var userWanderlists = (await userRepository.getUserWanderlists());
+    var wanderlists =
+        userWanderlists.map((userWanderlist) => userWanderlist.wanderlist);
+    emit(ActivityAddLoaded(List.of(wanderlists)));
   }
 
   Future<void> addActivityToWanderlist(Wanderlist wanderlist) async {
-    wanderlist.activities.add(activityDetails);
+    wanderlist.activities.add(await activityRepository.getActivity(activityId));
     wanderlistRepository.setWanderlist(wanderlist);
   }
 }

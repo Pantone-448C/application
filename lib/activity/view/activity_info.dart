@@ -1,6 +1,7 @@
 import 'package:application/activity/cubit/activity_cubit.dart';
 import 'package:application/apptheme.dart';
 import 'package:application/components/list_of_wanderlists.dart';
+import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
@@ -192,6 +193,7 @@ class _PointsTooltip extends StatelessWidget {
 class FlagButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String activityId = context.read<ActivityCubit>().id;
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
@@ -204,8 +206,7 @@ class FlagButton extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      AddActivityPage(context.read<ActivityCubit>().id),
+                  builder: (context) => AddActivityPage(activityId),
                 ),
               );
             },
