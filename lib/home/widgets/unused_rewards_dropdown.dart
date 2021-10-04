@@ -21,13 +21,6 @@ class UnusedRewardsDropdown extends StatelessWidget {
           bottomLeft: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
           bottomRight: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
         ),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 2,
-            color: const Color(0x0A000000),
-            offset: const Offset(4, 4),
-          ),
-        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

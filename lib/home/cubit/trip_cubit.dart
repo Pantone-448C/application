@@ -28,8 +28,7 @@ class TripCubit extends Cubit<TripState> {
     int percentageComplete = calculatePercentageComplete(wanderlists);
     int totalPoints = calculateTotalPoints(wanderlists);
 
-    emit(TripLoaded("Brisbane", numWanderlists, percentageComplete, totalPoints,
-        wanderlists.toList(), user.firstName));
+    emit(TripLoaded(442, 1000 - 442, 1000, 442 / 1000));
   }
 
   int calculatePercentageComplete(List<UserWanderlist> wanderlists) {

@@ -41,10 +41,7 @@ class HomePage extends StatelessWidget {
                 alignment: Alignment.center,
                 children: <Widget>[
                   ListView(),
-                  _emptyOrFilledHomePage(
-                    state.numWanderlists,
-                    gotoWanderlistsPage,
-                  ),
+                  _FilledHomePage(),
                 ],
               ),
             );
@@ -124,43 +121,10 @@ class _FilledHomePage extends StatelessWidget {
             Container(
               child: _TripInfo(width, tripInfoHeight),
             ),
-            Container(
-              padding: EdgeInsets.only(
-                      left: WanTheme.CARD_PADDING,
-                      right: WanTheme.CARD_PADDING,
-                    ),
-              child: _NextRewardsInfo(),
-            ),
-            Container(
-              padding: EdgeInsets.only(
-                      left: WanTheme.CARD_PADDING,
-                      right: WanTheme.CARD_PADDING,
-                    ),
-              child: _Wanderlists(width, wanderlistHeight),
-            ),
           ],
         ))]);
       },
     );
-  }
-}
-
-class _HelloMessage extends StatelessWidget {
-  final String name = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<TripCubit, TripState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is TripLoaded) {
-            return Text(
-              "Hello, " + state.firstName,
-            );
-          } else {
-            return Container();
-          }
-        });
   }
 }
 
@@ -190,20 +154,6 @@ class _TripInfo extends StatelessWidget {
   }
 }
 
-class _NextRewardsInfo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<TripCubit, TripState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        return Container(
-            // TODO: Implement _NextRewardsInfo widgets
-            );
-      },
-    );
-  }
-}
-
 class _Wanderlists extends StatelessWidget {
   final double width;
   final double height;
@@ -226,7 +176,7 @@ class _Wanderlists extends StatelessWidget {
                 width: width,
                 alignment: Alignment.centerLeft,
                 child: Text("Wanderlists", style: TextStyle(fontSize: 24))),
-            WanderlistsListView(width, height, state.wanderlists)
+            //WanderlistsListView(width, height, state.wanderlists)
           ]));
         }
 
