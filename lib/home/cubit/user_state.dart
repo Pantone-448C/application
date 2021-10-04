@@ -1,19 +1,19 @@
-part of 'trip_cubit.dart';
+part of 'user_cubit.dart';
 
-abstract class TripState {
-  const TripState();
+abstract class UserState {
+  const UserState();
 }
 
-class TripInitial implements TripState {
-  const TripInitial();
+class UserInitial implements UserState {
+  const UserInitial();
 }
 
-class TripLoading implements TripState {
-  const TripLoading();
+class UserLoading implements UserState {
+  const UserLoading();
 }
 
-class TripLoaded extends Equatable implements TripState {
-  const TripLoaded(this.points, this.pointsUntilReward,
+class UserLoaded extends Equatable implements UserState {
+  const UserLoaded(this.points, this.pointsUntilReward,
       this.nextRewardTotalPoints, this.percentageUntilReward);
 
   final int points;

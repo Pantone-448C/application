@@ -1,5 +1,5 @@
 import 'package:application/apptheme.dart';
-import 'package:application/home/cubit/trip_cubit.dart';
+import 'package:application/home/cubit/user_cubit.dart';
 import 'package:application/home/widgets/reward_info.dart';
 import 'package:application/home/widgets/wanderlists_list_view.dart';
 import 'package:application/repositories/user/user_repository.dart';
@@ -23,20 +23,20 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TripCubit(UserRepository()),
-      child: BlocConsumer<TripCubit, TripState>(
+      create: (context) => UserCubit(UserRepository()),
+      child: BlocConsumer<UserCubit, UserState>(
         listener: (context, state) {},
         builder: (context, state) {
-          if (state is TripInitial) {
+          if (state is UserInitial) {
             return Text("Error!");
-          } else if (state is TripLoading) {
+          } else if (state is UserLoading) {
             return Container(
               alignment: Alignment.center,
               child: CircularProgressIndicator(),
             );
-          } else if (state is TripLoaded) {
+          } else if (state is UserLoaded) {
             return RefreshIndicator(
-              onRefresh: () => context.read<TripCubit>().getTripInfo(),
+              onRefresh: () => context.read<UserCubit>().getTripInfo(),
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
@@ -109,7 +109,7 @@ class _FilledHomePage extends StatelessWidget {
     double tripInfoHeight = 130;
     double wanderlistHeight = height - tripInfoHeight;
 
-    return BlocConsumer<TripCubit, TripState>(
+    return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {},
       builder: (context, state) {
         return
@@ -136,14 +136,14 @@ class _TripInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TripCubit, TripState>(
+    return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {},
       builder: (context, state) {
-        if (state is TripInitial) {
+        if (state is UserInitial) {
           return CircularProgressIndicator();
-        } else if (state is TripLoading) {
+        } else if (state is UserLoading) {
           return CircularProgressIndicator();
-        } else if (state is TripLoaded) {
+        } else if (state is UserLoaded) {
           return Container(
               child: RewardInfo(width, height, 442, 558, 1000, 442 / 1000));
         }
@@ -162,14 +162,14 @@ class _Wanderlists extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TripCubit, TripState>(
+    return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {},
       builder: (context, state) {
-        if (state is TripInitial) {
+        if (state is UserInitial) {
           return CircularProgressIndicator();
-        } else if (state is TripLoading) {
+        } else if (state is UserLoading) {
           return CircularProgressIndicator();
-        } else if (state is TripLoaded) {
+        } else if (state is UserLoaded) {
           return Container(
               child: Column(children: [
             Container(
