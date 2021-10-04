@@ -42,7 +42,9 @@ class AddActivityPage extends StatelessWidget {
               ),
             );
           } else {
-            return Scaffold();
+            return Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
           }
         },
       ),
