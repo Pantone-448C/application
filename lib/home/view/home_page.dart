@@ -1,5 +1,6 @@
 import 'package:application/apptheme.dart';
 import 'package:application/home/cubit/user_cubit.dart';
+import 'package:application/home/widgets/pinned_wanderlists.dart';
 import 'package:application/home/widgets/reward_info.dart';
 import 'package:application/home/widgets/wanderlists_list_view.dart';
 import 'package:application/repositories/user/user_repository.dart';
@@ -10,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 Widget _emptyOrFilledHomePage(numWanderlists, gotoWanderlistsPage) {
   if (numWanderlists > 0) {
-    return _FilledHomePage();
+    return _FilledHomePage(gotoWanderlistsPage);
   }
   return _EmptyHomePage(gotoWanderlistsPage);
 }
@@ -41,7 +42,7 @@ class HomePage extends StatelessWidget {
                 alignment: Alignment.center,
                 children: <Widget>[
                   ListView(),
-                  _FilledHomePage(),
+                  _FilledHomePage(gotoWanderlistsPage),
                 ],
               ),
             );
@@ -102,27 +103,53 @@ class _EmptyHomePage extends StatelessWidget {
 /// The only way to get to this state is to have loaded user data and
 /// the ui showing > 0 wanderlists.
 class _FilledHomePage extends StatelessWidget {
-  Widget build(BuildContext context) {
+  _FilledHomePage(this.gotoWanderlistsPage);
+
+  final Function() gotoWanderlistsPage;
+
+  Column _homepageItems(BuildContext context, UserLoaded state) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
     double tripInfoHeight = 130;
     double wanderlistHeight = height - tripInfoHeight;
 
+    return Column(
+      children: <Widget>[
+        Container(
+          // height: SizeConfig(context).h,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              Container(
+                child: _TripInfo(width, tripInfoHeight),
+              ),
+              Padding(padding: EdgeInsets.only(top: 20.0)),
+              Padding(
+                padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                child: PinnedWanderlists(
+                  state.pinnedWanderlists,
+                  gotoWanderlistsPage,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget build(BuildContext context) {
     return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {},
       builder: (context, state) {
-        return
-        ListView(children: <Widget>[
-            Container (
-              height: SizeConfig(context).h,
-            child: Column(
-          children: [
-            Container(
-              child: _TripInfo(width, tripInfoHeight),
-            ),
-          ],
-        ))]);
+        if (state is UserLoaded) {
+          return _homepageItems(context, state);
+        } else {
+          return Container();
+        }
+
+        return Container();
       },
     );
   }

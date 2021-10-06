@@ -21,14 +21,13 @@ class UserCubit extends Cubit<UserState> {
   Future<void> getTripInfo() async {
     emit(UserLoading());
     UserDetails user = await userRepository.getUserData();
-    List<UserWanderlist> wanderlists =
+    List<UserWanderlist> userWanderlists =
         (await userRepository.getActiveWanderlists()).toList();
+    List<Wanderlist> wanderlists = userWanderlists
+        .map((userWanderlist) => userWanderlist.wanderlist)
+        .toList();
 
-    int numWanderlists = wanderlists.length;
-    int percentageComplete = calculatePercentageComplete(wanderlists);
-    int totalPoints = calculateTotalPoints(wanderlists);
-
-    emit(UserLoaded(442, 1000 - 442, 1000, 442 / 1000));
+    emit(UserLoaded(442, 1000 - 442, 1000, 442 / 1000, wanderlists));
   }
 
   int calculatePercentageComplete(List<UserWanderlist> wanderlists) {
