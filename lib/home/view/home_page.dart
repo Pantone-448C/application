@@ -9,6 +9,8 @@ import 'package:application/userwanderlists/view/userwanderlists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../titlebar.dart';
+
 Widget _emptyOrFilledHomePage(numWanderlists, gotoWanderlistsPage) {
   if (numWanderlists > 0) {
     return _FilledHomePage(gotoWanderlistsPage);
@@ -16,7 +18,50 @@ Widget _emptyOrFilledHomePage(numWanderlists, gotoWanderlistsPage) {
   return _EmptyHomePage(gotoWanderlistsPage);
 }
 
+class _HomePage extends StatelessWidget {
+
+  _HomePage(this.gotoWanderlistsPage);
+
+  final Function() gotoWanderlistsPage;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<UserCubit, UserState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        if (state is UserInitial) {
+          return Text("Error!");
+        } else if (state is UserLoading) {
+          return Container(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is UserLoaded) {
+          return RefreshIndicator(
+            onRefresh: () => context.read<UserCubit>().getTripInfo(),
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                ListView(),
+                _FilledHomePage(gotoWanderlistsPage),
+              ],
+            ),
+          );
+        }
+
+        return Text("Error!");
+      },
+      buildWhen: (current, previous) {
+        return true;
+      },
+    );
+  }
+
+}
+
+
 class HomePage extends StatelessWidget {
+
   HomePage(this.gotoWanderlistsPage);
 
   final Function() gotoWanderlistsPage;
@@ -25,35 +70,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => UserCubit(UserRepository()),
-      child: BlocConsumer<UserCubit, UserState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is UserInitial) {
-            return Text("Error!");
-          } else if (state is UserLoading) {
-            return Container(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is UserLoaded) {
-            return RefreshIndicator(
-              onRefresh: () => context.read<UserCubit>().getTripInfo(),
-              child: Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  ListView(),
-                  _FilledHomePage(gotoWanderlistsPage),
-                ],
-              ),
-            );
-          }
-
-          return Text("Error!");
-        },
-        buildWhen: (current, previous) {
-          return true;
-        },
-      ),
+      child: Scaffold (
+        appBar: Titlebar(),
+        body: _HomePage(gotoWanderlistsPage)
+      )
     );
   }
 }

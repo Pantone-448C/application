@@ -56,6 +56,8 @@ Color tintColor(Color color, double factor) => Color.fromRGBO(
     1);
 
 class WanTheme {
+  static const scrollPhysics = const BouncingScrollPhysics(
+      parent: AlwaysScrollableScrollPhysics());
   static const double CARD_CORNER_RADIUS = 15.0;
   static const double THUMB_CORNER_RADIUS = 5.0;
   static const double BUTTON_CORNER_RADIUS = 10.0;
@@ -113,6 +115,8 @@ class WanTheme {
 }
 
 class WanColors {
+  double pinkHue = 349;
+  double orangeHue = 24;
   var pink = Color(0xFFFE4165);
   var grey = Color.fromRGBO(0x42, 0x42, 0x42, 0.9);
   var lightGrey = Color(0xFFEEEEEE);

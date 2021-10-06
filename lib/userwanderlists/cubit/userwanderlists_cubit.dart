@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
@@ -7,7 +5,6 @@ import 'package:application/repositories/user/i_user_repository.dart';
 import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
@@ -30,14 +27,18 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
     if (state is UserWanderlistsLoaded) {
       var c = state as UserWanderlistsLoaded;
 
-      var wanderlists = List<UserWanderlist>.from(c.wanderlists);
+      var l = List<UserWanderlist>.from(c.wanderlists);
 
       if (oldIndex < newIndex) {
         newIndex -= 1;
       }
-      final UserWanderlist item = wanderlists.removeAt(oldIndex);
-      wanderlists.insert(newIndex, item);
-      emit(UserWanderlistsLoaded(wanderlists));
+
+      final UserWanderlist elem = l.removeAt(oldIndex);
+      l.insert(newIndex, elem);
+
+      userRepository.updateUserWanderlists(l);
+
+      emit(UserWanderlistsLoaded(l));
     }
     emit(state);
   }

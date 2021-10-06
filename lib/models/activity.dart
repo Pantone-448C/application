@@ -1,21 +1,40 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 @immutable
 class ActivityDetails extends Equatable {
   ActivityDetails(this.id, this.name, this.about, this.thumbUrl, this.imageUrl,
       this.address, this.points);
 
-  factory ActivityDetails.fromJson(Map<String, dynamic> json) =>
-      ActivityDetails(
-        json["doc_id"],
-        json['name'],
-        json['about'],
-        json['thumb_url'],
-        json['image_url'],
-        json['address'],
-        json['points'],
-      );
+  factory ActivityDetails.fromJson(Map<String, dynamic> json) {
+    var a = ActivityDetails(
+      json["doc_id"],
+      json['name'],
+      json['about'],
+      json['thumb_url'],
+      json['image_url'],
+      json['address'],
+      json['points'],
+    );
+
+    if (json.containsKey("location")) {
+      if (json["location"] is GeoPoint) {
+        // is GeoPoint from firebase
+        a.location = LatLng(json["location"].latitude, json["location"].longitude);
+      }
+      else if (json["location"].containsKey("type")) {
+        // is GeoJSON from mongo db
+        a.location = LatLng(json['location']["coordinates"][1],
+            json["location"]['coordinates'][0]);
+      } else {
+        throw Exception(["Activity with invalid location"]);
+      }
+    }
+
+    return a;
+  }
 
   final String id;
   final String name;
@@ -24,10 +43,12 @@ class ActivityDetails extends Equatable {
   final String imageUrl;
   final String address;
   final int points;
+  late final LatLng location;
 
   @override
   List<Object?> get props =>
       [id, name, about, thumbUrl, imageUrl, address, points];
+
 
   Map<String, dynamic> toJson() {
     return {

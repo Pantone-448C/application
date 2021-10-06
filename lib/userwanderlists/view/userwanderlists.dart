@@ -24,8 +24,7 @@ class UserWanderlists extends StatelessWidget {
     return BlocProvider(
       create: (context) => UserWanderlistsCubit(
         UserRepository(),
-        WanderlistRepository(),
-      ),
+        WanderlistRepository()),
       child: _UserWanderlistsContainer(),
     );
   }
@@ -34,15 +33,12 @@ class UserWanderlists extends StatelessWidget {
 class _UserWanderlistsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserWanderlistsCubit, UserWanderlistsState>(
-      listener: (context, state) {},
+    return BlocBuilder<UserWanderlistsCubit, UserWanderlistsState>(
+      buildWhen: (p, s) => p != s,
       builder: (context, state) {
         if (state is UserWanderlistsLoaded) {
-          return Column(
-            children: [
-              _WanderlistsView(),
-              _CreateWanderlistButton(),
-            ],
+          return _WanderlistsView(wanderlists: state.wanderlists,
+            cubloc: BlocProvider.of<UserWanderlistsCubit>(context),
           );
         } else {
           return Center(child: CircularProgressIndicator());
@@ -53,31 +49,47 @@ class _UserWanderlistsContainer extends StatelessWidget {
 }
 
 class _WanderlistsView extends StatelessWidget {
+  final wanderlists;
+  final cubloc;
+
+  const _WanderlistsView({Key? key, this.wanderlists, this.cubloc}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserWanderlistsCubit, UserWanderlistsState>(
-      builder: (context, state) {
-        if (state is UserWanderlistsLoaded) {
-          print(state.wanderlists);
-          return ListOfWanderlists(
-            readOnly: false,
-            wanderlists: List.of(state.wanderlists
-                .map((userwanderlist) => userwanderlist.wanderlist)),
-            onReorder: (int original, int next) {
-              context.read<UserWanderlistsCubit>().swap(original, next);
-            },
-            onWanderlistTap: (Wanderlist wanderlist) => Navigator.push(
-              context,
-              MaterialPageRoute<void>(
-                builder: (context) => WanderlistPage(wanderlist),
-              ),
-            ),
-          );
-        } else {
-          return Container();
-        }
-      },
-    );
+      return Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) => NewWanderlistDialog(cubloc));
+        },
+          backgroundColor: WanTheme.colors.pink,
+          foregroundColor: WanTheme.colors.white,
+          child: const Icon(Icons.add),
+        ),
+        body:BlocBuilder<UserWanderlistsCubit, UserWanderlistsState>(
+          builder: (context, state) {
+            if (state is UserWanderlistsLoaded) {
+              print(state.wanderlists);
+              return ListOfWanderlists(
+                readOnly: false,
+                wanderlists: List.of(state.wanderlists
+                    .map((userwanderlist) => userwanderlist.wanderlist)),
+                onReorder: (int original, int next) {
+                  context.read<UserWanderlistsCubit>().swap(original, next);
+                },
+                onWanderlistTap: (Wanderlist wanderlist) => Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => WanderlistPage(wanderlist),
+                  ),
+                ),
+              );
+            } else {
+              return Container();
+            }
+          },
+        )
+      );
   }
 }
 

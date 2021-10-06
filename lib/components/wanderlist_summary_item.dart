@@ -36,7 +36,6 @@ class GetListSummary extends StatelessWidget {
               numTotalItems: data['activities'].length,
               numCompletedItems: data['numComplete'],
               imageUrl: data['icon']);
-          return Text("Full Name: ${data['full_name']} ${data['last_name']}");
         }
 
         return Text("loading");

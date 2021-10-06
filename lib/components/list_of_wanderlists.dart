@@ -39,7 +39,7 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
       // search bar
       padding: EdgeInsets.symmetric(
           horizontal: WanTheme.CARD_PADDING,
-          vertical: 2 * WanTheme.CARD_PADDING),
+          vertical: MediaQuery.of(context).padding.top + WanTheme.CARD_PADDING),
       child: TextField(
         keyboardType: TextInputType.text,
         onChanged: (value) => filterSearch(value),
@@ -56,7 +56,7 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
         shrinkWrap: true,
         primary: true,
         padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-        physics: ClampingScrollPhysics(),
+        physics: WanTheme.scrollPhysics,
         children: [
           searchBar,
           for (int index = 0; index < displayedWanderlists.length; index++)
@@ -74,7 +74,7 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
         shrinkWrap: true,
         primary: true,
         padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-        physics: ClampingScrollPhysics(),
+        physics: WanTheme.scrollPhysics,
         onReorder: widget.onReorder ?? (_, __) {},
         children: [
           for (int index = 0; index < displayedWanderlists.length; index++)
