@@ -1,6 +1,6 @@
 import 'package:application/apptheme.dart';
-import 'package:application/home/cubit/trip_cubit.dart';
-import 'package:application/home/widgets/trip_info.dart';
+import 'package:application/home/cubit/user_cubit.dart';
+import 'package:application/home/widgets/reward_info.dart';
 import 'package:application/home/widgets/wanderlists_list_view.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/sizeconfig.dart';
@@ -23,28 +23,25 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TripCubit(UserRepository()),
-      child: BlocConsumer<TripCubit, TripState>(
+      create: (context) => UserCubit(UserRepository()),
+      child: BlocConsumer<UserCubit, UserState>(
         listener: (context, state) {},
         builder: (context, state) {
-          if (state is TripInitial) {
+          if (state is UserInitial) {
             return Text("Error!");
-          } else if (state is TripLoading) {
+          } else if (state is UserLoading) {
             return Container(
               alignment: Alignment.center,
               child: CircularProgressIndicator(),
             );
-          } else if (state is TripLoaded) {
+          } else if (state is UserLoaded) {
             return RefreshIndicator(
-              onRefresh: () => context.read<TripCubit>().getTripInfo(),
+              onRefresh: () => context.read<UserCubit>().getTripInfo(),
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
                   ListView(),
-                  _emptyOrFilledHomePage(
-                    state.numWanderlists,
-                    gotoWanderlistsPage,
-                  ),
+                  _FilledHomePage(),
                 ],
               ),
             );
@@ -112,54 +109,22 @@ class _FilledHomePage extends StatelessWidget {
     double tripInfoHeight = 130;
     double wanderlistHeight = height - tripInfoHeight;
 
-    return BlocConsumer<TripCubit, TripState>(
+    return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {},
       builder: (context, state) {
         return
         ListView(children: <Widget>[
             Container (
               height: SizeConfig(context).h,
-          padding: EdgeInsets.only(left: WanTheme.CARD_PADDING,
-              right: WanTheme.CARD_PADDING),
             child: Column(
           children: [
             Container(
-              padding: EdgeInsets.only(top: 50),
-              child: _HelloMessage(),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 30, bottom: 15),
               child: _TripInfo(width, tripInfoHeight),
-            ),
-            Container(
-              child: _NextRewardsInfo(),
-            ),
-            Container(
-              child: _Wanderlists(width, wanderlistHeight),
             ),
           ],
         ))]);
       },
     );
-  }
-}
-
-class _HelloMessage extends StatelessWidget {
-  final String name = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<TripCubit, TripState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is TripLoaded) {
-            return Text(
-              "Hello, " + state.firstName,
-            );
-          } else {
-            return Container();
-          }
-        });
   }
 }
 
@@ -171,34 +136,19 @@ class _TripInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TripCubit, TripState>(
+    return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {},
       builder: (context, state) {
-        if (state is TripInitial) {
+        if (state is UserInitial) {
           return CircularProgressIndicator();
-        } else if (state is TripLoading) {
+        } else if (state is UserLoading) {
           return CircularProgressIndicator();
-        } else if (state is TripLoaded) {
+        } else if (state is UserLoaded) {
           return Container(
-              child: TripInfo(width, height, state.name, state.numWanderlists,
-                  state.percentageComplete, state.points));
+              child: RewardInfo(width, height, 442, 558, 1000, 442 / 1000));
         }
 
         return Container(child: Text("Error!"));
-      },
-    );
-  }
-}
-
-class _NextRewardsInfo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<TripCubit, TripState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        return Container(
-            // TODO: Implement _NextRewardsInfo widgets
-            );
       },
     );
   }
@@ -212,21 +162,21 @@ class _Wanderlists extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TripCubit, TripState>(
+    return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {},
       builder: (context, state) {
-        if (state is TripInitial) {
+        if (state is UserInitial) {
           return CircularProgressIndicator();
-        } else if (state is TripLoading) {
+        } else if (state is UserLoading) {
           return CircularProgressIndicator();
-        } else if (state is TripLoaded) {
+        } else if (state is UserLoaded) {
           return Container(
               child: Column(children: [
             Container(
                 width: width,
                 alignment: Alignment.centerLeft,
                 child: Text("Wanderlists", style: TextStyle(fontSize: 24))),
-            WanderlistsListView(width, height, state.wanderlists)
+            //WanderlistsListView(width, height, state.wanderlists)
           ]));
         }
 
