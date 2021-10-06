@@ -5,6 +5,8 @@ import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import "add_to.dart";
+
 const _buttonSize = 40.0;
 const _sectionSize1 = 75.0;
 const _sectionSize2 = 125.0;
@@ -92,6 +94,7 @@ class _Title extends StatelessWidget {
                 child: Row(
                   children: [
                     Expanded(child: _Details(), flex: 70),
+                    Expanded(child: FlagButton(), flex: 15),
                     Expanded(child: LocationButton(), flex: 15),
                   ],
                 ),
@@ -103,40 +106,37 @@ class _Title extends StatelessWidget {
 class _Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ActivityCubit, ActivityState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is ActivityLoaded) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-                    child: Text(
-                      state.name,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    )),
-                Container(
-                    padding: EdgeInsets.only(
-                        left: WanTheme.CARD_PADDING,
-                        bottom: WanTheme.CARD_PADDING),
-                    child: Text(
-                      state.address,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ))
-              ],
-            );
-          } else {
-            return Container();
-          }
-        });
+    return BlocBuilder<ActivityCubit, ActivityState>(builder: (context, state) {
+      if (state is ActivityLoaded) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+                child: Text(
+                  state.name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                )),
+            Container(
+                padding: EdgeInsets.only(
+                    left: WanTheme.CARD_PADDING, bottom: WanTheme.CARD_PADDING),
+                child: Text(
+                  state.address,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ))
+          ],
+        );
+      } else {
+        return Container();
+      }
+    });
   }
 }
 
@@ -189,6 +189,7 @@ class _PointsTooltip extends StatelessWidget {
 class FlagButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String activityId = context.read<ActivityCubit>().id;
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
@@ -197,8 +198,15 @@ class FlagButton extends StatelessWidget {
           height: _buttonSize,
           color: WanTheme.colors.orange,
           child: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.outlined_flag_rounded),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddActivityPage(activityId),
+                ),
+              );
+            },
+            icon: Icon(Icons.add_rounded),
             color: WanTheme.colors.white,
           ),
         ),

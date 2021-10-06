@@ -1,7 +1,7 @@
 import 'package:application/apptheme.dart';
 import 'package:application/components/activity_summary_item_small.dart';
 import 'package:application/models/activity.dart';
-import 'package:application/models/user_wanderlist.dart';
+import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/wanderlist/cubit/wanderlist_cubit.dart';
 import 'package:application/wanderlist/cubit/wanderlist_state.dart';
@@ -10,12 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ViewWanderlistPage extends StatelessWidget {
-  ViewWanderlistPage(this.userWanderlist);
+  ViewWanderlistPage(this.wanderlist);
 
-  final UserWanderlist userWanderlist;
+  final Wanderlist wanderlist;
 
   _onEditPress(BuildContext context) {
-    context.read<WanderlistCubit>().startEdit(userWanderlist);
+    context.read<WanderlistCubit>().startEdit(wanderlist);
   }
 
   _onBackPress(BuildContext context) {
@@ -30,10 +30,9 @@ class ViewWanderlistPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _TopRow(userWanderlist.wanderlist.name, _onEditPress),
+            _TopRow(wanderlist.name, _onEditPress),
             Padding(padding: EdgeInsets.only(top: 10)),
-            _UneditableActivityList(userWanderlist.wanderlist.activities,
-                userWanderlist.completedActivities),
+            _UneditableActivityList(wanderlist.activities),
           ],
         ),
       ),
@@ -109,10 +108,9 @@ class _TopRow extends StatelessWidget {
 }
 
 class _UneditableActivityList extends StatelessWidget {
-  _UneditableActivityList(this.activities, this.completedActivities);
+  _UneditableActivityList(this.activities);
 
   final List<ActivityDetails> activities;
-  final List<ActivityDetails> completedActivities;
 
   @override
   Widget build(BuildContext context) {

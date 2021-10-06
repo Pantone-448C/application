@@ -34,9 +34,13 @@ class DetailedWanderlistSummary extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(CORNER_RADIUS))),
       child: Column(
         children: [
-          GestureDetector(onTap: () => Navigator.push(context,
-              MaterialPageRoute<void>(builder: (context) => WanderlistPage(userWanderlist))),
-            child: _TopSummary(this.width, 60, name, total, completed)),
+          GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                      builder: (context) =>
+                          WanderlistPage(userWanderlist.wanderlist))),
+              child: _TopSummary(this.width, 60, name, total, completed)),
           Divider(color: Colors.grey),
           _Activity(this.width, 70, nextActivity),
           _NMoreItems(total - 1),
