@@ -8,28 +8,26 @@ import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'trip_state.dart';
+part 'user_state.dart';
 
-class TripCubit extends Cubit<TripState> {
-  TripCubit(this.userRepository) : super(TripInitial()) {
-    emit(TripInitial());
+class UserCubit extends Cubit<UserState> {
+  UserCubit(this.userRepository) : super(UserInitial()) {
+    emit(UserInitial());
     getTripInfo();
   }
 
   final IUserRepository userRepository;
 
   Future<void> getTripInfo() async {
-    emit(TripLoading());
+    emit(UserLoading());
     UserDetails user = await userRepository.getUserData();
-    List<UserWanderlist> wanderlists =
+    List<UserWanderlist> userWanderlists =
         (await userRepository.getActiveWanderlists()).toList();
+    List<Wanderlist> wanderlists = userWanderlists
+        .map((userWanderlist) => userWanderlist.wanderlist)
+        .toList();
 
-    int numWanderlists = wanderlists.length;
-    int percentageComplete = calculatePercentageComplete(wanderlists);
-    int totalPoints = calculateTotalPoints(wanderlists);
-
-    emit(TripLoaded("Brisbane", numWanderlists, percentageComplete, totalPoints,
-        wanderlists.toList(), user.firstName));
+    emit(UserLoaded(442, 1000 - 442, 1000, 442 / 1000, wanderlists));
   }
 
   int calculatePercentageComplete(List<UserWanderlist> wanderlists) {

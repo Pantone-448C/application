@@ -1,6 +1,8 @@
+import 'package:application/components/list_of_wanderlists.dart';
 import 'package:application/components/searchfield.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/user_wanderlist.dart';
+import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
@@ -64,62 +66,30 @@ class _WanderlistsView extends StatelessWidget {
           foregroundColor: WanTheme.colors.white,
           child: const Icon(Icons.add),
         ),
-        body: ReorderableListView(
-            header: Padding(
-              // search bar
-              padding: EdgeInsets.only(left: WanTheme.CARD_PADDING, right: WanTheme.CARD_PADDING,
-                  top: MediaQuery.of(context).padding.top + 2 * WanTheme.CARD_PADDING, bottom: 2 * WanTheme.CARD_PADDING),
-              child: TextField(
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {
-                    context.read<UserWanderlistsCubit>().filter_search(value);
-                  },
-                  decoration: SearchField.defaultDecoration.copyWith(
-                    hintText: "Search Your Wanderlists",
-                  )
-              ),
-            ),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(WanTheme.CARD_PADDING),
-            physics: WanTheme.scrollPhysics,
-            onReorder: (int o, int n) {
-              BlocProvider.of<UserWanderlistsCubit>(context).swap(o, n);
-            },
-            children: [
-              for (int index = 0; index < wanderlists.length; index++)
-                _TappableWanderlistCard(
-                    Key('$index'), wanderlists[index])
-            ]));
-  }
-}
-
-class _TappableWanderlistCard extends StatelessWidget {
-  _TappableWanderlistCard(this.key, this.userWanderlist);
-
-  final Key key;
-  final UserWanderlist userWanderlist;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute<void>(
-          builder: (context) => WanderlistPage(userWanderlist),
-        ),
-      ),
-      child: Container(
-          margin: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
-          key: ValueKey(userWanderlist.wanderlist.hashCode),
-          child: WanderlistSummaryItem(
-            imageUrl: userWanderlist.wanderlist.icon,
-            authorName: userWanderlist.wanderlist.creatorName,
-            listName: userWanderlist.wanderlist.name,
-            numCompletedItems: userWanderlist.completedActivities.length,
-            numTotalItems: userWanderlist.wanderlist.activities.length,
-          )),
-    );
+        body:BlocBuilder<UserWanderlistsCubit, UserWanderlistsState>(
+          builder: (context, state) {
+            if (state is UserWanderlistsLoaded) {
+              print(state.wanderlists);
+              return ListOfWanderlists(
+                readOnly: false,
+                wanderlists: List.of(state.wanderlists
+                    .map((userwanderlist) => userwanderlist.wanderlist)),
+                onReorder: (int original, int next) {
+                  context.read<UserWanderlistsCubit>().swap(original, next);
+                },
+                onWanderlistTap: (Wanderlist wanderlist) => Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (context) => WanderlistPage(wanderlist),
+                  ),
+                ),
+              );
+            } else {
+              return Container();
+            }
+          },
+        )
+      );
   }
 }
 
