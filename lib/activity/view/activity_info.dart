@@ -1,10 +1,6 @@
 import 'package:application/activity/cubit/activity_cubit.dart';
 import 'package:application/apptheme.dart';
-import 'package:application/components/list_of_wanderlists.dart';
-import 'package:application/models/activity.dart';
-import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
-import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -210,7 +206,7 @@ class FlagButton extends StatelessWidget {
                 ),
               );
             },
-            icon: Icon(Icons.outlined_flag_rounded),
+            icon: Icon(Icons.add_rounded),
             color: WanTheme.colors.white,
           ),
         ),
@@ -230,7 +226,7 @@ class LocationButton extends StatelessWidget {
           height: _buttonSize,
           color: WanTheme.colors.pink,
           child: IconButton(
-            onPressed: () {},
+            onPressed: () => context.read<ActivityCubit>().launchMaps(),
             icon: Icon(Icons.place_rounded),
             color: WanTheme.colors.white,
           ),
