@@ -13,15 +13,25 @@ class UserLoading implements UserState {
 }
 
 class UserLoaded extends Equatable implements UserState {
-  const UserLoaded(this.points, this.pointsUntilReward,
-      this.nextRewardTotalPoints, this.percentageUntilReward);
+  const UserLoaded(
+      this.points,
+      this.pointsUntilReward,
+      this.nextRewardTotalPoints,
+      this.percentageUntilReward,
+      this.pinnedWanderlists);
 
   final int points;
   final int pointsUntilReward;
   final int nextRewardTotalPoints;
   final double percentageUntilReward;
+  final List<Wanderlist> pinnedWanderlists;
 
   @override
-  List<Object?> get props =>
-      [points, pointsUntilReward, nextRewardTotalPoints, percentageUntilReward];
+  List<Object?> get props => [
+        points,
+        pointsUntilReward,
+        nextRewardTotalPoints,
+        percentageUntilReward,
+        pinnedWanderlists,
+      ];
 }

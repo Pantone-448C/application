@@ -58,6 +58,7 @@ Color tintColor(Color color, double factor) => Color.fromRGBO(
 class WanTheme {
   static const double CARD_CORNER_RADIUS = 15.0;
   static const double THUMB_CORNER_RADIUS = 5.0;
+  static const double BUTTON_CORNER_RADIUS = 10.0;
   static const double BORDER_RADIUS = 15.0;
   static const double PAGE_MARGIN = 20;
   static const double CARD_PADDING = 8;
