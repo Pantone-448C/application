@@ -48,13 +48,16 @@ class SearchRepository implements ISearchRepository {
 
   @override
   Future<List<ActivityDetails>> getQuery(String query) async {
-    final response = await http.get(Uri(
-      scheme: API_SCHEME,
-      host: API_HOST,
-      path: API_BASE_PATH + "/search",
-      port: API_PORT,
-      queryParameters: {"query": query},
-    ), headers: _getToken());
+    final response = await http.get(
+      Uri(
+        scheme: API_SCHEME,
+        host: API_HOST,
+        path: API_BASE_PATH + "/search",
+        port: API_PORT,
+        queryParameters: {"query": query},
+      ),
+      headers: await _getToken(),
+    );
 
     if (response.statusCode == 200) {
       return _responseToActivityList(response.body);
