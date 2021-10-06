@@ -36,8 +36,8 @@ dependencies:
   cached_network_image: ^3.1.0
   qr_code_scanner: ^0.5.2
   sliding_up_panel: ^2.0.0+1
-  # Load our fork of this library because the original maintainer has
-  # terrible UI taste
+  map_launcher: ^2.1.1
+  geocoding: ^2.0.1
   gradient_widgets:
     git:
       url: git://github.com/Pantone-448C/Gradient-Widgets.git
