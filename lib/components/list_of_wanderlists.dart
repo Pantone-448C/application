@@ -74,7 +74,7 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
         shrinkWrap: true,
         primary: true,
         padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-        physics: ClampingScrollPhysics(),
+        physics: WanTheme.scrollPhysics,
         onReorder: widget.onReorder ?? (_, __) {},
         children: [
           for (int index = 0; index < displayedWanderlists.length; index++)

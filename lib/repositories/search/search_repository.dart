@@ -37,7 +37,7 @@ class SearchRepository implements ISearchRepository {
       port: API_PORT,
       queryParameters: {"lat": lat.toString(), "lon": lon.toString(), "range": range.toString()});
 
-    final response = await http.get(uri, headers: _getToken());
+    final response = await http.get(uri, headers: await _getToken());
 
     if (response.statusCode == 200) {
       return _responseToActivityList(response.body);
