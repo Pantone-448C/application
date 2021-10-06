@@ -24,7 +24,7 @@ class Loading implements WanderlistState {
 class Viewing implements WanderlistState {
   Viewing(this.wanderlist);
 
-  final UserWanderlist wanderlist;
+  final Wanderlist wanderlist;
 
   @override
   List<Object?> get props => [wanderlist];
@@ -36,8 +36,8 @@ class Viewing implements WanderlistState {
 class Editing implements WanderlistState {
   Editing(this.wanderlist, this.original);
 
-  final UserWanderlist wanderlist;
-  final UserWanderlist original;
+  final Wanderlist wanderlist;
+  final Wanderlist original;
 
   @override
   List<Object?> get props => [wanderlist, original];

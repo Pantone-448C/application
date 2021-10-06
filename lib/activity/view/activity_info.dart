@@ -5,6 +5,8 @@ import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import "add_to.dart";
+
 const _buttonSize = 40.0;
 const _sectionSize1 = 75.0;
 const _sectionSize2 = 125.0;
@@ -23,7 +25,7 @@ class ActivityInfo extends StatelessWidget {
         body: ListView(
           children: [
             LocationImage(),
-            Column (
+            Column(
               children: [
                 _Title(),
                 _PointsTooltip(),
@@ -79,62 +81,62 @@ class LocationImage extends StatelessWidget {
 class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container (
-      color: WanColors().bgOrange,
-        child: ClipRRect (
-      borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
-        bottomRight: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
-      ),
-      child: Stack (children: <Widget> [
-        Container(
-        color: Colors.white,
-        child: Row(
-          children: [
-            Expanded(child: _Details(), flex: 70),
-            Expanded(child: LocationButton(), flex: 15),
-          ],
-        ),
-      ),
-     ])));
+    return Container(
+        color: WanColors().bgOrange,
+        child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
+              bottomRight: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
+            ),
+            child: Stack(children: <Widget>[
+              Container(
+                color: Colors.white,
+                child: Row(
+                  children: [
+                    Expanded(child: _Details(), flex: 70),
+                    Expanded(child: FlagButton(), flex: 15),
+                    Expanded(child: LocationButton(), flex: 15),
+                  ],
+                ),
+              ),
+            ])));
   }
 }
 
 class _Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ActivityCubit, ActivityState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          if (state is ActivityLoaded) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container (
-                  padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-                  child: Text(
-                    state.name,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.black,
-                    ),
+    return BlocBuilder<ActivityCubit, ActivityState>(builder: (context, state) {
+      if (state is ActivityLoaded) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+                child: Text(
+                  state.name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
                 )),
-                Container (
-                  padding: EdgeInsets.only(left: WanTheme.CARD_PADDING, bottom: WanTheme.CARD_PADDING),
-                    child: Text(
+            Container(
+                padding: EdgeInsets.only(
+                    left: WanTheme.CARD_PADDING, bottom: WanTheme.CARD_PADDING),
+                child: Text(
                   state.address,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ))
-              ],
-            );
-          } else {
-            return Container();
-          }
-        });
+          ],
+        );
+      } else {
+        return Container();
+      }
+    });
   }
 }
 
@@ -187,6 +189,7 @@ class _PointsTooltip extends StatelessWidget {
 class FlagButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String activityId = context.read<ActivityCubit>().id;
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
@@ -195,8 +198,15 @@ class FlagButton extends StatelessWidget {
           height: _buttonSize,
           color: WanTheme.colors.orange,
           child: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.outlined_flag_rounded),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddActivityPage(activityId),
+                ),
+              );
+            },
+            icon: Icon(Icons.add_rounded),
             color: WanTheme.colors.white,
           ),
         ),
@@ -216,7 +226,7 @@ class LocationButton extends StatelessWidget {
           height: _buttonSize,
           color: WanTheme.colors.pink,
           child: IconButton(
-            onPressed: () {},
+            onPressed: () => context.read<ActivityCubit>().launchMaps(),
             icon: Icon(Icons.place_rounded),
             color: WanTheme.colors.white,
           ),

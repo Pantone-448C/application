@@ -1,6 +1,8 @@
+import 'package:application/components/list_of_wanderlists.dart';
 import 'package:application/components/searchfield.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/user_wanderlist.dart';
+import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
@@ -53,71 +55,28 @@ class _UserWanderlistsContainer extends StatelessWidget {
 class _WanderlistsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserWanderlistsCubit, UserWanderlistsState>(
-      listener: (context, state) {},
+    return BlocBuilder<UserWanderlistsCubit, UserWanderlistsState>(
       builder: (context, state) {
         if (state is UserWanderlistsLoaded) {
-          return ReorderableListView(
-              header: Padding(
-                // search bar
-                padding: EdgeInsets.symmetric(horizontal: WanTheme.CARD_PADDING,
-                    vertical: 2 * WanTheme.CARD_PADDING),
-                child: TextField(
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {
-                    context.read<UserWanderlistsCubit>().filter_search(value);
-                  },
-                  decoration: SearchField.defaultDecoration.copyWith(
-                    hintText: "Search Your Wanderlists",
-                  )
-                ),
+          print(state.wanderlists);
+          return ListOfWanderlists(
+            readOnly: false,
+            wanderlists: List.of(state.wanderlists
+                .map((userwanderlist) => userwanderlist.wanderlist)),
+            onReorder: (int original, int next) {
+              context.read<UserWanderlistsCubit>().swap(original, next);
+            },
+            onWanderlistTap: (Wanderlist wanderlist) => Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => WanderlistPage(wanderlist),
               ),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              primary: true,
-              padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-              physics: ClampingScrollPhysics(),
-              onReorder: (int o, int n) {
-                context.read<UserWanderlistsCubit>().swap(o, n);
-              },
-              children: [
-                for (int index = 0; index < state.wanderlists.length; index++)
-                  _TappableWanderlistCard(
-                      Key('$index'), state.wanderlists[index])
-              ]);
+            ),
+          );
         } else {
           return Container();
         }
       },
-    );
-  }
-}
-
-class _TappableWanderlistCard extends StatelessWidget {
-  _TappableWanderlistCard(this.key, this.userWanderlist);
-
-  final Key key;
-  final UserWanderlist userWanderlist;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute<void>(
-          builder: (context) => WanderlistPage(userWanderlist),
-        ),
-      ),
-      child: Container(
-          margin: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
-          key: ValueKey(userWanderlist.wanderlist.hashCode),
-          child: WanderlistSummaryItem(
-            imageUrl: userWanderlist.wanderlist.icon,
-            authorName: userWanderlist.wanderlist.creatorName,
-            listName: userWanderlist.wanderlist.name,
-            numCompletedItems: userWanderlist.completedActivities.length,
-            numTotalItems: userWanderlist.wanderlist.activities.length,
-          )),
     );
   }
 }
