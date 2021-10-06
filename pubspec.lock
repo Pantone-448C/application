@@ -296,6 +296,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  gradient_widgets:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "6aa9aece0e5b79ef3424fe9bce3b0be5cda89f41"
+      url: "git://github.com/Pantone-448C/Gradient-Widgets.git"
+    source: git
+    version: "0.6.0"
   http:
     dependency: transitive
     description:
