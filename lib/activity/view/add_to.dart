@@ -32,11 +32,10 @@ class AddActivityPage extends StatelessWidget {
               body: ListOfWanderlists(
                 wanderlists: state.wanderlists,
                 readOnly: true,
-                onWanderlistTap: (Wanderlist wanderlist) {
+                onWanderlistTap: (UserWanderlist wanderlist) {
                   context
                       .read<ActivityAddCubit>()
-                      .addActivityToWanderlist(wanderlist);
-
+                      .addActivityToWanderlist(wanderlist.wanderlist);
                   Navigator.pop(context);
                 },
               ),

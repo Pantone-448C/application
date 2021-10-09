@@ -38,8 +38,7 @@ class DetailedWanderlistSummary extends StatelessWidget {
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute<void>(
-                      builder: (context) =>
-                          WanderlistPage(userWanderlist.wanderlist))),
+                      builder: (context) => WanderlistPage(userWanderlist))),
               child: _TopSummary(this.width, 60, name, total, completed)),
           Divider(color: Colors.grey),
           _Activity(this.width, 70, nextActivity),

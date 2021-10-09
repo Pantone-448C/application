@@ -12,23 +12,25 @@ class ListOfWanderlists extends StatefulWidget {
     required this.wanderlists,
     this.readOnly = false,
     this.onReorder,
+    this.onPinTap,
   }) : super(key: key);
-  final void Function(Wanderlist) onWanderlistTap;
+  final void Function(UserWanderlist) onWanderlistTap;
   final void Function(int, int)? onReorder;
+  final void Function(UserWanderlist)? onPinTap;
   final readOnly;
-  final List<Wanderlist> wanderlists;
+  final List<UserWanderlist> wanderlists;
 
   @override
   _ListOfWanderlistsState createState() => _ListOfWanderlistsState();
 }
 
 class _ListOfWanderlistsState extends State<ListOfWanderlists> {
-  List<Wanderlist> matchedWanderlists = [];
+  List<UserWanderlist> matchedWanderlists = [];
   bool searching = false;
 
   @override
   Widget build(BuildContext context) {
-    List<Wanderlist> displayedWanderlists;
+    List<UserWanderlist> displayedWanderlists;
     if (searching) {
       displayedWanderlists = matchedWanderlists;
     } else {
@@ -82,6 +84,7 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
               key: Key('$index'),
               wanderlist: displayedWanderlists[index],
               onWanderlistTap: widget.onWanderlistTap,
+              onPinTap: widget.onPinTap,
             )
         ],
       );
@@ -98,15 +101,16 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
         searching = true;
       });
     }
-    List<Wanderlist> matches = [];
+    List<UserWanderlist> matches = [];
     List<String> words = query.split(" ");
     Set<int> added = Set<int>();
     for (var word in words) {
-      for (var list in widget.wanderlists) {
-        if (!added.contains(list)) {
-          if (list.name.contains(word) || list.creatorName.contains(word)) {
-            added.add(list.hashCode);
-            matches.add(list);
+      for (var wanderlist in widget.wanderlists) {
+        Wanderlist wlist = wanderlist.wanderlist;
+        if (!added.contains(wlist)) {
+          if (wlist.name.contains(word) || wlist.creatorName.contains(word)) {
+            added.add(wlist.hashCode);
+            matches.add(wanderlist);
           }
         }
       }
@@ -122,14 +126,17 @@ class _TappableWanderlistCard extends StatelessWidget {
     required this.key,
     required this.wanderlist,
     required this.onWanderlistTap,
+    this.onPinTap,
   });
 
   final Key key;
-  final Wanderlist wanderlist;
-  final void Function(Wanderlist) onWanderlistTap;
+  final UserWanderlist wanderlist;
+  final void Function(UserWanderlist) onWanderlistTap;
+  final void Function(UserWanderlist)? onPinTap;
 
   @override
   Widget build(BuildContext context) {
+    Wanderlist wlist = wanderlist.wanderlist;
     return Container(
       margin: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
       key: ValueKey(wanderlist.hashCode),
@@ -139,11 +146,15 @@ class _TappableWanderlistCard extends StatelessWidget {
         ),
         onTap: () => onWanderlistTap(wanderlist),
         child: WanderlistSummaryItem(
-          imageUrl: wanderlist.icon,
-          authorName: wanderlist.creatorName,
-          listName: wanderlist.name,
+          isPinned: wanderlist.inTrip,
+          onPinTap: () {
+            onPinTap?.call(wanderlist);
+          },
+          imageUrl: wlist.icon,
+          authorName: wlist.creatorName,
+          listName: wlist.name,
           numCompletedItems: 0,
-          numTotalItems: wanderlist.activities.length,
+          numTotalItems: wlist.activities.length,
         ),
       ),
     );

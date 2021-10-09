@@ -1,6 +1,9 @@
+import 'package:application/models/user_wanderlist.dart';
+import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../apptheme.dart';
 
@@ -53,6 +56,10 @@ class WanderlistSummaryItem extends StatelessWidget {
   final int numTotalItems;
   final int numCompletedItems;
   final String imageUrl;
+  final bool isPinned;
+
+  /// Null to not show the pin button
+  final void Function()? onPinTap;
 
   WanderlistSummaryItem({
     Key? key,
@@ -63,10 +70,28 @@ class WanderlistSummaryItem extends StatelessWidget {
     this.numTotalItems = 0,
     this.numCompletedItems = 0,
     this.imageUrl = "",
+    this.isPinned = false,
+    this.onPinTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    int imageFlex, textFlex, pinFlex;
+    if (onPinTap != null) {
+      imageFlex = 17;
+      textFlex = 59;
+      pinFlex = 20;
+    } else {
+      imageFlex = 17;
+      textFlex = 79;
+      pinFlex = 0;
+    }
+    var icon;
+    if (isPinned == true) {
+      icon = Icon(Icons.push_pin_rounded);
+    } else if (isPinned == false) {
+      icon = Icon(Icons.push_pin_outlined);
+    }
     return Ink(
       height: this.height,
       width: this.width,
@@ -83,12 +108,12 @@ class WanderlistSummaryItem extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(
-            flex: 17,
+            flex: imageFlex,
             child: _ImageComponent(this.width, this.height, this.imageUrl),
           ),
           Spacer(flex: 4),
           Expanded(
-            flex: 79,
+            flex: textFlex,
             child: _TextComponent(
               this.listName,
               this.authorName,
@@ -96,6 +121,16 @@ class WanderlistSummaryItem extends StatelessWidget {
               this.numCompletedItems,
             ),
           ),
+          if (onPinTap != null)
+            Expanded(
+              flex: pinFlex,
+              child: IconButton(
+                icon: icon,
+                onPressed: () {
+                  onPinTap?.call();
+                },
+              ),
+            )
         ],
       ),
     );
