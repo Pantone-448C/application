@@ -14,34 +14,33 @@ class UserWanderlistsInitial implements UserWanderlistsState {
   const UserWanderlistsInitial();
 }
 
-class UserWanderlistsSearch extends UserWanderlistsLoaded implements UserWanderlistsState {
+class UserWanderlistsSearch extends UserWanderlistsLoaded
+    implements UserWanderlistsState {
   final List<UserWanderlist> original_wanderlists;
 
-  const UserWanderlistsSearch(this.original_wanderlists, List<UserWanderlist> orig) : super(orig);
+  const UserWanderlistsSearch(
+      this.original_wanderlists, List<UserWanderlist> orig)
+      : super(orig);
 
   @override
   List<Object?> get props => [original_wanderlists, wanderlists];
 
-  UserWanderlistsSearch copyWith ({List<UserWanderlist> ? wanderlists,List<UserWanderlist> ? original_wanderlists}) {
+  UserWanderlistsSearch copyWith(
+      {List<UserWanderlist>? wanderlists,
+      List<UserWanderlist>? original_wanderlists}) {
     return UserWanderlistsSearch(wanderlists ?? this.wanderlists,
-        original_wanderlists ?? this.original_wanderlists
-    );
+        original_wanderlists ?? this.original_wanderlists);
   }
 }
 
-
-class UserWanderlistsLoaded extends Equatable implements UserWanderlistsState {
+class UserWanderlistsLoaded implements UserWanderlistsState {
   final List<UserWanderlist> wanderlists;
 
   const UserWanderlistsLoaded(this.wanderlists);
 
-  @override
-  List<Object?> get props => [wanderlists];
-
-  UserWanderlistsLoaded copyWith ({List<UserWanderlist> ? wanderlists}) {
+  UserWanderlistsLoaded copyWith({List<UserWanderlist>? wanderlists}) {
     return UserWanderlistsLoaded(wanderlists ?? this.wanderlists);
   }
 }
 
 class UserWanderlistsCreating implements UserWanderlistsState {}
-

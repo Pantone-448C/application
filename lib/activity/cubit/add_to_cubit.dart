@@ -26,9 +26,7 @@ class ActivityAddCubit extends Cubit<ActivityAddState> {
 
   Future<void> loadActivityAdd() async {
     var userWanderlists = (await userRepository.getUserWanderlists());
-    var wanderlists =
-        userWanderlists.map((userWanderlist) => userWanderlist.wanderlist);
-    emit(ActivityAddLoaded(List.of(wanderlists)));
+    emit(ActivityAddLoaded(List.of(userWanderlists)));
   }
 
   Future<void> addActivityToWanderlist(Wanderlist wanderlist) async {

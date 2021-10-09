@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:application/models/activity.dart';
+import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
 import 'package:application/repositories/user/user_repository.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class WanderlistPage extends StatelessWidget {
   WanderlistPage(this.wanderlist);
 
-  final Wanderlist wanderlist;
+  final UserWanderlist wanderlist;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class WanderlistPage extends StatelessWidget {
               create: (context) => SuggestionsCubit(ActivityRepository()),
             ),
           ],
-          child: _PageContent(wanderlist),
+          child: _PageContent(wanderlist.wanderlist),
         ),
       ),
     );
