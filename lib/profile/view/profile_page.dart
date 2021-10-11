@@ -36,6 +36,78 @@ class _UserPhoto extends StatelessWidget {
 }
 
 class _UserInfo extends StatelessWidget {
+  Widget _name(String firstName, String lastName) {
+    return Text(
+      "$firstName $lastName",
+      style: TextStyle(
+        fontFamily: "inter",
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+    );
+  }
+
+  RichText _bigSmallText(BuildContext context, String big, String small) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: big,
+            style:
+                Theme.of(context).textTheme.headline3?.copyWith(fontSize: 18),
+          ),
+          TextSpan(
+            text: " " + small,
+            style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _activityHistoryButton(BuildContext context) {
+    return Container(
+      height: 30,
+      width: 175,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all<EdgeInsets>(
+            EdgeInsets.only(left: 10, right: 0),
+          ),
+          backgroundColor: MaterialStateProperty.all<Color>(
+            WanTheme.colors.purple,
+          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(WanTheme.BUTTON_CORNER_RADIUS),
+              ),
+            ),
+          ),
+        ),
+        onPressed: () => {}, // TODO: make this go to the activity history page
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Archive History",
+              style: TextStyle(
+                fontFamily: "inter",
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Icon(Icons.chevron_right, color: Colors.white),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
       buildWhen: (prev, next) => true,
@@ -45,23 +117,14 @@ class _UserInfo extends StatelessWidget {
         } else if (state is ProfileLoaded) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "${state.firstName} ${state.lastName}",
-                style: TextStyle(
-                  fontFamily: "inter",
-                  fontSize: 24,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                "Points: ${state.points}",
-                style: TextStyle(
-                  fontFamily: "inter",
-                  fontSize: 24,
-                  color: Colors.black,
-                ),
-              ),
+              _name(state.firstName, state.lastName),
+              Padding(padding: EdgeInsets.only(top: 6.0)),
+              _bigSmallText(context, "${state.points}", "points"),
+              _bigSmallText(context, "12", "completed activities"),
+              Padding(padding: EdgeInsets.only(top: 16.0)),
+              _activityHistoryButton(context),
             ],
           );
         } else {
@@ -74,16 +137,23 @@ class _UserInfo extends StatelessWidget {
 
 class _UserInfoContainer extends StatelessWidget {
   Widget build(BuildContext context) {
+    const cardRadius = Radius.circular(WanTheme.CARD_CORNER_RADIUS);
+
     return Container(
         height: 200,
-        padding: EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.only(
+            bottomLeft: cardRadius,
+            bottomRight: cardRadius,
+          ),
+        ),
+        padding: EdgeInsets.all(8.0),
         child: Row(
           children: [
             _UserPhoto(),
-            Padding(
-              padding: EdgeInsets.fromLTRB(50, 0, 0, 0),
-              child: _UserInfo(),
-            ),
+            Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
+            _UserInfo(),
           ],
         ));
   }

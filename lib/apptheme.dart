@@ -56,8 +56,8 @@ Color tintColor(Color color, double factor) => Color.fromRGBO(
     1);
 
 class WanTheme {
-  static const scrollPhysics = const BouncingScrollPhysics(
-      parent: AlwaysScrollableScrollPhysics());
+  static const scrollPhysics =
+      const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
   static const double CARD_CORNER_RADIUS = 15.0;
   static const double THUMB_CORNER_RADIUS = 5.0;
   static const double BUTTON_CORNER_RADIUS = 10.0;
@@ -124,6 +124,7 @@ class WanColors {
   var bgOrange = Color.fromRGBO(0xFF, 0xDC, 0xC1, 1);
   var orange = Color.fromRGBO(0xFF, 0x83, 0x26, 1);
   var white = Colors.white;
+  var purple = Color(0xFFAE92FF);
   final LinearGradient pinkOrangeGradient = LinearGradient(
     colors: <Color>[
       Color(0xFFFF8326),
