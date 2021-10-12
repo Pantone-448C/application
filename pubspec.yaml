@@ -65,7 +65,24 @@ flutter:
         - asset: assets/fonts/Pacifico-Regular.ttf
     - family: Inter
       fonts:
-        - asset: assets/fonts/Inter-VariableFont_slnt,wght.ttf
+        - asset: assets/fonts/Inter-Black.otf
+        - asset: assets/fonts/Inter-BlackItalic.otf
+        - asset: assets/fonts/Inter-Bold.otf
+        - asset: assets/fonts/Inter-BoldItalic.otf
+        - asset: assets/fonts/Inter-ExtraBold.otf
+        - asset: assets/fonts/Inter-ExtraBoldItalic.otf
+        - asset: assets/fonts/Inter-ExtraLight.otf
+        - asset: assets/fonts/Inter-ExtraLightItalic.otf
+        - asset: assets/fonts/Inter-Italic.otf
+        - asset: assets/fonts/Inter-Light.otf
+        - asset: assets/fonts/Inter-LightItalic.otf
+        - asset: assets/fonts/Inter-Medium.otf
+        - asset: assets/fonts/Inter-MediumItalic.otf
+        - asset: assets/fonts/Inter-Regular.otf
+        - asset: assets/fonts/Inter-SemiBold.otf
+        - asset: assets/fonts/Inter-SemiBoldItalic.otf
+        - asset: assets/fonts/Inter-Thin.otf
+        - asset: assets/fonts/Inter-ThinItalic.otf
   assets:
     - assets/images/logo.png
   # The following line ensures that the Material Icons font is
