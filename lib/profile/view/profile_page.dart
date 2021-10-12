@@ -11,27 +11,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class _UserPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
-        buildWhen: (prev, next) => true,
-        builder: (context, state) {
-          if (state is ProfileInitial) {
-            return CircularProgressIndicator();
-          } else if (state is ProfileLoaded) {
-            return Container(
-              height: 150,
-              width: 150,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(state.imgUrl),
-                ),
+      buildWhen: (prev, next) => true,
+      builder: (context, state) {
+        if (state is ProfileInitial) {
+          return CircularProgressIndicator();
+        } else if (state is ProfileLoaded) {
+          return Container(
+            height: 180,
+            width: 144,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              image: DecorationImage(
+                fit: BoxFit.fitHeight,
+                image: NetworkImage(state.imgUrl),
               ),
-            );
-          } else {
-            return Container(child: Text("Error"));
-          }
-        });
+            ),
+          );
+        } else {
+          return Container(child: Text("Error"));
+        }
+      },
+    );
   }
 }
 
@@ -62,6 +63,7 @@ class _UserInfo extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText2?.copyWith(
                   fontSize: 12,
                   fontWeight: FontWeight.w300,
+                  color: Color(0xFF666666),
                 ),
           ),
         ],
@@ -71,7 +73,7 @@ class _UserInfo extends StatelessWidget {
 
   Widget _activityHistoryButton(BuildContext context) {
     return Container(
-      height: 30,
+      height: 36,
       width: 175,
       child: ElevatedButton(
         style: ButtonStyle(
@@ -94,7 +96,7 @@ class _UserInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Archive History",
+              "Activity History",
               style: TextStyle(
                 fontFamily: "inter",
                 fontSize: 14,
@@ -120,11 +122,13 @@ class _UserInfo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _name(state.firstName, state.lastName),
-              Padding(padding: EdgeInsets.only(top: 6.0)),
+              Padding(padding: EdgeInsets.only(top: 0.0)),
               _bigSmallText(context, "${state.points}", "points"),
               _bigSmallText(context, "12", "completed activities"),
-              Padding(padding: EdgeInsets.only(top: 16.0)),
+              Padding(padding: EdgeInsets.only(top: 18.0)),
               _activityHistoryButton(context),
+              Padding(padding: EdgeInsets.only(top: 8.0)),
+              _LogoutButton(),
             ],
           );
         } else {
@@ -140,37 +144,64 @@ class _UserInfoContainer extends StatelessWidget {
     const cardRadius = Radius.circular(WanTheme.CARD_CORNER_RADIUS);
 
     return Container(
-        height: 200,
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.only(
-            bottomLeft: cardRadius,
-            bottomRight: cardRadius,
-          ),
+      height: 205,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: cardRadius,
+          bottomRight: cardRadius,
         ),
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            _UserPhoto(),
-            Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
-            _UserInfo(),
-          ],
-        ));
+      ),
+      padding: EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          _UserPhoto(),
+          Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
+          _UserInfo(),
+        ],
+      ),
+    );
   }
 }
 
 class _LogoutButton extends StatelessWidget {
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        FirebaseAuth.instance.signOut();
-        Navigator.popUntil(context, ModalRoute.withName('/'));
-      },
-      child: Text(
-        "Log out",
-        style: TextStyle(
-          color: Colors.white,
-          fontFamily: "inter",
+    return Container(
+      height: 36,
+      width: 175,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all<EdgeInsets>(
+            EdgeInsets.only(left: 10, right: 0),
+          ),
+          backgroundColor: MaterialStateProperty.all<Color>(
+            WanTheme.colors.pink,
+          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(WanTheme.BUTTON_CORNER_RADIUS),
+              ),
+            ),
+          ),
+        ),
+        onPressed: () {
+          FirebaseAuth.instance.signOut();
+          Navigator.popUntil(context, ModalRoute.withName('/'));
+        },
+        child: Row(
+          children: [
+            Icon(
+              Icons.logout,
+            ),
+            Text(
+              "Log out",
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "inter",
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -178,29 +209,67 @@ class _LogoutButton extends StatelessWidget {
 }
 
 class _RewardsSummary extends StatelessWidget {
+  RichText _title(BuildContext context) {
+    return RichText(
+      text: TextSpan(children: [
+        WidgetSpan(
+          child: Icon(
+            Icons.emoji_events_outlined,
+            color: WanTheme.colors.orange,
+          ),
+        ),
+        TextSpan(
+          text: "Rewards",
+          style: Theme.of(context).textTheme.headline3,
+        ),
+      ]),
+    );
+  }
+
   Widget build(BuildContext context) {
-    return Column(children: [
-      Text("Your rewards"),
-    ]);
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _title(context),
+        ],
+      ),
+    );
   }
 }
 
 class ProfilePage extends StatelessWidget {
+  Widget _settingsButton() {
+    return IconButton(
+      onPressed: () {},
+      icon: Icon(Icons.settings, color: Colors.black54, size: 30),
+    );
+  }
+
+  AppBar _profileAppBar(BuildContext context) {
+    return AppBar(
+      title: Text("Profile", style: Theme.of(context).textTheme.headline2),
+      actions: [_settingsButton()],
+      leading: new IconButton(
+        icon: new Icon(Icons.arrow_back, color: Colors.black),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ProfileCubit(UserRepository()),
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
+        appBar: _profileAppBar(context),
         body: BlocListener<ProfileCubit, ProfileState>(
           listener: (context, state) {},
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _UserInfoContainer(),
               _RewardsSummary(),
-              _LogoutButton(),
             ],
           ),
         ),
