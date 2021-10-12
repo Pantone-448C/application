@@ -13,9 +13,7 @@ class _UserPhoto extends StatelessWidget {
     return BlocBuilder<ProfileCubit, ProfileState>(
       buildWhen: (prev, next) => true,
       builder: (context, state) {
-        if (state is ProfileInitial) {
-          return CircularProgressIndicator();
-        } else if (state is ProfileLoaded) {
+        if (state is ProfileLoaded) {
           return Container(
             height: 180,
             width: 144,
@@ -29,7 +27,7 @@ class _UserPhoto extends StatelessWidget {
             ),
           );
         } else {
-          return Container(child: Text("Error"));
+          return Container();
         }
       },
     );
@@ -37,6 +35,12 @@ class _UserPhoto extends StatelessWidget {
 }
 
 class _UserInfo extends StatelessWidget {
+  _UserInfo(this.firstName, this.lastName, this.points);
+
+  final String firstName;
+  final String lastName;
+  final int points;
+
   Widget _name(String firstName, String lastName) {
     return Text(
       "$firstName $lastName",
@@ -111,38 +115,27 @@ class _UserInfo extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileCubit, ProfileState>(
-      buildWhen: (prev, next) => true,
-      builder: (context, state) {
-        if (state is ProfileInitial) {
-          return CircularProgressIndicator();
-        } else if (state is ProfileLoaded) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _name(state.firstName, state.lastName),
-              Padding(padding: EdgeInsets.only(top: 0.0)),
-              _bigSmallText(context, "${state.points}", "points"),
-              _bigSmallText(context, "12", "completed activities"),
-              Padding(padding: EdgeInsets.only(top: 18.0)),
-              _activityHistoryButton(context),
-              Padding(padding: EdgeInsets.only(top: 8.0)),
-              _LogoutButton(),
-            ],
-          );
-        } else {
-          return Container(child: Text("Error!"));
-        }
-      },
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _name(firstName, lastName),
+        Padding(padding: EdgeInsets.only(top: 0.0)),
+        _bigSmallText(context, "$points", "points"),
+        _bigSmallText(context, "12", "completed activities"),
+        Padding(padding: EdgeInsets.only(top: 18.0)),
+        _activityHistoryButton(context),
+        Padding(padding: EdgeInsets.only(top: 8.0)),
+        _LogoutButton(),
+      ],
     );
   }
 }
 
 class _UserInfoContainer extends StatelessWidget {
-  Widget build(BuildContext context) {
-    const cardRadius = Radius.circular(WanTheme.CARD_CORNER_RADIUS);
+  static final cardRadius = Radius.circular(WanTheme.CARD_CORNER_RADIUS);
 
+  Container _buildInfoContainerWithChild(BuildContext context, Widget child) {
     return Container(
       height: 205,
       decoration: BoxDecoration(
@@ -153,13 +146,33 @@ class _UserInfoContainer extends StatelessWidget {
         ),
       ),
       padding: EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          _UserPhoto(),
-          Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
-          _UserInfo(),
-        ],
-      ),
+      alignment: Alignment.center,
+      child: child,
+    );
+  }
+
+  Widget build(BuildContext context) {
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      buildWhen: (prev, next) => true,
+      builder: (context, state) {
+        if (state is ProfileInitial) {
+          return _buildInfoContainerWithChild(
+              context, CircularProgressIndicator());
+        } else if (state is ProfileLoaded) {
+          return _buildInfoContainerWithChild(
+            context,
+            Row(
+              children: [
+                _UserPhoto(),
+                Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
+                _UserInfo(state.firstName, state.lastName, state.points),
+              ],
+            ),
+          );
+        } else {
+          return Container(child: Text("Error!"));
+        }
+      },
     );
   }
 }
@@ -208,6 +221,7 @@ class _LogoutButton extends StatelessWidget {
   }
 }
 
+// TODO: Move this to its own file
 class _RewardsSummary extends StatelessWidget {
   RichText _title(BuildContext context) {
     return RichText(
@@ -226,6 +240,14 @@ class _RewardsSummary extends StatelessWidget {
     );
   }
 
+  RichText _noRewardsText(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+          text: "You have no rewards yet",
+          style: Theme.of(context).textTheme.bodyText1),
+    );
+  }
+
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -233,6 +255,8 @@ class _RewardsSummary extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _title(context),
+          Padding(padding: EdgeInsets.only(top: 30)),
+          Center(child: _noRewardsText(context)),
         ],
       ),
     );
