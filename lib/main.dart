@@ -85,6 +85,7 @@ class _AppContainerState extends State<AppContainer> {
           // update navbar
           onPageChanged: (page) => setState(() => _selectedIndex = page),
           controller: _pageController,
+          physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
             Container(child: HomePage(_gotoWanderlistsPage)),
             Container(child: SearchPage()),
