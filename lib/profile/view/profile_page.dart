@@ -1,5 +1,4 @@
 import 'package:application/apptheme.dart';
-import 'package:application/components/rewards/reward_card.dart';
 import 'package:application/profile/cubit/profile_cubit.dart';
 import 'package:application/profile/cubit/profile_state.dart';
 import 'package:application/repositories/user/user_repository.dart';
@@ -23,7 +22,7 @@ class _UserPhoto extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
               image: DecorationImage(
                 fit: BoxFit.fitHeight,
-                image: NetworkImage(""),
+                image: NetworkImage(state.imgUrl),
               ),
             ),
           );
@@ -258,17 +257,6 @@ class _RewardsSummary extends StatelessWidget {
           _title(context),
           Padding(padding: EdgeInsets.only(top: 30)),
           Center(child: _noRewardsText(context)),
-          Padding(padding: EdgeInsets.only(top: 30)),
-          Center(
-            child: RewardCard(
-              "Central Park",
-              "https://drive.google.com/uc?export=download&id=1nUevSjcm7TVouL0KyPCQq85XYYgQTjLJ",
-              "20% off",
-              "Hungry Jack's Queen St",
-              true,
-              () => "you're looking for",
-            ),
-          ),
         ],
       ),
     );
