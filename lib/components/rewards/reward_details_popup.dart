@@ -16,6 +16,7 @@ class RewardDetailsPopup extends StatefulWidget {
     this.offer,
     this.location,
     this.onRedeemPress,
+    this.onClosePress,
     this.status,
   );
 
@@ -24,16 +25,26 @@ class RewardDetailsPopup extends StatefulWidget {
   final String caption;
   final String offer;
   final String location;
-  final Function() onRedeemPress;
+
+  /// onRedeemPress is an async function that completes an action when the
+  /// "Redeem" button is pressed when the popup has an Unredeemed status.
+  /// This should be used to update the database with details of this reward.
+  final Future<String> Function() onRedeemPress;
+  final Function() onClosePress;
   final RewardDetailsPopupStatus status;
 
   static final double CORNER_RADIUS = WanTheme.CARD_CORNER_RADIUS;
 
   @override
-  State<RewardDetailsPopup> createState() => _RewardDetailsPopupState();
+  State<RewardDetailsPopup> createState() => _RewardDetailsPopupState(status);
 }
 
 class _RewardDetailsPopupState extends State<RewardDetailsPopup> {
+  _RewardDetailsPopupState(this.status);
+
+  RewardDetailsPopupStatus status;
+  String _redeemedDate = "";
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -123,7 +134,13 @@ class _RewardDetailsPopupState extends State<RewardDetailsPopup> {
           ),
           Container(
             alignment: Alignment.topRight,
-            child: Icon(Icons.close, size: 24, color: Colors.white),
+            child: IconButton(
+              padding: EdgeInsets.all(0),
+              constraints: BoxConstraints(),
+              focusColor: Colors.black,
+              icon: Icon(Icons.close, color: Colors.white),
+              onPressed: this.widget.onClosePress,
+            ),
           ),
         ],
       ),
@@ -131,37 +148,48 @@ class _RewardDetailsPopupState extends State<RewardDetailsPopup> {
   }
 
   Widget _buildDetailsSection(BuildContext context) {
-    return Column(
-      children: [
-        _buildOfferPill(context),
-        Text(
-          "at",
-          style: Theme.of(context).textTheme.headline3!.copyWith(
-                color: WanTheme.colors.grey,
-                fontWeight: FontWeight.w300,
-              ),
-        ),
-        Text(this.widget.location,
-            style: Theme.of(context).textTheme.headline3),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+      child: Column(
+        children: [
+          _buildOfferPill(context),
+          Text(
+            "at",
+            style: Theme.of(context).textTheme.headline3!.copyWith(
+                  color: WanTheme.colors.grey,
+                  fontWeight: FontWeight.w300,
+                ),
+          ),
+          Text(this.widget.location,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline3),
+        ],
+      ),
     );
   }
 
   Widget _buildOfferPill(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(maxHeight: 50, maxWidth: 170),
+      constraints: BoxConstraints(minHeight: 50, minWidth: 170),
       decoration: BoxDecoration(
         color: WanTheme.colors.bgOrange,
         borderRadius: BorderRadius.circular(24.0),
       ),
-      child: Center(
-        child: Text(
-          this.widget.offer,
-          style: Theme.of(context).textTheme.headline3!.copyWith(
-                fontWeight: FontWeight.w600,
-                color: WanTheme.colors.orange,
-              ),
-        ),
+      child: Column(
+        // This Column is a hacky way to center the text vertically, without
+        // taking up the entire width of the column and causing the pill to be
+        // too wide.
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            this.widget.offer,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline3!.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: WanTheme.colors.orange,
+                ),
+          ),
+        ],
       ),
     );
   }
@@ -180,21 +208,44 @@ class _RewardDetailsPopupState extends State<RewardDetailsPopup> {
         borderType: BorderType.RRect,
         radius: Radius.circular(RewardDetailsPopup.CORNER_RADIUS),
         child: Container(
-          padding: EdgeInsets.only(top: 25.0),
-          alignment: Alignment.bottomCenter,
+          alignment: Alignment.center,
           constraints: BoxConstraints(
             maxWidth: 300,
             maxHeight: 120,
           ),
           decoration: BoxDecoration(),
-          child: _buildRedemptionButton(context),
+          child: _buildRedemptionInnerBox(context),
         ),
       ),
     );
   }
 
+  Widget _buildRedemptionInnerBox(BuildContext context) {
+    if (this.status == RewardDetailsPopupStatus.Unredeemed) {
+      return _buildRedemptionButton(context);
+    } else if (this.status == RewardDetailsPopupStatus.Redeeming) {
+      return _buildRedemptionLoading();
+    } else if (this.status == RewardDetailsPopupStatus.Success) {
+      return _buildRedemptionSuccess();
+    } else {
+      return Container();
+    }
+  }
+
+  void _redeemPress() async {
+    setState(() {
+      status = RewardDetailsPopupStatus.Redeeming;
+    });
+    String redeemed = await this.widget.onRedeemPress();
+    setState(() {
+      status = RewardDetailsPopupStatus.Success;
+      _redeemedDate = redeemed;
+    });
+  }
+
   Widget _buildRedemptionButton(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           constraints: BoxConstraints(
@@ -204,7 +255,7 @@ class _RewardDetailsPopupState extends State<RewardDetailsPopup> {
           width: 190,
           height: 60,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: _redeemPress,
             style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -230,6 +281,38 @@ class _RewardDetailsPopupState extends State<RewardDetailsPopup> {
               ),
         ),
       ],
+    );
+  }
+
+  Widget _buildRedemptionLoading() {
+    return Center(child: CircularProgressIndicator());
+  }
+
+  Widget _buildRedemptionSuccess() {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.done, size: 30, color: WanTheme.colors.pink),
+          Text(
+            "Successfully redeemed!",
+            style: TextStyle(
+              fontFamily: "Inter",
+              fontSize: 16,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          Text(
+            this._redeemedDate,
+            style: TextStyle(
+              fontFamily: "Inter",
+              fontSize: 12,
+              fontWeight: FontWeight.w300,
+              color: WanTheme.colors.grey,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
