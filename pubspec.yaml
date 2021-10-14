@@ -45,6 +45,7 @@ dependencies:
     git:
       url: git://github.com/Pantone-448C/Gradient-Widgets.git
       ref: master
+  dotted_border: ^2.0.0+1
   path_drawing: ^0.5.1
 
 dev_dependencies:
