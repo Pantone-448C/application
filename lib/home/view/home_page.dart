@@ -69,7 +69,8 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserCubit(UserRepository()),
+      create: (context) => UserCubit(GoodUserRepository()),
+
       child: Scaffold (
         appBar: Titlebar(),
         body: _HomePage(gotoWanderlistsPage)

@@ -1,6 +1,7 @@
 import 'package:application/apptheme.dart';
 import 'package:application/profile/cubit/profile_cubit.dart';
 import 'package:application/profile/cubit/profile_state.dart';
+import 'package:application/repositories/user/good_user_repository.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +119,7 @@ class _RewardsSummary extends StatelessWidget {
 class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProfileCubit(UserRepository()),
+      create: (_) => ProfileCubit(GoodUserRepository()),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,

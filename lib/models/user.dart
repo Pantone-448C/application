@@ -13,11 +13,11 @@ class UserDetails extends Equatable {
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     List<UserWanderlist> wanderlists = [];
+
     if (json['wanderlists'] != null) {
-      wanderlists = json['wanderlists']
-          .map<UserWanderlist>(
-              (wanderlist) => UserWanderlist.fromJson(wanderlist))
-          .toList();
+      json['wanderlists'].forEach((wanderlist) {
+        wanderlists.add(UserWanderlist.fromJson(wanderlist));
+      });
     }
 
     List<ActivityDetails> completedActivities = [];

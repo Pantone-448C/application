@@ -42,7 +42,7 @@ class Wanderlist extends Equatable {
     return {
       'name': name,
       'author_name': creatorName,
-      'activities': activities.map((activity) => activity.toRef()),
+      'activities': activities.map((activity) => activity.toRef()).toList(),
       'icon': icon,
     };
   }

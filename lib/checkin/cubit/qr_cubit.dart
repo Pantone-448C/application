@@ -32,6 +32,7 @@ class QrCubit extends Cubit<QrScannerState> {
       print("Trying to add activity: $activity");
       a = (await userRepository.getActivity(activity));
     } catch (e) {
+      print(e);
       emit(QrScannerError("Invalid Activity Code."));
       return;
     }
@@ -45,7 +46,6 @@ class QrCubit extends Cubit<QrScannerState> {
 
     bool changed = false;
     lists.forEach((e) {
-      // TODO: if not in trip, add to trip
       if (e.wanderlist.activities.any((elem) {
         print("$elem.id $activity");
         return elem.id == activity;

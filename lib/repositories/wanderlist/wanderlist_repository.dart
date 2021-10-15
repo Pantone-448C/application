@@ -29,7 +29,7 @@ class WanderlistRepository implements IWanderlistRepository {
   }
 
   @override
-  Future<DocumentReference> addWanderlist(Wanderlist wanderlist) async {
+  Future<Wanderlist> addWanderlist(Wanderlist wanderlist) async {
     DocumentReference id = await _wanderlists.add({
       "author_name": wanderlist.creatorName,
       "icon": wanderlist.icon,
@@ -38,6 +38,7 @@ class WanderlistRepository implements IWanderlistRepository {
           wanderlist.activities.map((activity) => activity.id).toList(),
     });
 
-    return id;
+    wanderlist = wanderlist.copyWith(id: id.id);
+    return wanderlist;
   }
 }
