@@ -9,6 +9,7 @@ class Wanderlist extends Equatable {
   Wanderlist(this.id, this.name, this.creatorName, this.activities, this.icon);
 
   factory Wanderlist.fromJson(Map<String, dynamic> json) {
+    print(json);
     List<ActivityDetails>? activities = List<ActivityDetails>.from(
         json['activities'].map((activity) {
               return ActivityDetails.fromJson(activity);}
