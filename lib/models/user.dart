@@ -66,7 +66,7 @@ class UserDetails extends Equatable {
       'first_name': firstName,
       'last_name': lastName,
       'wanderlists': jsonWanderLists,
-      'completed_activities': jsonCompletedActivities,
+      'completed_activities': completedActivities.map((a) => a.toRef()).toList(),
     };
   }
 

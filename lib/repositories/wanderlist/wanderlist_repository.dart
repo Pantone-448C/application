@@ -12,7 +12,7 @@ class WanderlistRepository implements IWanderlistRepository {
   Future<Wanderlist> getWanderlist(String id) async {
     DocumentSnapshot snapshot = await _wanderlists.doc(id).get();
     var data = snapshot.data() as Map<String, dynamic>;
-    data["doc_id"] = id;
+    data["id"] = id;
     return Wanderlist.fromJson(data);
   }
 

@@ -19,7 +19,6 @@ class SearchRepository implements ISearchRepository {
     var results = jsonDecode(json)["results"];
     results.map((json) => ActivityDetails.fromJson(json));
     List<ActivityDetails> l = List.empty(growable: true);
-    results.forEach((element) => element["doc_id"] = element["id"]);
     results.forEach((element) => {l.add(ActivityDetails.fromJson(element))});
     return l;
   }

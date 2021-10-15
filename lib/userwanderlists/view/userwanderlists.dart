@@ -3,7 +3,7 @@ import 'package:application/components/searchfield.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
-import 'package:application/repositories/user/user_repository.dart';
+import 'package:application/repositories/user/good_user_repository.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
