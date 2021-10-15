@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 const API_SCHEME = 'http';
-const API_HOST = "189.254.206.35.bc.googleusercontent.com";
+const API_HOST = "192.168.0.36";
 const API_PORT = 8080;
 
 getToken() async {
@@ -24,7 +24,13 @@ restUri(String path, Map<String, dynamic> queryParams) {
 
 Future<Map> getDocument(Uri uri) async {
   print(await getToken());
-  final response = await http.get(uri, headers: await getToken());
+  var response = await http.get(uri, headers: await getToken());
+  int tries = 0;
+  while (response.statusCode != 200 && tries++ < 3) {
+    print("Request failed retry $tries, $response.body");
+    await Future.delayed(Duration(milliseconds: 100));
+    response = await http.get(uri, headers: await getToken());
+  }
 
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
