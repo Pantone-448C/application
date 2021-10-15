@@ -1,60 +1,24 @@
 import 'package:application/models/activity.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
+import 'package:application/repositories/activity/good_activity_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:convert';
 
 import 'i_user_repository.dart';
 import 'package:http/http.dart' as http;
+import '../rest_api.dart';
 
-class UserRepository implements IUserRepository {
-
-  _getToken() async {
-    return {"authorization": await FirebaseAuth.instance.currentUser!.getIdToken()};
-  }
-
-  _Uri(String path, Map<String, dynamic> queryParams) {
-    return Uri(
-      scheme: API_SCHEME,
-      host: API_HOST,
-      path: path,
-      port: API_PORT,
-    );
-  }
-
-  Future<Map> _getDocument(Uri uri) async {
-    print(uri);
-    print(await _getToken());
-    final response = await http.get(uri, headers: await _getToken());
-    print(response);
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    }
-
-    throw Exception(["Bad request " + jsonDecode(response.body)["error"]]);
-  }
+class GoodUserRepository implements IUserRepository {
 
 
-  _getUser() async {
-
-  }
-
-
-
-
-  UserRepository() {
+  GoodUserRepository() {
     final FirebaseAuth auth = FirebaseAuth.instance;
     _setUser(auth, auth.currentUser);
-    _users = FirebaseFirestore.instance.collection('users');
-    _activities = FirebaseFirestore.instance.collection('activities');
     auth.authStateChanges().listen((newUser) => _setUser(auth, newUser));
   }
 
-  static const API_SCHEME = 'http';
-  static const API_HOST = "192.168.0.36";
-  static const API_PORT = 8080;
 
   _setUser(auth, user) {
     if (user != null) {
@@ -68,7 +32,7 @@ class UserRepository implements IUserRepository {
 
   @override
   Future<UserDetails> getUserData() async {
-    var data = await _getDocument(_Uri("user", {})) as Map<String, dynamic>;
+    var data = await getDocument(restUri("user", {})) as Map<String, dynamic>;
     return UserDetails.fromJson(data);
   }
 
@@ -81,10 +45,10 @@ class UserRepository implements IUserRepository {
 
   @override
   Future<void> updateUserData(UserDetails details) async {
-    print(await _getToken());
-    var headers =await _getToken();
+    print(await getToken());
+    var headers =await getToken();
     headers["content-type"] = "application/json";
-    final response = await http.post(_Uri("user",{}),
+    final response = await http.post(restUri("user",{}),
         headers: headers,
         body: json.encode(details.toJson()));
 
@@ -104,17 +68,14 @@ class UserRepository implements IUserRepository {
 
   @override
   Future<void> updateUserCompletedActivities(List<ActivityDetails> list) async {
-    _users.doc(_uid).update({
-      "completed_activities":
-          list.map((activity) => _activities.doc(activity.id)).toList(),
-    });
+
+    var details = await getUserData();
+    details.completedActivities = list;
+    return updateUserData(details);
   }
 
   Future<ActivityDetails> getActivity(String id) async {
-
-    Map<String, dynamic> data = await _getDocument(_Uri("activity/$id", {})) as Map<String, dynamic>;
-    data["id"] = id;
-    return ActivityDetails.fromJson(data);
+    return GoodActivityRepository().getActivity(id);
   }
 
   @override
