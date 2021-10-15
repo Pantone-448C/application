@@ -1,3 +1,4 @@
+import 'package:application/activity/cubit/activity_cubit.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
@@ -23,7 +24,17 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
     emit(UserWanderlistsLoaded(w));
   }
 
-  void swap(int oldIndex, int newIndex) {
+  Future<void> flipPin(UserWanderlist userWanderlist) async {
+    userWanderlist.inTrip = !userWanderlist.inTrip;
+    print(userWanderlist.inTrip);
+
+    List<UserWanderlist> newList = (state as UserWanderlistsLoaded).wanderlists;
+    emit(UserWanderlistsLoaded(newList));
+    userRepository
+        .updateUserWanderlists((state as UserWanderlistsLoaded).wanderlists);
+  }
+
+  Future<void> swap(int oldIndex, int newIndex) async {
     if (state is UserWanderlistsLoaded) {
       var c = state as UserWanderlistsLoaded;
 

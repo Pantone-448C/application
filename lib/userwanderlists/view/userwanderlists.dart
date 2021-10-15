@@ -23,8 +23,7 @@ class UserWanderlists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserWanderlistsCubit(
-        GoodUserRepository(),
+      create: (context) => UserWanderlistsCubit( GoodUserRepository(),
         GoodWanderlistRepository()),
       child: _UserWanderlistsContainer(),
     );
@@ -38,7 +37,8 @@ class _UserWanderlistsContainer extends StatelessWidget {
       buildWhen: (p, s) => p != s,
       builder: (context, state) {
         if (state is UserWanderlistsLoaded) {
-          return _WanderlistsView(wanderlists: state.wanderlists,
+          return _WanderlistsView(
+            wanderlists: state.wanderlists,
             cubloc: BlocProvider.of<UserWanderlistsCubit>(context),
           );
         } else {
@@ -53,44 +53,47 @@ class _WanderlistsView extends StatelessWidget {
   final wanderlists;
   final cubloc;
 
-  const _WanderlistsView({Key? key, this.wanderlists, this.cubloc}) : super(key: key);
+  const _WanderlistsView({Key? key, this.wanderlists, this.cubloc})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) => NewWanderlistDialog(cubloc));
-        },
+    return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) => NewWanderlistDialog(cubloc));
+          },
           backgroundColor: WanTheme.colors.pink,
           foregroundColor: WanTheme.colors.white,
           child: const Icon(Icons.add),
         ),
-        body:BlocBuilder<UserWanderlistsCubit, UserWanderlistsState>(
+        body: BlocBuilder<UserWanderlistsCubit, UserWanderlistsState>(
           builder: (context, state) {
             if (state is UserWanderlistsLoaded) {
               print(state.wanderlists);
               return ListOfWanderlists(
                 readOnly: false,
-                wanderlists: List.of(state.wanderlists
-                    .map((userwanderlist) => userwanderlist.wanderlist)),
+                wanderlists: state.wanderlists,
                 onReorder: (int original, int next) {
                   context.read<UserWanderlistsCubit>().swap(original, next);
                 },
-                onWanderlistTap: (Wanderlist wanderlist) => Navigator.push(
+                onWanderlistTap: (UserWanderlist wanderlist) => Navigator.push(
                   context,
                   MaterialPageRoute<void>(
                     builder: (context) => WanderlistPage(wanderlist),
                   ),
                 ),
+                onPinTap: (UserWanderlist wanderlist) {
+                  context.read<UserWanderlistsCubit>().flipPin(wanderlist);
+                },
               );
             } else {
               return Container();
             }
           },
-        )
-      );
+        ));
   }
 }
 

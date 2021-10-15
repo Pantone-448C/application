@@ -86,9 +86,6 @@ class GoodUserRepository implements IUserRepository {
 
   @override
   Future<Iterable<ActivityDetails>> getUserCompletedActivities() async {
-    //var data = snapshot.data() as Map<String, dynamic>;
-    //Map<String, dynamic> data = await _getDocument(_Uri("user", {})) as Map<String, dynamic>;
-
     var data = await getUserData();
     return data.completedActivities;
   }

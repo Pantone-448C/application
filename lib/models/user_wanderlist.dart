@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart';
 
 @immutable
 class UserWanderlist extends Equatable {
-
   UserWanderlist(
     this.wanderlist,
     this.completedActivities,
@@ -26,14 +25,14 @@ class UserWanderlist extends Equatable {
           .toList();
     }
 
-    return UserWanderlist(
-        wanderlist, activities, json['in_trip'], json['num_completions'], wanderlist.id);
+    return UserWanderlist(wanderlist, activities, json['in_trip'],
+        json['num_completions'], wanderlist.id);
   }
 
   final String id;
   final Wanderlist wanderlist;
   final List<ActivityDetails> completedActivities;
-  final bool inTrip;
+  bool inTrip;
   final int numCompletions;
 
   @override
@@ -51,20 +50,19 @@ class UserWanderlist extends Equatable {
     };
   }
 
-
   UserWanderlist copyWith({
     Wanderlist? wanderlist,
     List<ActivityDetails>? activities,
     bool? inTrip,
     int? numCompletions,
-    String ? id,
+    String? id,
   }) {
     return UserWanderlist(
-        wanderlist ?? this.wanderlist,
-        activities ?? this.completedActivities,
-        inTrip ?? this.inTrip,
-        numCompletions ?? this.numCompletions,
-        id ?? this.id,
+      wanderlist ?? this.wanderlist,
+      activities ?? this.completedActivities,
+      inTrip ?? this.inTrip,
+      numCompletions ?? this.numCompletions,
+      id ?? this.id,
     );
   }
 }
