@@ -154,7 +154,7 @@ class _TappableWanderlistCard extends StatelessWidget {
           authorName: wlist.creatorName,
           listName: wlist.name,
           numCompletedItems: 0,
-          numTotalItems: wlist.activities.length,
+          numTotalItems: wlist.activityReferences.length,
         ),
       ),
     );

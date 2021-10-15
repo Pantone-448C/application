@@ -20,7 +20,10 @@ class WanderlistsListView extends StatelessWidget {
                   child: DetailedWanderlistSummary(
                       370, // remove bad hard-coded value
                       145, // remove bad hard-coded value
-                      this.userWanderlists[index].wanderlist.activities[0],
+                      this
+                          .userWanderlists[index]
+                          .wanderlist
+                          .loadedActivities[0],
                       this.userWanderlists[index]));
             },
             separatorBuilder: (BuildContext context, int index) => Divider(

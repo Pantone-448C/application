@@ -23,7 +23,7 @@ class DetailedWanderlistSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String name = userWanderlist.wanderlist.name;
-    int total = userWanderlist.wanderlist.activities.length;
+    int total = userWanderlist.wanderlist.activityReferences.length;
     int completed = userWanderlist.completedActivities.length;
 
     return Container(

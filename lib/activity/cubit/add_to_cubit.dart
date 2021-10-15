@@ -30,7 +30,8 @@ class ActivityAddCubit extends Cubit<ActivityAddState> {
   }
 
   Future<void> addActivityToWanderlist(Wanderlist wanderlist) async {
-    wanderlist.activities.add(await activityRepository.getActivity(activityId));
+    wanderlist.loadedActivities
+        .add(await activityRepository.getActivity(activityId));
     wanderlistRepository.setWanderlist(wanderlist);
   }
 }

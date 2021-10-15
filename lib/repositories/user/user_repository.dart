@@ -105,18 +105,19 @@ class UserRepository implements IUserRepository {
           Map<String, dynamic> wanderlistData =
               wanderlist.data() as Map<String, dynamic>;
 
-          List<Map<String, dynamic>> completedActivities =
-              await hydrateReferences(List<DocumentReference>.from(
-                  userWanderlist['completed_activities']));
+          // List<Map<String, dynamic>> completedActivities =
+          //     await hydrateReferences(List<DocumentReference>.from(
+          //         userWanderlist['completed_activities']));
           // Get each of the activities referenced in the wanderlist and
           // replace the list of references currently held in the Map.
-          List<Map<String, dynamic>> wanderlistActivities =
-              await hydrateReferences(
-                  List<DocumentReference>.from(wanderlist['activities']));
+          // List<Map<String, dynamic>> wanderlistActivities =
+          //     await hydrateReferences(
+          //         List<DocumentReference>.from(wanderlist['activities']));
 
-          userWanderlist['completed_activities'] = completedActivities;
+          // userWanderlist['completed_activities'] = completedActivities;
 
-          wanderlistData['activities'] = wanderlistActivities;
+          wanderlistData['activities'] =
+              List<DocumentReference>.from(wanderlist['activities']);
           wanderlistData["doc_ref"] = wanderlist.id;
           userWanderlist['wanderlist'] = wanderlistData;
 

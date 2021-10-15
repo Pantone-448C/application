@@ -55,7 +55,7 @@ class _PinnedWanderlistsContent extends StatelessWidget {
         return WanderlistSummaryItem(
           listName: pinnedWanderlist.name,
           authorName: pinnedWanderlist.creatorName,
-          numTotalItems: pinnedWanderlist.activities.length,
+          numTotalItems: pinnedWanderlist.activityReferences.length,
           imageUrl: pinnedWanderlist.icon,
         );
       },

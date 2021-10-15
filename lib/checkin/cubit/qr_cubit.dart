@@ -46,7 +46,7 @@ class QrCubit extends Cubit<QrScannerState> {
     bool changed = false;
     lists.forEach((e) {
       // TODO: if not in trip, add to trip
-      if (e.wanderlist.activities.any((elem) {
+      if (e.wanderlist.activityReferences.any((elem) {
         print("$elem.id $activity");
         return elem.id == activity;
       })) {

@@ -32,7 +32,7 @@ class ViewWanderlistPage extends StatelessWidget {
           children: [
             _TopRow(wanderlist.name, _onEditPress),
             Padding(padding: EdgeInsets.only(top: 10)),
-            _UneditableActivityList(wanderlist.activities),
+            _UneditableActivityList(wanderlist.loadedActivities),
           ],
         ),
       ),

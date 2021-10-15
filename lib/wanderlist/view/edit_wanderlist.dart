@@ -92,7 +92,7 @@ class _EditWanderlistBody extends StatelessWidget {
                     child: _EditNameTextfield(state.wanderlist.name),
                   ),
                   Padding(padding: EdgeInsets.only(top: 10)),
-                  _EditableActivityList(state.wanderlist.activities),
+                  _EditableActivityList(state.wanderlist.loadedActivities),
                   Padding(padding: EdgeInsets.only(top: 10)),
                 ],
               ),
@@ -151,7 +151,7 @@ class _EditableActivityList extends StatelessWidget {
   _onRemoveItem(BuildContext context, Editing state, int index) {
     activities.removeAt(index);
     context.read<WanderlistCubit>().madeEdit(
-          state.wanderlist.copyWith(activities: activities),
+          state.wanderlist.copyWith(loadedActivities: activities),
         );
   }
 
@@ -183,13 +183,13 @@ class _EditableActivityList extends StatelessWidget {
                 itemCount: activities.length,
                 onReorder: (int oldIndex, int newIndex) {
                   List<ActivityDetails> activities =
-                      state.wanderlist.activities;
+                      state.wanderlist.loadedActivities;
                   if (oldIndex < newIndex) {
                     newIndex--;
                   }
                   activities.insert(newIndex, activities.removeAt(oldIndex));
                   context.read<WanderlistCubit>().madeEdit(
-                        state.wanderlist.copyWith(activities: activities),
+                        state.wanderlist.copyWith(loadedActivities: activities),
                       );
                 },
               ),

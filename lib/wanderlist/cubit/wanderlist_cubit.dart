@@ -3,6 +3,7 @@ import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
 import 'package:application/wanderlist/cubit/wanderlist_state.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,16 +15,27 @@ class WanderlistCubit extends Cubit<WanderlistState> {
   loadWanderlists(Wanderlist wanderlist) async {
     if (state is Initial) {
       emit(Loading());
-      await Future.delayed(Duration(seconds: 0));
+      await loadWanderlistActivities(wanderlist);
       emit(Viewing(wanderlist));
     } else {
       emit(state);
     }
   }
 
+  Future<void> loadWanderlistActivities(Wanderlist wanderlist) async {
+    if (wanderlist.loadedActivities.length == 0 &&
+        wanderlist.activityReferences.length != 0) {
+      for (DocumentReference activity in wanderlist.activityReferences) {
+        wanderlist.loadedActivities.add(ActivityDetails.fromJson(
+            (await activity.get()).data() as Map<String, dynamic>));
+      }
+    }
+  }
+
   Wanderlist _deepCopyActivityList(Wanderlist wanderlist) {
-    List<ActivityDetails> copiedActivities = []..addAll(wanderlist.activities);
-    return wanderlist.copyWith(activities: copiedActivities);
+    List<ActivityDetails> copiedActivities = []
+      ..addAll(wanderlist.loadedActivities);
+    return wanderlist.copyWith(loadedActivities: copiedActivities);
   }
 
   startEdit(Wanderlist wanderlist) {
@@ -63,7 +75,7 @@ class WanderlistCubit extends Cubit<WanderlistState> {
 
   addActivity(Wanderlist wanderlist, ActivityDetails activity) {
     if (state is Editing) {
-      (state as Editing).wanderlist.activities.add(activity);
+      (state as Editing).wanderlist.loadedActivities.add(activity);
       final original = (state as Editing).original;
       emit(Editing(wanderlist, original));
     } else {

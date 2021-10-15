@@ -19,7 +19,7 @@ class WanderlistRepository implements IWanderlistRepository {
   @override
   Future<void> setWanderlist(Wanderlist wanderlist) async {
     await _wanderlists.doc(wanderlist.id).set({
-      'activities': wanderlist.activities.map((activity) {
+      'activities': wanderlist.activityReferences.map((activity) {
         return _activities.doc(activity.id);
       }).toList(),
       'author_name': wanderlist.creatorName,
@@ -35,7 +35,7 @@ class WanderlistRepository implements IWanderlistRepository {
       "icon": wanderlist.icon,
       "name": wanderlist.name,
       "activities":
-          wanderlist.activities.map((activity) => activity.id).toList(),
+          wanderlist.activityReferences.map((activity) => activity.id).toList(),
     });
 
     return id;

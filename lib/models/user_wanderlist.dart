@@ -17,15 +17,8 @@ class UserWanderlist extends Equatable {
 
   factory UserWanderlist.fromJson(Map<String, dynamic> json) {
     Wanderlist wanderlist = Wanderlist.fromJson(json['wanderlist']);
-    List<ActivityDetails> activities = [];
-    if (json['completed_activities'] != null) {
-      activities = json['completed_activities']
-          .map<ActivityDetails>(
-              (activity) => ActivityDetails.fromJson(activity))
-          .toList();
-    }
 
-    return UserWanderlist(wanderlist, activities, json['in_trip'],
+    return UserWanderlist(wanderlist, [], json['in_trip'],
         json['num_completions'], wanderlist.id);
   }
 

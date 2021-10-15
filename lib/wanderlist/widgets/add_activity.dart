@@ -124,7 +124,7 @@ class _SuggestionsItem extends StatelessWidget {
   }
 
   Widget pickItemIcon(BuildContext context, wanderlistState.Editing state) {
-    if (state.wanderlist.activities
+    if (state.wanderlist.loadedActivities
         .any((activity) => this.activity.id == activity.id)) {
       return successfullyAddedIcon();
     }
