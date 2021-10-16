@@ -64,7 +64,7 @@ class UserRepository implements IUserRepository {
   Future<ActivityDetails> getActivity(String id) async {
     DocumentSnapshot snapshot = await _activities.doc(id).get();
     var data = snapshot.data() as Map<String, dynamic>;
-    data["doc_id"] = id;
+    data["id"] = id;
     return ActivityDetails.fromJson(data);
   }
 
@@ -137,7 +137,7 @@ class UserRepository implements IUserRepository {
       DocumentSnapshot refDocument = await ref.get();
       Map<String, dynamic> document =
           refDocument.data() as Map<String, dynamic>;
-      document["doc_id"] = ref.id;
+      document["id"] = ref.id;
       data.add(document);
     }
 

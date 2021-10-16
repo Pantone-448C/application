@@ -1,6 +1,7 @@
 import 'package:application/apptheme.dart';
 import 'package:application/profile/cubit/profile_cubit.dart';
 import 'package:application/profile/cubit/profile_state.dart';
+import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -284,7 +285,7 @@ class ProfilePage extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProfileCubit(UserRepository()),
+      create: (_) => ProfileCubit(RestUserRepository()),
       child: Scaffold(
         appBar: _profileAppBar(context),
         body: BlocListener<ProfileCubit, ProfileState>(
