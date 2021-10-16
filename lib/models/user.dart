@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';

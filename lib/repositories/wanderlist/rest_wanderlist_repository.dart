@@ -1,9 +1,7 @@
-import 'dart:convert';
 
 import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/rest_api.dart';
 import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RestWanderlistRepository implements IWanderlistRepository {
 

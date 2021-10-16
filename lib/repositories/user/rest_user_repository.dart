@@ -1,14 +1,15 @@
+import 'dart:convert';
+
 import 'package:application/models/activity.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/activity/rest_activity_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:convert';
-
-import 'i_user_repository.dart';
 import 'package:http/http.dart' as http;
+
 import '../rest_api.dart';
+import 'i_user_repository.dart';
 
 class RestUserRepository implements IUserRepository {
 
