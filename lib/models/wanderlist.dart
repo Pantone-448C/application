@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:application/models/activity.dart';
 import 'package:equatable/equatable.dart';

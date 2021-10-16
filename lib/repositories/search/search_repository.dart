@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:application/activity/view/activity_info.dart';
 import 'package:application/models/activity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'i_search_repository.dart';
 import 'package:http/http.dart' as http;
+
+import 'i_search_repository.dart';
 
 
 class SearchRepository implements ISearchRepository {
   static const API_SCHEME = 'http';
-  static const API_HOST = "192.168.0.36";
+  static const API_HOST = "189.254.206.35.bc.googleusercontent.com";
   static const API_PORT = 8080;
   static const API_BASE_PATH = "/activity";
 

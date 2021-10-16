@@ -1,7 +1,7 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart';
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 // These should be generic text styles, eg "label", "title", "button1", "button2"
 // loginButton and signupButton are temporary to illustrate how they are used,

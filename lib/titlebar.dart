@@ -1,11 +1,10 @@
 import 'package:application/apptheme.dart';
-import 'package:application/activity/view/activity_info.dart';
-import 'package:application/profile/view/profile_page.dart';
+import 'package:application/pages/profile/view/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'login/view/login.dart';
+import 'pages/login/view/login.dart';
 
 class Titlebar extends StatelessWidget implements PreferredSizeWidget {
   void handleProfileButton(BuildContext context) {

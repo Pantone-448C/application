@@ -1,8 +1,6 @@
 import 'package:application/models/activity.dart';
 import 'package:application/models/wanderlist.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/widgets.dart';
 
 @immutable

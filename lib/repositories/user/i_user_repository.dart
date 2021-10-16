@@ -1,7 +1,6 @@
 import 'package:application/models/activity.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class IUserRepository {
   Future<UserDetails> getUserData();
