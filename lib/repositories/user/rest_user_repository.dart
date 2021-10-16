@@ -1,7 +1,7 @@
 import 'package:application/models/activity.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
-import 'package:application/repositories/activity/good_activity_repository.dart';
+import 'package:application/repositories/activity/rest_activity_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:convert';
@@ -10,10 +10,10 @@ import 'i_user_repository.dart';
 import 'package:http/http.dart' as http;
 import '../rest_api.dart';
 
-class GoodUserRepository implements IUserRepository {
+class RestUserRepository implements IUserRepository {
 
 
-  GoodUserRepository() {
+  RestUserRepository() {
     final FirebaseAuth auth = FirebaseAuth.instance;
     _setUser(auth, auth.currentUser);
     auth.authStateChanges().listen((newUser) => _setUser(auth, newUser));
@@ -75,7 +75,7 @@ class GoodUserRepository implements IUserRepository {
   }
 
   Future<ActivityDetails> getActivity(String id) async {
-    return GoodActivityRepository().getActivity(id);
+    return RestActivityRepository().getActivity(id);
   }
 
   @override

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:application/apptheme.dart';
 import 'package:application/components/activity_summary_item_large.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
-import 'package:application/repositories/user/good_user_repository.dart';
+import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -196,7 +196,7 @@ class WanQrPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<QrCubit>(
-      create: (BuildContext context) => QrCubit(GoodUserRepository()),
+      create: (BuildContext context) => QrCubit(RestUserRepository()),
       child: WanQrScanner(),
     );
   }

@@ -23,7 +23,6 @@ restUri(String path, Map<String, dynamic> queryParams) {
 }
 
 Future<Map> getDocument(Uri uri) async {
-  print(await getToken());
   var response = await http.get(uri, headers: await getToken());
   int tries = 0;
   while (response.statusCode != 200 && tries++ < 3) {

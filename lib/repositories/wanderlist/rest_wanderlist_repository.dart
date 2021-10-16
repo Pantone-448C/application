@@ -5,7 +5,7 @@ import 'package:application/repositories/rest_api.dart';
 import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class GoodWanderlistRepository implements IWanderlistRepository {
+class RestWanderlistRepository implements IWanderlistRepository {
 
   @override
   Future<Wanderlist> getWanderlist(String id) async {

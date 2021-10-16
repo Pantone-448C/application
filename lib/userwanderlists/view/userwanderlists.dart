@@ -3,8 +3,8 @@ import 'package:application/components/searchfield.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
-import 'package:application/repositories/user/good_user_repository.dart';
-import 'package:application/repositories/wanderlist/good_wanderlist_repository.dart';
+import 'package:application/repositories/user/rest_user_repository.dart';
+import 'package:application/repositories/wanderlist/rest_wanderlist_repository.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
@@ -23,8 +23,8 @@ class UserWanderlists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserWanderlistsCubit( GoodUserRepository(),
-        GoodWanderlistRepository()),
+      create: (context) => UserWanderlistsCubit( RestUserRepository(),
+        RestWanderlistRepository()),
       child: _UserWanderlistsContainer(),
     );
   }

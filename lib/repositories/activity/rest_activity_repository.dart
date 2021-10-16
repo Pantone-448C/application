@@ -7,12 +7,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../rest_api.dart';
 
-class GoodActivityRepository implements IActivityRepository {
+class RestActivityRepository implements IActivityRepository {
 
   @override
   Future<ActivityDetails> getActivity(String id) async {
     var data = await getDocument(restUri("activities/" + id, {})) as Map<String, dynamic>;
-    print(data);
     return ActivityDetails.fromJson(data);
   }
 
