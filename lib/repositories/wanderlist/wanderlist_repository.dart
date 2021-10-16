@@ -12,7 +12,7 @@ class WanderlistRepository implements IWanderlistRepository {
   Future<Wanderlist> getWanderlist(String id) async {
     DocumentSnapshot snapshot = await _wanderlists.doc(id).get();
     var data = snapshot.data() as Map<String, dynamic>;
-    data["id"] = id;
+    data["doc_id"] = id;
     return Wanderlist.fromJson(data);
   }
 
@@ -29,7 +29,7 @@ class WanderlistRepository implements IWanderlistRepository {
   }
 
   @override
-  Future<Wanderlist> addWanderlist(Wanderlist wanderlist) async {
+  Future<DocumentReference> addWanderlist(Wanderlist wanderlist) async {
     DocumentReference id = await _wanderlists.add({
       "author_name": wanderlist.creatorName,
       "icon": wanderlist.icon,
@@ -38,7 +38,6 @@ class WanderlistRepository implements IWanderlistRepository {
           wanderlist.activities.map((activity) => activity.id).toList(),
     });
 
-    wanderlist = wanderlist.copyWith(id: id.id);
-    return wanderlist;
+    return id;
   }
 }

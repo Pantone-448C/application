@@ -6,10 +6,7 @@ import 'package:application/components/list_of_wanderlists.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
-import 'package:application/repositories/activity/rest_activity_repository.dart';
-import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:application/repositories/user/user_repository.dart';
-import 'package:application/repositories/wanderlist/rest_wanderlist_repository.dart';
 import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,8 +23,8 @@ class AddActivityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ActivityAddCubit(RestUserRepository(),
-          RestWanderlistRepository(), RestActivityRepository(), activityId),
+      create: (context) => ActivityAddCubit(UserRepository(),
+          WanderlistRepository(), ActivityRepository(), activityId),
       child: BlocBuilder<ActivityAddCubit, ActivityAddState>(
         builder: (context, state) {
           if (state is ActivityAddLoaded) {

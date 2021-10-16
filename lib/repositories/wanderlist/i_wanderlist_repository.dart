@@ -5,5 +5,5 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 abstract class IWanderlistRepository {
   Future<Wanderlist> getWanderlist(String id);
   Future<void> setWanderlist(Wanderlist wanderlist);
-  Future<Wanderlist> addWanderlist(Wanderlist wanderlist);
+  Future<DocumentReference> addWanderlist(Wanderlist wanderlist);
 }

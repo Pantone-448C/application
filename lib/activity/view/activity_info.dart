@@ -1,7 +1,6 @@
 import 'package:application/activity/cubit/activity_cubit.dart';
 import 'package:application/apptheme.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
-import 'package:application/repositories/activity/rest_activity_repository.dart';
 import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +19,7 @@ class ActivityInfo extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ActivityCubit(RestActivityRepository(), id),
+      create: (context) => ActivityCubit(ActivityRepository(), id),
       child: Scaffold(
         backgroundColor: WanTheme.colors.offWhite,
         body: ListView(

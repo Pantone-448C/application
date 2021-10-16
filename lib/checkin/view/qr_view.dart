@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:application/apptheme.dart';
 import 'package:application/components/activity_summary_item_large.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
-import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:application/repositories/user/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -167,7 +166,7 @@ class _QrAddActivity extends StatelessWidget {
       } else if (state is ActivityAlreadyComplete) {
         return Column(children: <Widget>[
           Container(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 20, left: 20, right: 20, bottom: 50),
+            padding: EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 50),
             child: ActivitySummaryItemLarge(state.activity),
           ),
           Center(child: Text("Activity already added.")),
@@ -196,7 +195,7 @@ class WanQrPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<QrCubit>(
-      create: (BuildContext context) => QrCubit(RestUserRepository()),
+      create: (BuildContext context) => QrCubit(UserRepository()),
       child: WanQrScanner(),
     );
   }

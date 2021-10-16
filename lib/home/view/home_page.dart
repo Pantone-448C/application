@@ -3,7 +3,7 @@ import 'package:application/home/cubit/user_cubit.dart';
 import 'package:application/home/widgets/pinned_wanderlists.dart';
 import 'package:application/home/widgets/reward_info.dart';
 import 'package:application/home/widgets/wanderlists_list_view.dart';
-import 'package:application/repositories/user/rest_user_repository.dart';
+import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/sizeconfig.dart';
 import 'package:application/userwanderlists/view/userwanderlists.dart';
 import 'package:flutter/material.dart';
@@ -69,8 +69,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserCubit(RestUserRepository()),
-
+      create: (context) => UserCubit(UserRepository()),
       child: Scaffold (
         appBar: Titlebar(),
         body: _HomePage(gotoWanderlistsPage)
