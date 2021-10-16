@@ -23,7 +23,9 @@ class ActivityCubit extends Cubit<ActivityState> {
   }
 
   Future<void> launchMaps() async {
+    print("beep");
     ActivityDetails a = await activityRepository.getActivity(id);
+    print("beep");
     List<Location> locations = await locationFromAddress(a.address);
     var coords = Coords(locations.first.latitude, locations.first.longitude);
     final availableMaps = await MapLauncher.installedMaps;

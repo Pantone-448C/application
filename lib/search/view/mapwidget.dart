@@ -65,6 +65,7 @@ class MapSampleState extends State<MapSample> {
               );
             });
             setState(() {
+              print(markers);
               markers = newMarkers;
             });
           }
@@ -94,6 +95,7 @@ class MapSampleState extends State<MapSample> {
               );
             });
             setState(() {
+              print(markers);
               markers = newMarkers;
             });
           }
