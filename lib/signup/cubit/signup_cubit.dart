@@ -14,18 +14,6 @@ class SignupCubit extends Cubit<SignupState> {
     ));
   }
 
-  void selectInput() {
-    emit(state.copyWith(
-      isKeyboardOpen: true,
-    ));
-  }
-
-  void deSelectInput() {
-    emit(state.copyWith(
-      isKeyboardOpen: false,
-    ));
-  }
-
   void passwordChanged(String value) {
     emit(state.copyWith(
       password: value,
@@ -60,12 +48,13 @@ class SignupCubit extends Cubit<SignupState> {
     } catch (e) {
       return false;
     }
-
   }
 
-  Future<String> signupWithCredentials() async {
+  Future<bool> signupWithCredentials() async {
     if (state.password != state.passwordConfirm) {
-      return "Passwords don't match";
+      emit(state.copyWith(signupError: "Passwords don't match"));
+      emit(state.copyWith(signupError: ""));
+      return false;
     }
 
     try {
@@ -80,15 +69,19 @@ class SignupCubit extends Cubit<SignupState> {
         'last_name': state.lastName,
         'email': state.email,
       });
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        emit(state.copyWith(signupError: "The password provided is too weak."));
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        emit(state.copyWith(
+            signupError: "The account already exists for that email."));
       }
-      return "";
+      emit(state.copyWith(signupError: ""));
     } catch (e) {
-      print(e);
+      emit(state.copyWith(signupError: "Error creating account"));
+      emit(state.copyWith(signupError: ""));
     }
+    return false;
   }
 }

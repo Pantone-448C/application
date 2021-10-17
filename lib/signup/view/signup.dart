@@ -20,10 +20,13 @@ InputDecoration inputDecoration(String label) {
 }
 
 class _InputBox extends StatelessWidget {
-  _InputBox(this.onChanged, this._labelText, {Key? key}) : super(key: key);
+  _InputBox(this.onChanged, this._labelText,
+      {Key? key, this.obscureText = false})
+      : super(key: key);
 
   String _labelText;
   var onChanged;
+  bool obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -111,52 +114,71 @@ class SignupPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Sign Up"),
-      ),
-      body: ListView(
-        children: [
-          Container(
-            height: 200,
-            width: 350,
-            padding: EdgeInsets.only(top: 40),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(200),
+    return BlocListener<SignupCubit, SignupState>(
+      listener: (context, state) {
+        if (state.signupError != "") {
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: Text(state.signupError),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
             ),
-            child: Center(
-              child: Text(
-                "Enter a new password",
-                style: TextStyle(fontSize: 25),
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Sign Up"),
+        ),
+        body: ListView(
+          children: [
+            Container(
+              height: 200,
+              width: 350,
+              padding: EdgeInsets.only(top: 40),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(200),
+              ),
+              child: Center(
+                child: Text(
+                  "Enter a new password",
+                  style: TextStyle(fontSize: 25),
+                ),
               ),
             ),
-          ),
-          BlocBuilder<SignupCubit, SignupState>(
-            builder: (context, state) {
-              return _InputBox(
-                (value) => context.read<SignupCubit>().passwordChanged(value),
-                "Password",
-              );
-            },
-          ),
-          BlocBuilder<SignupCubit, SignupState>(
-            builder: (context, state) {
-              return _InputBox(
-                (value) =>
-                    context.read<SignupCubit>().passwordConfirmChanged(value),
-                "Confirm Password",
-              );
-            },
-          ),
-          _FinishButton(),
-        ],
+            BlocBuilder<SignupCubit, SignupState>(
+              builder: (context, state) {
+                return _InputBox(
+                  (value) => context.read<SignupCubit>().passwordChanged(value),
+                  "Password",
+                  obscureText: true,
+                );
+              },
+            ),
+            BlocBuilder<SignupCubit, SignupState>(
+              builder: (context, state) {
+                return _InputBox(
+                  (value) =>
+                      context.read<SignupCubit>().passwordConfirmChanged(value),
+                  "Confirm Password",
+                  obscureText: true,
+                );
+              },
+            ),
+            _FinishButton(),
+          ],
+        ),
       ),
     );
   }
 }
 
 class _NextButton extends StatelessWidget {
-
   void showInvalidEmailError(BuildContext context) {
     showDialog<String>(
       context: context,
@@ -172,6 +194,7 @@ class _NextButton extends StatelessWidget {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<SignupCubit>(context);
@@ -182,21 +205,22 @@ class _NextButton extends StatelessWidget {
             child: ElevatedButton(
               child: Text("Next", style: TextStyle(fontSize: 20)),
               onPressed: () {
-                context.read<SignupCubit>().isEmailValid(state.email).then(
-                    (valid) {
-                      if (valid) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) {
-                            return BlocProvider<SignupCubit>.value(
-                                value: bloc, child: SignupPasswordPage());
-                          }),
-                        );
-                      } else {
-                        showInvalidEmailError(context);
-                      }
-                    }
-                );
+                context
+                    .read<SignupCubit>()
+                    .isEmailValid(state.email)
+                    .then((valid) {
+                  if (valid) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return BlocProvider<SignupCubit>.value(
+                            value: bloc, child: SignupPasswordPage());
+                      }),
+                    );
+                  } else {
+                    showInvalidEmailError(context);
+                  }
+                });
               },
             ),
           ),
@@ -216,8 +240,14 @@ class _FinishButton extends StatelessWidget {
             child: ElevatedButton(
               child: Text("Create account", style: TextStyle(fontSize: 20)),
               onPressed: () {
-                context.read<SignupCubit>().signupWithCredentials();
-                Navigator.popUntil(context, ModalRoute.withName('/'));
+                context
+                    .read<SignupCubit>()
+                    .signupWithCredentials()
+                    .then((result) {
+                  if (result) {
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                  }
+                });
               },
             ),
           ),
