@@ -8,7 +8,7 @@ part 'signup_state.dart';
 class SignupCubit extends Cubit<SignupState> {
   SignupCubit() : super(const SignupState());
 
-  void emailChanged(String value) {
+  void emailChanged(String value) async {
     emit(state.copyWith(
       email: value,
     ));
@@ -50,9 +50,22 @@ class SignupCubit extends Cubit<SignupState> {
     ));
   }
 
-  Future<void> signupWithCredentials() async {
+  Future<bool> isEmailValid(String email) async {
+    if (email == "") {
+      return false;
+    }
+    try {
+      var users = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
+      return users.isEmpty;
+    } catch (e) {
+      return false;
+    }
+
+  }
+
+  Future<String> signupWithCredentials() async {
     if (state.password != state.passwordConfirm) {
-      return;
+      return "Passwords don't match";
     }
 
     try {
@@ -73,6 +86,7 @@ class SignupCubit extends Cubit<SignupState> {
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
+      return "";
     } catch (e) {
       print(e);
     }

@@ -156,6 +156,22 @@ class SignupPasswordPage extends StatelessWidget {
 }
 
 class _NextButton extends StatelessWidget {
+
+  void showInvalidEmailError(BuildContext context) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Invalid email"),
+        content: Text("Choose another one"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<SignupCubit>(context);
@@ -166,12 +182,20 @@ class _NextButton extends StatelessWidget {
             child: ElevatedButton(
               child: Text("Next", style: TextStyle(fontSize: 20)),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return BlocProvider<SignupCubit>.value(
-                        value: bloc, child: SignupPasswordPage());
-                  }),
+                context.read<SignupCubit>().isEmailValid(state.email).then(
+                    (valid) {
+                      if (valid) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return BlocProvider<SignupCubit>.value(
+                                value: bloc, child: SignupPasswordPage());
+                          }),
+                        );
+                      } else {
+                        showInvalidEmailError(context);
+                      }
+                    }
                 );
               },
             ),

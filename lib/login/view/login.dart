@@ -30,10 +30,40 @@ class LoginForm extends StatelessWidget {
   static const topInset = 50.0;
   LoginForm({Key? key}) : super(key: key);
 
+  void showError(BuildContext context, String reason) {
+    String heading, body;
+    if (reason == "user-not-found") {
+      heading = "Couldn't log in";
+      body = "No user found with that email address";
+    } else if (reason == "wrong-password"){
+      heading = "Couldn't log in";
+      body = "Invalid password";
+    } else {
+      heading = "Couldn't log in";
+      body = "Invalid username or password";
+    }
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(heading),
+        content: Text(body),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state.failReason != "") {
+          showError(context, state.failReason);
+        }
+      },
       child: ListView(
         children: [
           Logo(),
