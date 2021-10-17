@@ -1,12 +1,15 @@
 import 'package:application/apptheme.dart';
+import 'package:application/components/list_of_wanderlists.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
+import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
+import 'package:application/wanderlist/view/wanderlist.dart';
 import 'package:flutter/material.dart';
 
 class PinnedWanderlists extends StatelessWidget {
   const PinnedWanderlists(this.pinnedWanderlists, this.gotoWanderlistsPage);
 
-  final List<Wanderlist> pinnedWanderlists;
+  final List<UserWanderlist> pinnedWanderlists;
   final Function() gotoWanderlistsPage;
 
   @override
@@ -23,7 +26,7 @@ class PinnedWanderlists extends StatelessWidget {
 class _PinnedWanderlistsContent extends StatelessWidget {
   const _PinnedWanderlistsContent(this.pinnedWanderlists);
 
-  final List<Wanderlist> pinnedWanderlists;
+  final List<UserWanderlist> pinnedWanderlists;
 
   static const String title = "Pinned Wanderlists";
   static const Radius corner = Radius.circular(WanTheme.CARD_CORNER_RADIUS);
@@ -48,18 +51,16 @@ class _PinnedWanderlistsContent extends StatelessWidget {
   }
 
   Widget _wanderlists(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        Wanderlist pinnedWanderlist = pinnedWanderlists[index];
-        return WanderlistSummaryItem(
-          listName: pinnedWanderlist.name,
-          authorName: pinnedWanderlist.creatorName,
-          numTotalItems: pinnedWanderlist.activities.length,
-          imageUrl: pinnedWanderlist.icon,
-        );
-      },
-      itemCount: pinnedWanderlists.length,
+    return ListOfWanderlists(
+      searchable: false,
+      readOnly: true,
+      onWanderlistTap: (UserWanderlist uw) => Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (context) => WanderlistPage(uw),
+        ),
+      ),
+      wanderlists: pinnedWanderlists,
     );
   }
 
