@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 const API_SCHEME = 'http';
-const API_HOST = "35.206.254.189";
+const API_HOST = "189.254.206.35.bc.googleusercontent.com";
 const API_PORT = 8080;
 
 getToken() async {
