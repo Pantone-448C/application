@@ -54,43 +54,29 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
     );
 
     // TODO: Factor out more arguments somehow
+    var _onPinTap;
     if (widget.readOnly) {
-      return ListView(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        primary: true,
-        padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-        physics: WanTheme.scrollPhysics,
-        children: [
-          if (widget.searchable) searchBar,
-          for (int index = 0; index < displayedWanderlists.length; index++)
-            _TappableWanderlistCard(
-              key: Key('$index'),
-              wanderlist: displayedWanderlists[index],
-              onWanderlistTap: widget.onWanderlistTap,
-            )
-        ],
-      );
+      _onPinTap = null;
     } else {
-      return ReorderableListView(
-        header: searchBar,
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        primary: true,
-        padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-        physics: WanTheme.scrollPhysics,
-        onReorder: widget.onReorder ?? (_, __) {},
-        children: [
-          for (int index = 0; index < displayedWanderlists.length; index++)
-            _TappableWanderlistCard(
-              key: Key('$index'),
-              wanderlist: displayedWanderlists[index],
-              onWanderlistTap: widget.onWanderlistTap,
-              onPinTap: widget.onPinTap,
-            )
-        ],
-      );
+      _onPinTap = widget.onPinTap;
     }
+    return ListView(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      primary: true,
+      padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+      physics: WanTheme.scrollPhysics,
+      children: [
+        if (widget.searchable) searchBar,
+        for (int index = 0; index < displayedWanderlists.length; index++)
+          _TappableWanderlistCard(
+            key: Key('$index'),
+            wanderlist: displayedWanderlists[index],
+            onWanderlistTap: widget.onWanderlistTap,
+            onPinTap: _onPinTap,
+          )
+      ],
+    );
   }
 
   void filterSearch(String query) {
