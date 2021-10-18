@@ -10,7 +10,7 @@ class ActivityDetails extends Equatable {
 
   factory ActivityDetails.fromJson(Map<String, dynamic> json) {
     var a = ActivityDetails(
-      json["doc_id"],
+      json["id"],
       json['name'],
       json['about'],
       json['thumb_url'],
@@ -49,6 +49,12 @@ class ActivityDetails extends Equatable {
   List<Object?> get props =>
       [id, name, about, thumbUrl, imageUrl, address, points];
 
+
+  Map<String, dynamic> toRef() {
+    return {
+      'ref': "activities/" + id,
+    };
+  }
 
   Map<String, dynamic> toJson() {
     return {

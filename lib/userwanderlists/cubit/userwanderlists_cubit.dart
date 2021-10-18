@@ -59,11 +59,8 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
     UserDetails details = await userRepository.getUserData();
     String creatorName = details.firstName + " " + details.lastName;
     Wanderlist wanderlist = Wanderlist("", name, creatorName, [], "");
-    DocumentReference ref =
-        await wanderlistRepository.addWanderlist(wanderlist);
-    wanderlist = wanderlist.copyWith(id: ref.id);
-    UserWanderlist userWanderlist =
-        UserWanderlist(wanderlist, [], false, 0, ref.id);
+    wanderlist = await wanderlistRepository.addWanderlist(wanderlist);
+    UserWanderlist userWanderlist = UserWanderlist(wanderlist, [], false, 0, wanderlist.id);
     await userRepository.addUserWanderlist(userWanderlist);
     await _loadLists();
   }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:application/activity/view/activity_info.dart';
 import 'package:application/models/activity.dart';
@@ -10,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class SearchRepository implements ISearchRepository {
   static const API_SCHEME = 'http';
-  static const API_HOST = "189.254.206.35.bc.googleusercontent.com";
+  static const API_HOST = "192.168.0.36";
   static const API_PORT = 8080;
   static const API_BASE_PATH = "/activity";
 
@@ -19,7 +18,6 @@ class SearchRepository implements ISearchRepository {
     var results = jsonDecode(json)["results"];
     results.map((json) => ActivityDetails.fromJson(json));
     List<ActivityDetails> l = List.empty(growable: true);
-    results.forEach((element) => element["doc_id"] = element["id"]);
     results.forEach((element) => {l.add(ActivityDetails.fromJson(element))});
     return l;
   }

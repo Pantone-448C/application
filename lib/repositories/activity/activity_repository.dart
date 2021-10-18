@@ -13,7 +13,7 @@ class ActivityRepository implements IActivityRepository {
     DocumentSnapshot snapshot = await _activities.doc(id).get();
     if (snapshot.exists) {
       var data = snapshot.data() as Map<String, dynamic>;
-      data["doc_id"] = id;
+      data["id"] = id;
       return ActivityDetails.fromJson(data);
     } else {
       throw Exception(["Failed to get activity $id"]);
@@ -27,7 +27,7 @@ class ActivityRepository implements IActivityRepository {
     List<ActivityDetails> activities =
         snapshot.docs.map((DocumentSnapshot doc) {
       final data = doc.data() as Map<String, dynamic>;
-      data["doc_id"] = doc.id;
+      data["id"] = doc.id;
       return ActivityDetails.fromJson(data);
     }).toList();
     log("test");

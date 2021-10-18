@@ -1,11 +1,9 @@
 import 'dart:developer';
 
-import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
-import 'package:application/repositories/activity/activity_repository.dart';
-import 'package:application/repositories/user/user_repository.dart';
-import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
+import 'package:application/repositories/activity/rest_activity_repository.dart';
+import 'package:application/repositories/wanderlist/rest_wanderlist_repository.dart';
 import 'package:application/wanderlist/cubit/suggestions_cubit.dart';
 import 'package:application/wanderlist/cubit/wanderlist_cubit.dart';
 import 'package:application/wanderlist/cubit/wanderlist_state.dart';
@@ -26,10 +24,10 @@ class WanderlistPage extends StatelessWidget {
         body: MultiBlocProvider(
           providers: [
             BlocProvider<WanderlistCubit>(
-              create: (context) => WanderlistCubit(WanderlistRepository()),
+              create: (context) => WanderlistCubit(RestWanderlistRepository()),
             ),
             BlocProvider<SuggestionsCubit>(
-              create: (context) => SuggestionsCubit(ActivityRepository()),
+              create: (context) => SuggestionsCubit(RestActivityRepository()),
             ),
           ],
           child: _PageContent(wanderlist.wanderlist),
