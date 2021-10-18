@@ -6,7 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'i_user_repository.dart';
 
-class UserRepository implements IUserRepository {
+/// Deprecated - no longer up to date with spec
+class UserRepository {
   UserRepository() {
     final FirebaseAuth auth = FirebaseAuth.instance;
     _setUser(auth, auth.currentUser);
