@@ -13,10 +13,12 @@ class ListOfWanderlists extends StatefulWidget {
     this.readOnly = false,
     this.onReorder,
     this.onPinTap,
+    this.searchable = true,
   }) : super(key: key);
   final void Function(UserWanderlist) onWanderlistTap;
   final void Function(int, int)? onReorder;
   final void Function(UserWanderlist)? onPinTap;
+  final bool searchable;
   final readOnly;
   final List<UserWanderlist> wanderlists;
 
@@ -65,7 +67,7 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
       padding: EdgeInsets.all(WanTheme.CARD_PADDING),
       physics: WanTheme.scrollPhysics,
       children: [
-        searchBar,
+        if (widget.searchable) searchBar,
         for (int index = 0; index < displayedWanderlists.length; index++)
           _TappableWanderlistCard(
             key: Key('$index'),
@@ -123,6 +125,12 @@ class _TappableWanderlistCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Wanderlist wlist = wanderlist.wanderlist;
+    var _onPinTap;
+    if (onPinTap != null) {
+      _onPinTap = () => onPinTap?.call(wanderlist);
+    } else {
+      _onPinTap = null;
+    }
     return Container(
       margin: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),
       key: ValueKey(wanderlist.hashCode),
@@ -133,9 +141,7 @@ class _TappableWanderlistCard extends StatelessWidget {
         onTap: () => onWanderlistTap(wanderlist),
         child: WanderlistSummaryItem(
           isPinned: wanderlist.inTrip,
-          onPinTap: () {
-            onPinTap?.call(wanderlist);
-          },
+          onPinTap: _onPinTap,
           imageUrl: wlist.icon,
           authorName: wlist.creatorName,
           listName: wlist.name,

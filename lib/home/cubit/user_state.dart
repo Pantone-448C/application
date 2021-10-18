@@ -24,7 +24,7 @@ class UserLoaded extends Equatable implements UserState {
   final int pointsUntilReward;
   final int nextRewardTotalPoints;
   final double percentageUntilReward;
-  final List<Wanderlist> pinnedWanderlists;
+  final List<UserWanderlist> pinnedWanderlists;
 
   @override
   List<Object?> get props => [
