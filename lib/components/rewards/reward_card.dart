@@ -137,15 +137,24 @@ class RewardCard extends StatelessWidget {
 
   Widget _buildOfferPill() {
     return Container(
-      width: 130,
-      height: 40,
+      constraints: BoxConstraints(
+        minWidth: 130,
+        minHeight: 40,
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(18),
         color: WanTheme.colors.bgOrange,
       ),
-      child: Center(
-        child: Text(
+      padding: EdgeInsets.all(4.0),
+      child: Column(
+        // This Column is a hacky way to center the text vertically, without
+        // taking up the entire width of the column and causing the pill to be
+        // too wide.
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
           this.offer,
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: WanTheme.colors.orange,
             fontFamily: "Inter",
@@ -153,6 +162,7 @@ class RewardCard extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
+        ],
       ),
     );
   }

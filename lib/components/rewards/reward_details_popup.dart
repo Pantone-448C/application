@@ -175,6 +175,7 @@ class _RewardDetailsPopupState extends State<RewardDetailsPopup> {
         color: WanTheme.colors.bgOrange,
         borderRadius: BorderRadius.circular(24.0),
       ),
+      padding: EdgeInsets.all(4.0),
       child: Column(
         // This Column is a hacky way to center the text vertically, without
         // taking up the entire width of the column and causing the pill to be
