@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:application/models/activity.dart';
 import 'package:application/models/reward.dart';
 import 'package:application/models/user.dart';
@@ -28,7 +30,7 @@ class RestUserRepository implements IUserRepository {
   late CollectionReference _users;
   late CollectionReference _activities;
 
-  static final isUserRewardsEndpointImplemented = false;
+  static final isUserRewardsEndpointImplemented = true;
 
   @override
   Future<UserDetails> getUserData() async {
@@ -78,18 +80,19 @@ class RestUserRepository implements IUserRepository {
       List<Reward> rewards = (await getUserRewards()).toList();
       for (int i = 0; i < rewards.length; i++) {
         if (rewards[i].id == reward.id) {
-          rewards[i].copyWith(
-            redemptionDate: reward.redemptionDate,
-            description: reward.description,
-            imageUrl: reward.imageUrl,
-            location: reward.location,
-            value: reward.value,
-          );
+          rewards[i] = reward;
         }
       }
       List<Map<String, dynamic>> jsonRewards =
           rewards.map((reward) => reward.toJson()).toList();
-      await postDocument(restUri("user/rewards", {}), {"rewards": jsonRewards});
+
+      // work around until the reward endpoint is actually implemented
+      Map<String, dynamic> data = (await getUserData()).toJson();
+      data["rewards"] = jsonRewards;
+      var headers = await getToken();
+      headers["content-type"] = "application/json";
+      await http.post(restUri("user", {}),
+          headers: headers, body: json.encode(data));
     } else {
       throw new UnimplementedError(
           "This method is not fully implemented yet, use updateUserDate");
