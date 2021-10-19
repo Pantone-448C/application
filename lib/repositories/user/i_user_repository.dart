@@ -19,8 +19,10 @@ abstract class IUserRepository {
 
   // Rewards
   Future<Iterable<Reward>> getUserRewards();
-  Future<dynamic> getPointsForNextReward();
+  Future<int> getPointsForNextReward();
   Future<Reward> getRecommendedReward();
+  Future<void> addReward(Reward reward);
+  Future<void> updateReward(Reward reward);
 
   // Activity ???
   Future<ActivityDetails> getActivity(String id);

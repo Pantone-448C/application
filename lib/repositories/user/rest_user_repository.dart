@@ -28,6 +28,8 @@ class RestUserRepository implements IUserRepository {
   late CollectionReference _users;
   late CollectionReference _activities;
 
+  static final isUserRewardsEndpointImplemented = false;
+
   @override
   Future<UserDetails> getUserData() async {
     var data = await getDocument(restUri("user", {})) as Map<String, dynamic>;
@@ -55,6 +57,43 @@ class RestUserRepository implements IUserRepository {
         await getDocument(restUri("user/rewards/next", {}))
             as Map<String, dynamic>;
     return Reward.fromRewardOnlyJson(reward);
+  }
+
+  @override
+  Future<void> addReward(Reward reward) async {
+    if (isUserRewardsEndpointImplemented) {
+      List<Map> rewards =
+          (await getUserRewards()).map((reward) => reward.toJson()).toList();
+      rewards.add(reward.toJson());
+      await postDocument(restUri("user/rewards", {}), {"rewards": rewards});
+    } else {
+      throw new UnimplementedError(
+          "This method is not fully implemented yet, use updateUserDate");
+    }
+  }
+
+  @override
+  Future<void> updateReward(Reward reward) async {
+    if (isUserRewardsEndpointImplemented) {
+      List<Reward> rewards = (await getUserRewards()).toList();
+      for (int i = 0; i < rewards.length; i++) {
+        if (rewards[i].id == reward.id) {
+          rewards[i].copyWith(
+            redemptionDate: reward.redemptionDate,
+            description: reward.description,
+            imageUrl: reward.imageUrl,
+            location: reward.location,
+            value: reward.value,
+          );
+        }
+      }
+      List<Map<String, dynamic>> jsonRewards =
+          rewards.map((reward) => reward.toJson()).toList();
+      await postDocument(restUri("user/rewards", {}), {"rewards": jsonRewards});
+    } else {
+      throw new UnimplementedError(
+          "This method is not fully implemented yet, use updateUserDate");
+    }
   }
 
   @override
