@@ -1,4 +1,5 @@
 import 'package:application/models/activity.dart';
+import 'package:application/models/reward.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/activity/rest_activity_repository.dart';
@@ -11,14 +12,11 @@ import 'package:http/http.dart' as http;
 import '../rest_api.dart';
 
 class RestUserRepository implements IUserRepository {
-
-
   RestUserRepository() {
     final FirebaseAuth auth = FirebaseAuth.instance;
     _setUser(auth, auth.currentUser);
     auth.authStateChanges().listen((newUser) => _setUser(auth, newUser));
   }
-
 
   _setUser(auth, user) {
     if (user != null) {
@@ -30,10 +28,72 @@ class RestUserRepository implements IUserRepository {
   late CollectionReference _users;
   late CollectionReference _activities;
 
+  static final isUserRewardsEndpointImplemented = false;
+
   @override
   Future<UserDetails> getUserData() async {
     var data = await getDocument(restUri("user", {})) as Map<String, dynamic>;
     return UserDetails.fromJson(data);
+  }
+
+  @override
+  Future<Iterable<Reward>> getUserRewards() async {
+    Map<String, dynamic> user =
+        await getDocument(restUri("user", {})) as Map<String, dynamic>;
+    return (user["rewards"] as List)
+        .map((reward) => Reward.fromJson(reward as Map<String, dynamic>))
+        .toList();
+  }
+
+  @override
+  Future<int> getPointsForNextReward() async {
+    return await getDyanmicDocument(restUri("user/rewards/totalpoints", {}))
+        as int;
+  }
+
+  @override
+  Future<Reward> getRecommendedReward() async {
+    Map<String, dynamic> reward =
+        await getDocument(restUri("user/rewards/next", {}))
+            as Map<String, dynamic>;
+    return Reward.fromRewardOnlyJson(reward);
+  }
+
+  @override
+  Future<void> addReward(Reward reward) async {
+    if (isUserRewardsEndpointImplemented) {
+      List<Map> rewards =
+          (await getUserRewards()).map((reward) => reward.toJson()).toList();
+      rewards.add(reward.toJson());
+      await postDocument(restUri("user/rewards", {}), {"rewards": rewards});
+    } else {
+      throw new UnimplementedError(
+          "This method is not fully implemented yet, use updateUserDate");
+    }
+  }
+
+  @override
+  Future<void> updateReward(Reward reward) async {
+    if (isUserRewardsEndpointImplemented) {
+      List<Reward> rewards = (await getUserRewards()).toList();
+      for (int i = 0; i < rewards.length; i++) {
+        if (rewards[i].id == reward.id) {
+          rewards[i].copyWith(
+            redemptionDate: reward.redemptionDate,
+            description: reward.description,
+            imageUrl: reward.imageUrl,
+            location: reward.location,
+            value: reward.value,
+          );
+        }
+      }
+      List<Map<String, dynamic>> jsonRewards =
+          rewards.map((reward) => reward.toJson()).toList();
+      await postDocument(restUri("user/rewards", {}), {"rewards": jsonRewards});
+    } else {
+      throw new UnimplementedError(
+          "This method is not fully implemented yet, use updateUserDate");
+    }
   }
 
   @override
@@ -46,11 +106,10 @@ class RestUserRepository implements IUserRepository {
   @override
   Future<void> updateUserData(UserDetails details) async {
     print(await getToken());
-    var headers =await getToken();
+    var headers = await getToken();
     headers["content-type"] = "application/json";
-    final response = await http.post(restUri("user",{}),
-        headers: headers,
-        body: json.encode(details.toJson()));
+    final response = await http.post(restUri("user", {}),
+        headers: headers, body: json.encode(details.toJson()));
 
     print(response);
 
@@ -68,7 +127,6 @@ class RestUserRepository implements IUserRepository {
 
   @override
   Future<void> updateUserCompletedActivities(List<ActivityDetails> list) async {
-
     var details = await getUserData();
     details.completedActivities = list;
     return updateUserData(details);
@@ -95,7 +153,6 @@ class RestUserRepository implements IUserRepository {
     var data = await getUserData();
     return data.wanderlists;
   }
-
 
   @override
   Future<void> addUserWanderlist(UserWanderlist wanderlist) async {
