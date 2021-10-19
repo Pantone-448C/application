@@ -90,11 +90,8 @@ class RewardsList extends StatelessWidget {
   }
 }
 
-Future<String> onRedeemPress() async {
-  // Todo: Update database with redemption date
-  await Future.delayed(Duration(seconds: 2));
-  String redemptionDate = "yes";
-  return redemptionDate;
+Future<String> onRedeemPress(BuildContext context, Reward reward) async {
+  return await context.read<RewardsListCubit>().redeemReward(reward);
 }
 
 class _RewardItem extends StatelessWidget {
@@ -105,7 +102,7 @@ class _RewardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool redeemed = reward.redemptionDate != null;
-
+    BuildContext itemContext = context;
     _onPress() {
       showDialog(
         context: context,
@@ -120,7 +117,9 @@ class _RewardItem extends StatelessWidget {
             "",
             reward.value,
             reward.location,
-            onRedeemPress,
+            () async {
+              return onRedeemPress(itemContext, reward);
+            },
             Navigator.of(context).pop,
             reward.redemptionDate == null
                 ? RewardDetailsPopupStatus.Unredeemed

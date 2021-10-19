@@ -80,4 +80,12 @@ class Reward extends Equatable {
       value ?? this.value,
     );
   }
+
+  String getRedemptionDateAsString() {
+    if (redemptionDate == null) {
+      return "";
+    }
+
+    return DateFormat(datetimeFormat).format(redemptionDate!);
+  }
 }
