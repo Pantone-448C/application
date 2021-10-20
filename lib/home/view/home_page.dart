@@ -139,7 +139,7 @@ class _FilledHomePage extends StatelessWidget {
       children: <Widget>[
         Container(
           // height: SizeConfig(context).h,
-          child: ListView(
+          child: Expanded(child: ListView(
             shrinkWrap: true,
             children: [
               Container(
@@ -154,6 +154,7 @@ class _FilledHomePage extends StatelessWidget {
                 ),
               ),
             ],
+          ),
           ),
         ),
       ],

@@ -14,6 +14,7 @@ class ListOfWanderlists extends StatefulWidget {
     this.onReorder,
     this.onPinTap,
     this.searchable = true,
+    this.scrollable = true,
   }) : super(key: key);
   final void Function(UserWanderlist) onWanderlistTap;
   final void Function(int, int)? onReorder;
@@ -21,6 +22,7 @@ class ListOfWanderlists extends StatefulWidget {
   final bool searchable;
   final readOnly;
   final List<UserWanderlist> wanderlists;
+  final scrollable;
 
   @override
   _ListOfWanderlistsState createState() => _ListOfWanderlistsState();
@@ -39,18 +41,13 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
       displayedWanderlists = widget.wanderlists;
     }
 
-    var searchBar = Padding(
-      // search bar
-      padding: EdgeInsets.symmetric(
-          horizontal: WanTheme.CARD_PADDING,
-          vertical: MediaQuery.of(context).padding.top + WanTheme.CARD_PADDING),
-      child: TextField(
+    var searchBar =
+      TextField(
         keyboardType: TextInputType.text,
         onChanged: (value) => filterSearch(value),
         decoration: SearchField.defaultDecoration.copyWith(
           hintText: "Search Your Wanderlists",
         ),
-      ),
     );
 
     // TODO: Factor out more arguments somehow
@@ -60,23 +57,43 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
     } else {
       _onPinTap = widget.onPinTap;
     }
-    return ListView(
+
+    var list = ListView(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      primary: true,
       padding: EdgeInsets.all(WanTheme.CARD_PADDING),
       physics: WanTheme.scrollPhysics,
       children: [
-        if (widget.searchable) searchBar,
+        if (widget.searchable) Container(height: 60),
         for (int index = 0; index < displayedWanderlists.length; index++)
           _TappableWanderlistCard(
             key: Key('$index'),
             wanderlist: displayedWanderlists[index],
             onWanderlistTap: widget.onWanderlistTap,
             onPinTap: _onPinTap,
-          )
+          ),
+        if (widget.searchable) Container(height: 70),
       ],
     );
+
+
+    if (widget.searchable) {
+      return Stack (
+      children: [
+        list,
+        Padding (
+          padding: EdgeInsets.all(8),
+            child:  Material (
+        borderRadius: BorderRadius.circular(25),
+          shadowColor: Colors.grey.withOpacity(0.5),
+          elevation: 5,
+          child: searchBar)),
+        ],
+    );
+    } else {
+      return list;
+    }
+
   }
 
   void filterSearch(String query) {
@@ -90,13 +107,13 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
       });
     }
     List<UserWanderlist> matches = [];
-    List<String> words = query.split(" ");
+    List<String> words = query.toLowerCase().split(" ");
     Set<int> added = Set<int>();
     for (var word in words) {
       for (var wanderlist in widget.wanderlists) {
         Wanderlist wlist = wanderlist.wanderlist;
         if (!added.contains(wlist)) {
-          if (wlist.name.contains(word) || wlist.creatorName.contains(word)) {
+          if (wlist.name.toLowerCase().contains(word) || wlist.creatorName.contains(word)) {
             added.add(wlist.hashCode);
             matches.add(wanderlist);
           }
