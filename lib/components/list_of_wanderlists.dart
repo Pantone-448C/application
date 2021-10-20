@@ -14,6 +14,7 @@ class ListOfWanderlists extends StatefulWidget {
     this.onReorder,
     this.onPinTap,
     this.searchable = true,
+    this.scrollable = true,
   }) : super(key: key);
   final void Function(UserWanderlist) onWanderlistTap;
   final void Function(int, int)? onReorder;
@@ -21,6 +22,7 @@ class ListOfWanderlists extends StatefulWidget {
   final bool searchable;
   final readOnly;
   final List<UserWanderlist> wanderlists;
+  final bool scrollable;
 
   @override
   _ListOfWanderlistsState createState() => _ListOfWanderlistsState();
@@ -65,7 +67,8 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
       shrinkWrap: true,
       primary: true,
       padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-      physics: WanTheme.scrollPhysics,
+      physics:
+          widget.scrollable ? WanTheme.scrollPhysics : ClampingScrollPhysics(),
       children: [
         if (widget.searchable) searchBar,
         for (int index = 0; index < displayedWanderlists.length; index++)

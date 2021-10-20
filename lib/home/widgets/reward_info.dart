@@ -25,17 +25,28 @@ class RewardInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      _InfoPanel(
-        width,
-        height,
-        points,
-        pointsUntil,
-        rewardPoints,
-        percentagePointsUntil,
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
+        bottomRight: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
       ),
-      UnusedRewardsDropdown(width, height / 3, 6),
-    ]);
+      child: Container(
+        decoration: BoxDecoration(color: Colors.white),
+        child: Column(children: [
+          Padding(padding: EdgeInsets.only(top: 10.0)),
+          _InfoPanel(
+            width,
+            height,
+            points,
+            pointsUntil,
+            rewardPoints,
+            percentagePointsUntil,
+          ),
+          Divider(),
+          UnusedRewardsDropdown(width, height / 3, 6),
+        ]),
+      ),
+    );
   }
 }
 
@@ -62,7 +73,7 @@ class _InfoPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: WanTheme.colors.bgOrange,
+        color: WanTheme.colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(CORNER_RADIUS),
           topRight: Radius.circular(CORNER_RADIUS),
@@ -72,7 +83,7 @@ class _InfoPanel extends StatelessWidget {
         width: this.width,
         height: this.height,
         padding: EdgeInsets.fromLTRB(
-            width / 25, height / 7.5, width / 25, height / 7.5),
+            width / 25, 0, width / 25, height / 7.5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -83,7 +94,9 @@ class _InfoPanel extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+
             pointsUntilText(context, pointsUntil.toString()),
+            Padding(padding: EdgeInsets.all(4.0)),
             _ProgressBar(percentagePointsUntil),
             SizedBox(
               width: width,

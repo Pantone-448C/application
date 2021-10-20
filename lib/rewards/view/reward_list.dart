@@ -12,6 +12,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class RewardsList extends StatelessWidget {
+
+  RewardsList({
+    this.hasTitle = true,
+    this.maxRewardNum = -1,
+    this.loaderColour = Colors.pink,
+  });
+
+  final bool hasTitle;
+  final int maxRewardNum;
+  final Color loaderColour;
+
   RichText _title(BuildContext context) {
     return RichText(
       text: TextSpan(children: [
@@ -44,7 +55,7 @@ class RewardsList extends StatelessWidget {
       return Container(
         child: ListView.separated(
           shrinkWrap: true,
-          itemCount: rewards.length,
+          itemCount: maxRewardNum == -1 ? rewards.length : maxRewardNum,
           itemBuilder: (context, i) {
             return _RewardItem(rewards[i]);
           },
@@ -66,7 +77,7 @@ class RewardsList extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _title(context),
+                hasTitle ? _title(context) : Container(),
                 Padding(padding: EdgeInsets.only(top: 16)),
                 state is RewardsListLoaded
                     ? _rewards(context, state.rewards)

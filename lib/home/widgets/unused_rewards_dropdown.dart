@@ -1,5 +1,10 @@
 import 'package:application/apptheme.dart';
+import 'package:application/repositories/user/rest_user_repository.dart';
+import 'package:application/rewards/cubit/rewards_list_cubit.dart';
+import 'package:application/rewards/cubit/rewards_list_state.dart';
+import 'package:application/rewards/view/reward_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UnusedRewardsDropdown extends StatelessWidget {
   UnusedRewardsDropdown(this.width, this.height, this.unusedRewards);
@@ -11,23 +16,28 @@ class UnusedRewardsDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
-      height: height,
       padding: EdgeInsets.fromLTRB(
-          width / 25, height / 7.5, width / 25, height / 7.5),
+          width / 25, 0, width / 25, height / 7.5),
       decoration: BoxDecoration(
-        color: WanTheme.colors.bgOrange,
+        color: WanTheme.colors.white,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
           bottomRight: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          unusedRewardsText(context, unusedRewards.toString()),
-          Icon(Icons.expand_more, color: WanTheme.colors.orange),
-        ],
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          iconColor: WanTheme.colors.orange,
+          collapsedIconColor: WanTheme.colors.orange,
+          title: unusedRewardsText(context, unusedRewards.toString()),
+          children: [
+            RewardsList(
+              hasTitle: false,
+              maxRewardNum: 1,
+            )
+          ],
+        ),
       ),
     );
   }

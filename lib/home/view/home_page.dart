@@ -128,18 +128,21 @@ class _FilledHomePage extends StatelessWidget {
 
   final Function() gotoWanderlistsPage;
 
-  Column _homepageItems(BuildContext context, UserLoaded state) {
+  Widget _homepageItems(BuildContext context, UserLoaded state) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
     double tripInfoHeight = 130;
+    double viewPortHeight = MediaQuery.of(context).size.height - 145;
     double wanderlistHeight = height - tripInfoHeight;
 
     return Column(
       children: <Widget>[
         Container(
-          // height: SizeConfig(context).h,
+          height: viewPortHeight,
           child: ListView(
+            physics:
+                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             shrinkWrap: true,
             children: [
               Container(
