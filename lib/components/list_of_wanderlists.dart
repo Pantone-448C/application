@@ -72,7 +72,7 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
             onWanderlistTap: widget.onWanderlistTap,
             onPinTap: _onPinTap,
           ),
-        Container(height: 70),
+        if (widget.searchable) Container(height: 70),
       ],
     );
 
