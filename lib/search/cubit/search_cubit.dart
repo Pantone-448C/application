@@ -16,7 +16,6 @@ class SearchCubit extends Cubit<SearchState> {
     suggestNearby();
   }
 
-
   Future<void> _getUserPosition() async {
     var currentState = state;
     userPosition = await GPSPosition().getPosition();
@@ -29,11 +28,16 @@ class SearchCubit extends Cubit<SearchState> {
 
   Future<void> suggestNearby() async {
     await _getUserPosition();
-    var res = await searchRepository.getNear(userPosition.latitude, userPosition.longitude, range: 50);
+    var res = await searchRepository
+        .getNear(userPosition.latitude, userPosition.longitude, range: 50);
     emit(SearchSuggest(res));
   }
 
   Future<void> search(String query) async {
+    if (query == "") {
+      suggestNearby();
+      return;
+    }
 
     final results = await searchRepository.getQuery(query);
     emit(SearchResults(results, state.suggestion));

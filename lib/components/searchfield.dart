@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
 
 class SearchField extends StatelessWidget {
   final String hint;
@@ -21,7 +19,6 @@ class SearchField extends StatelessWidget {
     hintStyle: TextStyle(color: Colors.grey[800], height: 1),
     fillColor: Colors.grey[300],
   );
-
 
   @override
   Widget build(BuildContext context) {
