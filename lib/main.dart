@@ -115,13 +115,13 @@ class _AppContainerState extends State<AppContainer> {
           ),
           BottomNavigationBarItem(
             label: 'Check-in',
-            icon: Icon(Icons.qr_code_2),
-            activeIcon: Icon(Icons.qr_code_2),
+            icon: Icon(Icons.qr_code_scanner_rounded),
+            activeIcon: Icon(Icons.qr_code_scanner_rounded),
           ),
           BottomNavigationBarItem(
             label: 'Wanderlists',
-            activeIcon: Icon(Icons.list_rounded),
-            icon: Icon(Icons.list_rounded),
+            activeIcon: Icon(Icons.view_list_rounded),
+            icon: Icon(Icons.view_list_rounded),
           ),
         ],
         currentIndex: _selectedIndex,
