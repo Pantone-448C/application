@@ -44,13 +44,9 @@ class UserWanderlist extends Equatable {
     return {
       'in_trip': inTrip as bool,
       'num_completions': numCompletions as num,
-      'wanderlist':
-          FirebaseFirestore.instance.collection("wanderlists").doc(id),
-      'completed_activities': completedActivities
-          .map((activity) => FirebaseFirestore.instance
-              .collection("activities")
-              .doc(activity.id))
-          .toList(),
+      'wanderlist': wanderlist.toRef(),
+      'completed_activities': completedActivities.map((activity)
+        => activity.toRef()).toList(),
     };
   }
 

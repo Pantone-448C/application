@@ -13,11 +13,11 @@ class UserDetails extends Equatable {
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     List<UserWanderlist> wanderlists = [];
+
     if (json['wanderlists'] != null) {
-      wanderlists = json['wanderlists']
-          .map<UserWanderlist>(
-              (wanderlist) => UserWanderlist.fromJson(wanderlist))
-          .toList();
+      json['wanderlists'].forEach((wanderlist) {
+        wanderlists.add(UserWanderlist.fromJson(wanderlist));
+      });
     }
 
     List<ActivityDetails> completedActivities = [];
@@ -54,7 +54,6 @@ class UserDetails extends Equatable {
     });
 
     var jsonCompletedActivities = List.empty(growable: true);
-    print("XD $completedActivities");
     completedActivities.forEach((activity) {
       var activityReference =
           FirebaseFirestore.instance.collection("activities").doc(activity.id);
@@ -66,7 +65,7 @@ class UserDetails extends Equatable {
       'first_name': firstName,
       'last_name': lastName,
       'wanderlists': jsonWanderLists,
-      'completed_activities': jsonCompletedActivities,
+      'completed_activities': completedActivities.map((a) => a.toRef()).toList(),
     };
   }
 

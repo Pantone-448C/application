@@ -10,11 +10,11 @@ class Wanderlist extends Equatable {
 
   factory Wanderlist.fromJson(Map<String, dynamic> json) {
     List<ActivityDetails>? activities = List<ActivityDetails>.from(
-        json['activities']
-            .map((activity) => ActivityDetails.fromJson(activity))
-            .toList());
+        json['activities'].map((activity) {
+              return ActivityDetails.fromJson(activity);}
+        ).toList());
     return Wanderlist(
-      json['doc_ref'],
+      json['id'],
       json['name'],
       json['author_name'],
       activities,
@@ -31,12 +31,17 @@ class Wanderlist extends Equatable {
   @override
   List<Object?> get props => [id, name, creatorName, activities, icon];
 
+  Map<String, dynamic> toRef() {
+    return {
+      'ref': "wanderlists/" + id,
+    };
+  }
 
   Map<String, dynamic> toJson() {
     return {
       'name': name,
       'author_name': creatorName,
-      'activities': activities.map((activity) => activity.toJson()),
+      'activities': activities.map((activity) => activity.toRef()).toList(),
       'icon': icon,
     };
   }

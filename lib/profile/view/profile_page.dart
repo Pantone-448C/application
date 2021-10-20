@@ -1,7 +1,9 @@
 import 'package:application/apptheme.dart';
 import 'package:application/profile/cubit/profile_cubit.dart';
 import 'package:application/profile/cubit/profile_state.dart';
+import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:application/repositories/user/user_repository.dart';
+import 'package:application/rewards/view/reward_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -221,48 +223,6 @@ class _LogoutButton extends StatelessWidget {
   }
 }
 
-// TODO: Move this to its own file
-class _RewardsSummary extends StatelessWidget {
-  RichText _title(BuildContext context) {
-    return RichText(
-      text: TextSpan(children: [
-        WidgetSpan(
-          child: Icon(
-            Icons.emoji_events_outlined,
-            color: WanTheme.colors.orange,
-          ),
-        ),
-        TextSpan(
-          text: "Rewards",
-          style: Theme.of(context).textTheme.headline3,
-        ),
-      ]),
-    );
-  }
-
-  RichText _noRewardsText(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-          text: "You have no rewards yet",
-          style: Theme.of(context).textTheme.bodyText1),
-    );
-  }
-
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _title(context),
-          Padding(padding: EdgeInsets.only(top: 30)),
-          Center(child: _noRewardsText(context)),
-        ],
-      ),
-    );
-  }
-}
-
 class ProfilePage extends StatelessWidget {
   Widget _settingsButton() {
     return IconButton(
@@ -284,16 +244,17 @@ class ProfilePage extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProfileCubit(UserRepository()),
+      create: (_) => ProfileCubit(RestUserRepository()),
       child: Scaffold(
         appBar: _profileAppBar(context),
         body: BlocListener<ProfileCubit, ProfileState>(
           listener: (context, state) {},
           child: Column(
+            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _UserInfoContainer(),
-              _RewardsSummary(),
+              Expanded(child: RewardsList()),
             ],
           ),
         ),

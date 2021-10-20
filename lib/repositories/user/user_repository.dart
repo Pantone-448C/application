@@ -6,7 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'i_user_repository.dart';
 
-class UserRepository implements IUserRepository {
+/// Deprecated - no longer up to date with spec
+class UserRepository {
   UserRepository() {
     final FirebaseAuth auth = FirebaseAuth.instance;
     _setUser(auth, auth.currentUser);
@@ -64,7 +65,7 @@ class UserRepository implements IUserRepository {
   Future<ActivityDetails> getActivity(String id) async {
     DocumentSnapshot snapshot = await _activities.doc(id).get();
     var data = snapshot.data() as Map<String, dynamic>;
-    data["doc_id"] = id;
+    data["id"] = id;
     return ActivityDetails.fromJson(data);
   }
 
@@ -137,7 +138,7 @@ class UserRepository implements IUserRepository {
       DocumentSnapshot refDocument = await ref.get();
       Map<String, dynamic> document =
           refDocument.data() as Map<String, dynamic>;
-      document["doc_id"] = ref.id;
+      document["id"] = ref.id;
       data.add(document);
     }
 
