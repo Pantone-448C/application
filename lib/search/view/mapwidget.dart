@@ -97,8 +97,9 @@ class MapSampleState extends State<MapSample> {
         mapType: MapType.terrain,
         initialCameraPosition: _brisbane,
         //liteModeEnabled: true,
-        myLocationButtonEnabled: true,
+        myLocationButtonEnabled: false,
         myLocationEnabled: true,
+        zoomControlsEnabled: false,
         markers: Set<Marker>.of(markers.values),
         onMapCreated: (GoogleMapController controller) {
           _controller = controller;
