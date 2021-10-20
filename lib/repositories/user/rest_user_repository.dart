@@ -49,7 +49,7 @@ class RestUserRepository implements IUserRepository {
 
   @override
   Future<int> getPointsForNextReward() async {
-    return await getDyanmicDocument(restUri("user/rewards/totalpoints", {}))
+    return await getDynamicDocument(restUri("user/rewards/totalpoints", {}))
         as int;
   }
 
@@ -163,4 +163,21 @@ class RestUserRepository implements IUserRepository {
     details.wanderlists.add(wanderlist);
     await updateUserData(details);
   }
+
+
+  @override
+  Future<List<ActivityDetails>> getRecc() async {
+    var data = await getDocument(restUri("activities", {"rec": "yes"})) as Map<String, dynamic>;
+    var results = data["results"];
+    results.map((json) => ActivityDetails.fromJson(json));
+    List<ActivityDetails> l = List.empty(growable: true);
+    results.forEach((element) => {l.add(ActivityDetails.fromJson(element))});
+    return l;
+
+  }
+
+
+
+
+
 }

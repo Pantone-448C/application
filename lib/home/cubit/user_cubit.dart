@@ -24,7 +24,10 @@ class UserCubit extends Cubit<UserState> {
     List<UserWanderlist> userWanderlists =
         (await userRepository.getActiveWanderlists()).toList();
 
-    emit(UserLoaded(442, 1000 - 442, 1000, 442 / 1000, userWanderlists));
+    List<ActivityDetails> userActivities=
+    (await userRepository.getRecc()).toList();
+
+    emit(UserLoaded(442, 1000 - 442, 1000, 442 / 1000, userWanderlists, userActivities));
   }
 
   int calculatePercentageComplete(List<UserWanderlist> wanderlists) {

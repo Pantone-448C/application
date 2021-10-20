@@ -24,10 +24,10 @@ restUri(String path, Map<String, dynamic> queryParams) {
 }
 
 Future<Map> getDocument(Uri uri) async {
-  return await getDyanmicDocument(uri) as Map;
+  return await getDynamicDocument(uri) as Map;
 }
 
-Future<dynamic> getDyanmicDocument(Uri uri) async {
+Future<dynamic> getDynamicDocument(Uri uri) async {
   var response = await http.get(uri, headers: await getToken());
   int tries = 0;
   while (response.statusCode != 200 && tries++ < 3) {

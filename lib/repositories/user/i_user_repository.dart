@@ -26,4 +26,5 @@ abstract class IUserRepository {
 
   // Activity ???
   Future<ActivityDetails> getActivity(String id);
+  Future<List<ActivityDetails>> getRecc();
 }

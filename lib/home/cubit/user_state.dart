@@ -18,13 +18,15 @@ class UserLoaded extends Equatable implements UserState {
       this.pointsUntilReward,
       this.nextRewardTotalPoints,
       this.percentageUntilReward,
-      this.pinnedWanderlists);
+      this.pinnedWanderlists,
+      this.recommendedActivities);
 
   final int points;
   final int pointsUntilReward;
   final int nextRewardTotalPoints;
   final double percentageUntilReward;
   final List<UserWanderlist> pinnedWanderlists;
+  final List<ActivityDetails> recommendedActivities;
 
   @override
   List<Object?> get props => [
@@ -33,5 +35,6 @@ class UserLoaded extends Equatable implements UserState {
         nextRewardTotalPoints,
         percentageUntilReward,
         pinnedWanderlists,
+        recommendedActivities,
       ];
 }
