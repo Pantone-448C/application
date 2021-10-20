@@ -16,49 +16,50 @@ class ActivitySummaryItemSmall extends StatelessWidget {
   final Widget? rightWidget;
   final bool smallIcon;
   final ActivityDetails activity;
+  final bool shadow;
 
   ActivitySummaryItemSmall(
       {Key? key,
-        required this.activity,
+      required this.activity,
       this.width = 475.0,
+      this.shadow = false,
       this.height = 75.0,
       this.rightWidget = const Icon(Icons.chevron_right, color: Colors.grey),
       this.smallIcon = false,
-        this.complete})
-  : activityName = activity.name,
-    imageUrl = activity.imageUrl,
-    activityDescription = activity.about;
+      this.complete})
+      : activityName = activity.name,
+        imageUrl = activity.imageUrl,
+        activityDescription = activity.about;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector  (
-      onTap:() => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ActivityInfo(activity.id))),
-    child: Container(
-        height: this.height,
-        width: this.width,
-        color: Colors.transparent,
+    return GestureDetector(
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ActivityInfo(activity.id))),
         child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                    Radius.circular(WanTheme.CARD_CORNER_RADIUS))),
-            child: Row(children: <Widget>[
-              Expanded(
-                  flex: 0,
-                  child: _ImageComponent(
-                      this.width, this.height, this.imageUrl, this.smallIcon)),
-              Expanded(
-                  child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child:
-                          _TextComponent(activityName, activityDescription))),
-              Container(
-                  padding: EdgeInsets.only(right: 8),
-                  child: this.rightWidget),
-            ]))));
+            height: this.height,
+            width: this.width,
+            color: Colors.transparent,
+            child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(WanTheme.CARD_CORNER_RADIUS)),
+                ),
+                child: Row(children: <Widget>[
+                  Expanded(
+                      flex: 0,
+                      child: _ImageComponent(this.width, this.height,
+                          this.imageUrl, this.smallIcon)),
+                  Expanded(
+                      child: Container(
+                          padding: const EdgeInsets.all(8),
+                          child: _TextComponent(
+                              activityName, activityDescription))),
+                  Container(
+                      padding: EdgeInsets.only(right: 8),
+                      child: this.rightWidget),
+                ]))));
   }
 }
 
@@ -113,12 +114,12 @@ class _TextComponent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-              padding: const EdgeInsets.only(bottom: 3),
-              child: new Text(activityName,
-                  style: WanTheme.text.cardTitle,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1),
-                ),
+            padding: const EdgeInsets.only(bottom: 3),
+            child: new Text(activityName,
+                style: WanTheme.text.cardTitle,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1),
+          ),
           Container(
               child: Text(
             activityDescription,
