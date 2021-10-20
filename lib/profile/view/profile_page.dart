@@ -166,8 +166,8 @@ class _UserInfo extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Padding(padding: EdgeInsets.only(top: 8.0)),
         _name(firstName, lastName),
-        Padding(padding: EdgeInsets.only(top: 0.0)),
         _bigSmallText(context, "$points", "points"),
         _bigSmallText(context, "12", "completed activities"),
         Padding(padding: EdgeInsets.only(top: 18.0)),
