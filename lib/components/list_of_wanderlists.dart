@@ -41,18 +41,13 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
       displayedWanderlists = widget.wanderlists;
     }
 
-    var searchBar = Padding(
-      // search bar
-      padding: EdgeInsets.symmetric(
-          horizontal: WanTheme.CARD_PADDING,
-          vertical: WanTheme.CARD_PADDING),
-      child: TextField(
+    var searchBar =
+      TextField(
         keyboardType: TextInputType.text,
         onChanged: (value) => filterSearch(value),
         decoration: SearchField.defaultDecoration.copyWith(
           hintText: "Search Your Wanderlists",
         ),
-      ),
     );
 
     // TODO: Factor out more arguments somehow
@@ -69,6 +64,7 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
       padding: EdgeInsets.all(WanTheme.CARD_PADDING),
       physics: WanTheme.scrollPhysics,
       children: [
+        if (widget.searchable) Container(height: 60),
         for (int index = 0; index < displayedWanderlists.length; index++)
           _TappableWanderlistCard(
             key: Key('$index'),
@@ -80,21 +76,19 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
       ],
     );
 
-    var search = Container(
-      decoration: BoxDecoration (
-          color: Colors.white,
-          boxShadow: [BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            blurRadius: 5,
-            spreadRadius: 1,
-          )]
-      ),
-      child: searchBar,
-    );
 
     if (widget.searchable) {
-      return Column (
-      children: [search, Expanded(child: list)],
+      return Stack (
+      children: [
+        list,
+        Padding (
+          padding: EdgeInsets.all(8),
+            child:  Material (
+        borderRadius: BorderRadius.circular(25),
+          shadowColor: Colors.grey.withOpacity(0.5),
+          elevation: 5,
+          child: searchBar)),
+        ],
     );
     } else {
       return list;

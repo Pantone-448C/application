@@ -175,9 +175,7 @@ class _TextComponent extends StatelessWidget {
 
   _TextComponent(this.listName, this.authorName, this.numTotalItems,
       this.numCompletedItems)
-      : completed = "Completed " +
-            numCompletedItems.toString() +
-            " of " +
+      : completed = "Contains " +
             numTotalItems.toString() +
             " activities";
 
