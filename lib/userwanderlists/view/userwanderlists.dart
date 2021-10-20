@@ -1,15 +1,10 @@
 import 'package:application/components/list_of_wanderlists.dart';
-import 'package:application/components/searchfield.dart';
-import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/user_wanderlist.dart';
-import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:application/repositories/wanderlist/rest_wanderlist_repository.dart';
-import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
 import 'package:application/userwanderlists/widgets/new_wanderlist_dialog.dart';
-import 'package:application/wanderlist/view/view_wanderlist.dart';
 import 'package:application/wanderlist/view/wanderlist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +67,6 @@ class _WanderlistsView extends StatelessWidget {
         body: BlocBuilder<UserWanderlistsCubit, UserWanderlistsState>(
           builder: (context, state) {
             if (state is UserWanderlistsLoaded) {
-              print(state.wanderlists);
               return ListOfWanderlists(
                 readOnly: false,
                 wanderlists: state.wanderlists,
@@ -127,6 +121,7 @@ class UserWanderlistsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: UserWanderlists(),
     );
   }

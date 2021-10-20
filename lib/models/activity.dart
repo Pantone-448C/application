@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 @immutable
 class ActivityDetails extends Equatable {
   ActivityDetails(this.id, this.name, this.about, this.thumbUrl, this.imageUrl,
-      this.address, this.points);
+      this.address, this.points, this.tags);
 
   factory ActivityDetails.fromJson(Map<String, dynamic> json) {
     var a = ActivityDetails(
@@ -17,6 +17,7 @@ class ActivityDetails extends Equatable {
       json['image_url'],
       json['address'],
       json['points'],
+      json['tags'],
     );
 
     if (json.containsKey("location")) {
@@ -42,6 +43,7 @@ class ActivityDetails extends Equatable {
   final String thumbUrl;
   final String imageUrl;
   final String address;
+  final List<dynamic> tags;
   final int points;
   late final LatLng location;
 
@@ -63,6 +65,7 @@ class ActivityDetails extends Equatable {
       'thumb_url': thumbUrl,
       'image_url': imageUrl,
       'address': address,
+      'tags': tags,
     };
   }
 
@@ -74,6 +77,7 @@ class ActivityDetails extends Equatable {
     String? imageUrl,
     String? address,
     int? points,
+    List<dynamic>? tags,
   }) {
     return ActivityDetails(
       id ?? this.id,
@@ -83,6 +87,7 @@ class ActivityDetails extends Equatable {
       imageUrl ?? this.imageUrl,
       address ?? this.address,
       points ?? this.points,
+      tags?? this.tags,
     );
   }
 }
