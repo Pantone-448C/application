@@ -55,6 +55,22 @@ class _PageBody extends StatelessWidget {
                               ),
                               AddWLModalButtons(() {
                                 cubit.createWanderlist(_nameController.text);
+                                var name = _nameController.text;
+                                final snackBar = SnackBar(
+                                  content: Text(
+                                    'Added to new Wanderlist $name!',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  backgroundColor: WanTheme.colors.pink,
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+
+
                                 Navigator.pop(context);
                               }
                               ),
