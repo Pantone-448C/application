@@ -22,6 +22,10 @@ class SearchPage extends StatelessWidget {
           drawerScrimColor: Colors.transparent,
           body: SlidingUpPanel(
             panelBuilder: (ScrollController sc) => _SearchPage(sc),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25.0),
+              topRight: Radius.circular(25.0),
+            ),
             body: Container(
                 padding:
                     EdgeInsets.only(top: MediaQuery.of(context).padding.top),
