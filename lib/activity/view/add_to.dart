@@ -34,6 +34,19 @@ class _PageBody extends StatelessWidget {
                 context
                     .read<ActivityAddCubit>()
                     .addActivityToWanderlist(wanderlist.wanderlist);
+                final snackBar = SnackBar(
+                  content: Text(
+                      'Activity successfully added!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: WanColors().orange,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  backgroundColor: WanColors().bgOrange,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
                 Navigator.pop(context);
               },
             )),

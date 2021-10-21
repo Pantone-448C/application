@@ -145,7 +145,7 @@ class _ActivityPage extends StatelessWidget {
                 child: Column(children: [
               Icon(Icons.horizontal_rule, color: WanColors().grey),
               Text("Search results",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 24,)),
               Expanded(child: _ActivityList(activities: state.results)),
             ]));
           }
