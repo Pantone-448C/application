@@ -145,7 +145,9 @@ class _ActivityPage extends StatelessWidget {
                 child: Column(children: [
               Icon(Icons.horizontal_rule, color: WanColors().grey),
               Text("Search results",
-                  style: TextStyle(fontSize: 24,)),
+                  style: TextStyle(
+                    fontSize: 24,
+                  )),
               Expanded(child: _ActivityList(activities: state.results)),
             ]));
           }
@@ -154,8 +156,7 @@ class _ActivityPage extends StatelessWidget {
             return Expanded(
                 child: Column(children: [
               Icon(Icons.horizontal_rule, color: WanColors().grey),
-              Text("Nearby Activities",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              Text("Nearby Activities", style: TextStyle(fontSize: 24)),
               Expanded(child: _ActivityList(activities: state.suggestion))
             ]));
           }
