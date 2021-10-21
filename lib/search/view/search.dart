@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bottom_drawer/bottom_drawer.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../../apptheme.dart';
 
 class SearchPage extends StatelessWidget {
@@ -19,29 +20,16 @@ class SearchPage extends StatelessWidget {
       child: Scaffold(
           backgroundColor: Colors.transparent,
           drawerScrimColor: Colors.transparent,
-          body: Container(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-              child: Stack(children: <Widget>[
-                MapSample(),
-                _Drawer(),
-                _ActivityPreview(),
-                _SearchBar(),
-              ]))),
-    );
-  }
-}
-
-class _Drawer extends StatelessWidget {
-  BottomDrawerController controller = BottomDrawerController();
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomDrawer(
-      body: _SearchPage(),
-      header: Container(),
-      headerHeight: 87,
-      drawerHeight: MediaQuery.of(context).size.height * 2 / 3,
-      controller: controller,
+          body: SlidingUpPanel(
+            panelBuilder: (ScrollController sc) => _SearchPage(sc),
+            body: Container(
+                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                child: Stack(children: <Widget>[
+                  MapSample(),
+                  _ActivityPreview(),
+                  _SearchBar(),
+                ])),
+          )),
     );
   }
 }
@@ -74,13 +62,15 @@ class _ActivityPreview extends StatelessWidget {
 }
 
 class _SearchPage extends StatelessWidget {
+  final ScrollController sc;
+  _SearchPage(this.sc);
   @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(),
         padding: EdgeInsets.all(WanTheme.CARD_PADDING),
         child: Column(children: <Widget>[
-          _ActivityPage(),
+          _ActivityPage(sc),
         ]));
   }
 }
@@ -127,6 +117,9 @@ class _SearchBar extends StatelessWidget {
 }
 
 class _ActivityPage extends StatelessWidget {
+  final ScrollController sc;
+  _ActivityPage(this.sc);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SearchCubit, SearchState>(
@@ -137,7 +130,7 @@ class _ActivityPage extends StatelessWidget {
           }
 
           if (state is SearchInitial) {
-            return Expanded(child: _ActivityList(activities: state.suggestion));
+            return Expanded(child: _ActivityList(sc, activities: state.suggestion));
           }
 
           if (state is SearchResults) {
@@ -145,9 +138,7 @@ class _ActivityPage extends StatelessWidget {
                 child: Column(children: [
               Icon(Icons.horizontal_rule, color: WanColors().grey),
               Text("Search results",
-                  style: TextStyle(
-                    fontSize: 24,
-                  )),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               Expanded(child: _ActivityList(activities: state.results)),
             ]));
           }
@@ -156,8 +147,10 @@ class _ActivityPage extends StatelessWidget {
             return Expanded(
                 child: Column(children: [
               Icon(Icons.horizontal_rule, color: WanColors().grey),
-              Text("Nearby Activities", style: TextStyle(fontSize: 24)),
-              Expanded(child: _ActivityList(activities: state.suggestion))
+              Text("Nearby Activities",
+
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              Expanded(child: _ActivityList(sc, activities: state.suggestion))
             ]));
           }
 
@@ -168,12 +161,14 @@ class _ActivityPage extends StatelessWidget {
 
 class _ActivityList extends StatelessWidget {
   final activities;
+  final ScrollController sc;
 
-  const _ActivityList({Key? key, this.activities}) : super(key: key);
+  const _ActivityList(this.sc, {Key? key, this.activities}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return (ListView.builder(
+        controller: this.sc,
         itemCount: activities.length,
         itemBuilder: (BuildContext context, int index) => Container(
             padding: EdgeInsets.only(bottom: WanTheme.CARD_PADDING),

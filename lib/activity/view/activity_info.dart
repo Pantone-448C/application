@@ -23,17 +23,25 @@ class ActivityInfo extends StatelessWidget {
       create: (context) => ActivityCubit(RestActivityRepository(), id),
       child: Scaffold(
         backgroundColor: WanTheme.colors.offWhite,
-        body: ListView(
-          children: [
-            LocationImage(),
-            Column(
-              children: [
-                _Title(),
-                _PointsTooltip(),
-              ],
-            ),
-            AboutBox(),
-          ],
+        body: BlocBuilder<ActivityCubit, ActivityState>(
+          builder: (context, state) {
+            if (state is ActivityLoaded) {
+              return ListView(
+                children: [
+                  LocationImage(),
+                  Column(
+                    children: [
+                      _Title(),
+                      _PointsTooltip(),
+                    ],
+                  ),
+                  AboutBox(),
+                ],
+              );
+            } else {
+              return Center(child:CircularProgressIndicator());
+            }
+          }
         ),
       ),
     );
@@ -42,21 +50,15 @@ class ActivityInfo extends StatelessWidget {
 
 class LocationImage extends StatelessWidget {
   Widget build(BuildContext context) {
+    var state = context.read<ActivityCubit>().state as ActivityLoaded;
     return Stack(
       children: <Widget>[
-        BlocConsumer<ActivityCubit, ActivityState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              if (state is ActivityLoaded) {
-                return Image(
+                Image(
                   fit: BoxFit.cover,
                   image: NetworkImage(state.imgUrl),
                   height: MediaQuery.of(context).size.width * 0.8,
                   width: MediaQuery.of(context).size.width,
-                );
-              }
-              return Container();
-            }),
+                ),
         Container(
           height: MediaQuery.of(context).size.width * 0.8,
           width: MediaQuery.of(context).size.width,
@@ -107,8 +109,7 @@ class _Title extends StatelessWidget {
 class _Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ActivityCubit, ActivityState>(builder: (context, state) {
-      if (state is ActivityLoaded) {
+      var state = context.read<ActivityCubit>().state as ActivityLoaded;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -134,16 +135,13 @@ class _Details extends StatelessWidget {
                 ))
           ],
         );
-      } else {
-        return Container();
       }
-    });
-  }
 }
 
 class _PointsTooltip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var state = context.read<ActivityCubit>().state as ActivityLoaded;
     return ClipRRect(
       borderRadius: BorderRadius.only(
         bottomLeft: Radius.circular(WanTheme.CARD_CORNER_RADIUS),
@@ -156,11 +154,7 @@ class _PointsTooltip extends StatelessWidget {
           bottom: _POINTSPADDING,
         ),
         child: Center(
-          child: BlocConsumer<ActivityCubit, ActivityState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              if (state is ActivityLoaded) {
-                return RichText(
+                child: RichText(
                   text: TextSpan(
                     style: TextStyle(
                       fontFamily: 'inter',
@@ -176,14 +170,10 @@ class _PointsTooltip extends StatelessWidget {
                       TextSpan(text: " from this activity")
                     ],
                   ),
-                );
-              }
-              return Container();
-            },
+                ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -256,6 +246,7 @@ class _BackButton extends StatelessWidget {
 class AboutBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var state = context.read<ActivityCubit>().state as ActivityLoaded;
     return Container(
       margin: EdgeInsets.all(20.0),
       child: ClipRRect(
@@ -290,18 +281,10 @@ class AboutBox extends StatelessWidget {
                   )
                 ],
               ),
-              BlocConsumer<ActivityCubit, ActivityState>(
-                listener: (context, state) {},
-                builder: (context, state) {
-                  if (state is ActivityLoaded) {
-                    return Text(
+                    Text(
                       state.about,
                       style: TextStyle(fontSize: 16),
-                    );
-                  }
-                  return Container();
-                },
-              ),
+                    ),
             ],
           ),
         ),

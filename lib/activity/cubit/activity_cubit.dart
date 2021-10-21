@@ -9,8 +9,8 @@ class ActivityCubit extends Cubit<ActivityState> {
   ActivityCubit(
     this.activityRepository,
     this.id,
-  ) : super(ActivityInitial()) {
-    emit(ActivityInitial());
+  ) : super(ActivityLoading()) {
+    emit(ActivityLoading());
     getActivityInfo();
   }
 
