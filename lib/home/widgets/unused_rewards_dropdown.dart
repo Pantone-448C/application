@@ -16,8 +16,6 @@ class UnusedRewardsDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(
-          width / 25, 0, width / 25, height / 7.5),
       decoration: BoxDecoration(
         color: WanTheme.colors.white,
         borderRadius: BorderRadius.only(
@@ -35,6 +33,7 @@ class UnusedRewardsDropdown extends StatelessWidget {
             RewardsList(
               hasTitle: false,
               maxRewardNum: 1,
+              carousel: true,
             )
           ],
         ),
