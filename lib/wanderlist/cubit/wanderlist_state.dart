@@ -34,8 +34,9 @@ class Viewing implements WanderlistState {
 }
 
 class Editing implements WanderlistState {
-  Editing(this.wanderlist, this.original);
+  Editing(this.wanderlist, this.original, {this.isChanged: false});
 
+  final bool isChanged;
   final Wanderlist wanderlist;
   final Wanderlist original;
 

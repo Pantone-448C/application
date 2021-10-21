@@ -14,8 +14,10 @@ class WanderlistCubit extends Cubit<WanderlistState> {
   loadWanderlists(Wanderlist wanderlist) async {
     if (state is Initial) {
       emit(Loading());
-      await Future.delayed(Duration(seconds: 0));
-      emit(Viewing(wanderlist));
+      var newWl = await wanderlistRepository.getWanderlist(wanderlist.id);
+      //emit(Editing(_deepCopyActivityList(wanderlist), _deepCopyActivityList(wanderlist)));
+      // emit(Viewing(wanderlist));
+      startEdit(newWl);
     } else {
       emit(state);
     }
@@ -27,17 +29,12 @@ class WanderlistCubit extends Cubit<WanderlistState> {
   }
 
   startEdit(Wanderlist wanderlist) {
-    if (state is Viewing) {
-      emit(Editing(wanderlist, _deepCopyActivityList(wanderlist)));
-    } else {
-      emit(state);
-    }
+    emit(Editing(wanderlist, _deepCopyActivityList(wanderlist)));
   }
 
   endEdit() {
     if (state is Editing) {
       Wanderlist wanderlist = (state as Editing).wanderlist;
-      emit(Saving());
       _save(wanderlist);
       emit(Viewing(wanderlist));
     } else {
@@ -47,7 +44,7 @@ class WanderlistCubit extends Cubit<WanderlistState> {
 
   cancelEdit() {
     if (state is Editing) {
-      emit(Viewing((state as Editing).original));
+       emit(Viewing((state as Editing).original));
     } else {
       emit(state);
     }
@@ -55,7 +52,7 @@ class WanderlistCubit extends Cubit<WanderlistState> {
 
   madeEdit(Wanderlist wanderlist) {
     if (state is Editing) {
-      emit(Editing(wanderlist, (state as Editing).original));
+      emit(Editing(wanderlist, (state as Editing).original, isChanged: true));
     } else {
       emit(state);
     }
@@ -65,7 +62,7 @@ class WanderlistCubit extends Cubit<WanderlistState> {
     if (state is Editing) {
       (state as Editing).wanderlist.activities.add(activity);
       final original = (state as Editing).original;
-      emit(Editing(wanderlist, original));
+      emit(Editing(wanderlist, original, isChanged: true));
     } else {
       emit(state);
     }
