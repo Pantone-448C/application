@@ -1,4 +1,3 @@
-
 import 'package:application/activity/cubit/add_to_cubit.dart';
 import 'package:application/activity/cubit/add_to_state.dart';
 import 'package:application/components/list_of_wanderlists.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../apptheme.dart';
 
-
 class _PageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,38 +18,38 @@ class _PageBody extends StatelessWidget {
       builder: (context, state) {
         if (state is ActivityAddLoaded) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text("Add to Wanderlist",
-              style: TextStyle(color: WanTheme.colors.pink),
+              appBar: AppBar(
+                title: Text(
+                  "Add to Wanderlist",
+                  style: TextStyle(color: WanTheme.colors.pink),
+                ),
               ),
-            ),
-            body: Column (
-                children: [
-                  Expanded (child: ListOfWanderlists(
-              wanderlists: state.wanderlists,
-              readOnly: true,
-              onWanderlistTap: (UserWanderlist wanderlist) {
-                context
-                    .read<ActivityAddCubit>()
-                    .addActivityToWanderlist(wanderlist.wanderlist);
-                final snackBar = SnackBar(
-                  content: Text(
-                      'Activity successfully added!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: WanColors().orange,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  backgroundColor: WanColors().bgOrange,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              body: Column(children: [
+                Expanded(
+                    child: ListOfWanderlists(
+                  wanderlists: state.wanderlists,
+                  readOnly: true,
+                  onWanderlistTap: (UserWanderlist wanderlist) {
+                    context
+                        .read<ActivityAddCubit>()
+                        .addActivityToWanderlist(wanderlist.wanderlist);
+                    final snackBar = SnackBar(
+                      content: Text(
+                        'Activity successfully added!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: WanColors().white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      backgroundColor: WanColors().pink,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-                Navigator.pop(context);
-              },
-            )),
-            ])
-          );
+                    Navigator.pop(context);
+                  },
+                )),
+              ]));
         } else {
           return Scaffold(
             body: Center(child: CircularProgressIndicator()),
@@ -60,7 +58,6 @@ class _PageBody extends StatelessWidget {
       },
     );
   }
-
 }
 
 /**
