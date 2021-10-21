@@ -157,7 +157,6 @@ class _FilledHomePage extends StatelessWidget {
               ),
             ],
           ),
-          ),
         ),
       ],
     );
@@ -202,7 +201,9 @@ class _TripInfo extends StatelessWidget {
                   state.points,
                   state.pointsUntilReward,
                   state.nextRewardTotalPoints,
-                  state.percentageUntilReward));
+                  state.percentageUntilReward,
+            state.numRewards,
+          ));
         }
 
         return Container(child: Text("Error!"));

@@ -12,6 +12,7 @@ class RewardInfo extends StatelessWidget {
     this.pointsUntil,
     this.rewardPoints,
     this.percentagePointsUntil,
+    this.numRewards,
   );
 
   final double width;
@@ -20,6 +21,7 @@ class RewardInfo extends StatelessWidget {
   final int rewardPoints;
   final int pointsUntil;
   final double percentagePointsUntil;
+  final int numRewards;
 
   static const double CORNER_RADIUS = 15.0;
 
@@ -43,7 +45,7 @@ class RewardInfo extends StatelessWidget {
             percentagePointsUntil,
           ),
           Divider(),
-          UnusedRewardsDropdown(width, height / 3, 6),
+          UnusedRewardsDropdown(width, height / 3, this.numRewards),
         ]),
       ),
     );
@@ -82,8 +84,7 @@ class _InfoPanel extends StatelessWidget {
       child: Container(
         width: this.width,
         height: this.height,
-        padding: EdgeInsets.fromLTRB(
-            width / 25, 0, width / 25, height / 7.5),
+        padding: EdgeInsets.fromLTRB(width / 25, 0, width / 25, height / 7.5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -94,7 +95,6 @@ class _InfoPanel extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-
             pointsUntilText(context, pointsUntil.toString()),
             Padding(padding: EdgeInsets.all(4.0)),
             _ProgressBar(percentagePointsUntil),

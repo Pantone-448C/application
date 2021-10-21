@@ -26,8 +26,10 @@ class UserCubit extends Cubit<UserState> {
     int pointsForNextReward = await userRepository.getPointsForNextReward();
     int points = calculateTotalPoints(user.completedActivities);
 
+    int numRewards = (await userRepository.getUserRewards()).length;
+
     emit(UserLoaded(points, pointsForNextReward - points, pointsForNextReward,
-        points / pointsForNextReward, userWanderlists));
+        points / pointsForNextReward, userWanderlists, numRewards));
   }
 
   int calculateTotalPoints(List<ActivityDetails> userActivities) {

@@ -54,7 +54,7 @@ RichText unusedRewardsText(BuildContext context, String unusedRewardsNum) {
           text: unusedRewardsNum,
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
-        TextSpan(text: " unused rewards")
+        TextSpan(text: " rewards")
       ],
     ),
   );
