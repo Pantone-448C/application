@@ -27,7 +27,7 @@ class WanderlistPage extends StatelessWidget {
               create: (context) => WanderlistCubit(RestWanderlistRepository()),
             ),
             BlocProvider<SuggestionsCubit>(
-              create: (context) => SuggestionsCubit(RestActivityRepository()),
+              create: (context) => SuggestionsCubit(RestActivityRepository(), wanderlist.id),
             ),
           ],
           child: _PageContent(wanderlist.wanderlist),
@@ -53,14 +53,14 @@ class _PageContent extends StatelessWidget {
         } else if (state is Editing) {
           return EditWanderlistPage(state.wanderlist);
         } else if (state is Saving) {
-          return CircularProgressIndicator();
+          return Center( child: CircularProgressIndicator());
         } else if (state is Saved) {
           Navigator.of(context).pop();
         } else {
           context.read<WanderlistCubit>().loadWanderlists(wanderlist);
         }
 
-        return CircularProgressIndicator();
+        return Center (child: CircularProgressIndicator());
       },
       listener: (context, state) {},
     );

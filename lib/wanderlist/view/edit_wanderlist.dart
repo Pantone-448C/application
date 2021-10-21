@@ -1,5 +1,6 @@
 import 'package:application/apptheme.dart';
 import 'package:application/components/activity_summary_item_small.dart';
+import 'package:application/components/searchfield.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
@@ -29,49 +30,52 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(barHeight);
 
   Widget _cancelButton(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.close_rounded, color: Theme.of(context).accentColor),
+    return TextButton (
+      child: Row(children: [Icon(Icons.arrow_back, color: Theme.of(context).accentColor),
+        Text(" Cancel"),
+      ]),
       onPressed: () {
-        context.read<WanderlistCubit>().cancelEdit();
+         context.read<WanderlistCubit>().cancelEdit();
+         Navigator.of(context).pop(true);
       },
     );
   }
 
   Widget _saveButton(BuildContext context) {
-    return ElevatedButton(
+    return TextButton (
         onPressed: () {
           context.read<WanderlistCubit>().endEdit();
+          Navigator.of(context).pop(true);
         },
-        child: Text("Save"));
+        child: Row (children: [Icon(Icons.check_rounded),
+          Text("  Save")]));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<WanderlistCubit, WanderlistState>(
-      builder: (context, state) {
-        return Container(
-          child: SafeArea(
-            child: AppBar(
-              backgroundColor: Colors.white12,
-              foregroundColor: Colors.black,
-              elevation: 0,
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: _saveButton(context),
-                )
-              ],
-              leading: _cancelButton(context),
-              title: Text("Editing Wanderlist",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontStyle: FontStyle.normal,
-                      fontFamily: "Inter")),
-            ),
-          ),
-        );
-      },
       listener: (context, state) => {},
+      builder: (context, state) {
+        if (state is Editing) {
+          if (state.isChanged) {
+            return AppBar(
+              backgroundColor: Colors.white,
+              title: Text("Wanderlist", style: TextStyle(color: WanTheme.colors.pink)),
+              centerTitle: true,
+              actions: [_saveButton(context)],
+              leading: _cancelButton(context),
+              leadingWidth: 100,
+            );
+          } else {
+            return AppBar(
+              backgroundColor: Colors.white,
+              title: Text("Wanderlist", style: TextStyle(color: WanTheme.colors.pink)),
+              centerTitle: true,
+            );
+          }
+          }
+        return Container();
+      }
     );
   }
 }
@@ -82,23 +86,34 @@ class _EditWanderlistBody extends StatelessWidget {
     return BlocConsumer<WanderlistCubit, WanderlistState>(
       builder: (context, state) {
         if (state is Editing) {
-          return Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+          return
+              Container (
+                padding: EdgeInsets.all(8),
+              child: ListView (
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 48.0, right: 48.0),
+                    padding: EdgeInsets.only(left: 8.0, right: 8.0),
                     child: _EditNameTextfield(state.wanderlist.name),
                   ),
                   Padding(padding: EdgeInsets.only(top: 10)),
                   _EditableActivityList(state.wanderlist.activities),
                   Padding(padding: EdgeInsets.only(top: 10)),
+                  //SearchField("Search Activities"),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Suggestions",
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.normal)),
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 10)),
+                  ActivitySuggestions(),
+
+
                 ],
-              ),
-              AddActivityOverlay(),
-            ],
-          );
+              ));
         }
 
         return CircularProgressIndicator();
@@ -127,12 +142,12 @@ class _EditNameTextfield extends StatelessWidget {
       builder: (context, WanderlistState state) {
         if (state is Editing) {
           return TextField(
+            style: TextStyle(color: Colors.black,
+            fontSize: 24),
             textAlign: TextAlign.center,
+            maxLines: null,
+            keyboardType: TextInputType.text,
             controller: _controller,
-            onTap: () => _controller.selection = TextSelection(
-              baseOffset: 0,
-              extentOffset: _controller.value.text.length,
-            ),
             onSubmitted: (text) => _submitNewName(context, state, text),
           );
         }
@@ -165,7 +180,6 @@ class _EditableActivityList extends StatelessWidget {
         builder: (context, state) {
           if (state is Editing) {
             return Container(
-              width: MediaQuery.of(context).size.width * 0.95,
               padding: EdgeInsets.all(WanTheme.CARD_PADDING),
               decoration: BoxDecoration(
                   borderRadius:
@@ -173,11 +187,13 @@ class _EditableActivityList extends StatelessWidget {
                   color: Colors.white),
               child: ReorderableListView.builder(
                 shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return _EditableActivityListItem(
                     Key('$index'),
                     activities[index],
                     () => _onRemoveItem(context, state, index),
+                    true,
                   );
                 },
                 itemCount: activities.length,
@@ -203,33 +219,32 @@ class _EditableActivityList extends StatelessWidget {
 }
 
 class _EditableActivityListItem extends StatelessWidget {
-  _EditableActivityListItem(this.key, this.activity, this.remove);
+  _EditableActivityListItem(this.key, this.activity, this.remove, this.showRemove);
 
+  final bool showRemove;
   final Key key;
   final ActivityDetails activity;
   final Function() remove;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          IconButton(
-            icon:
-                Icon(Icons.remove_circle_outline_outlined, color: Colors.grey),
-            onPressed: () {
-              remove();
-            },
+    if (showRemove) {
+      return ActivitySummaryItemSmall(
+          width: MediaQuery.of(context).size.width,
+          activity: activity,
+          rightWidget: IconButton(icon:
+          Icon(Icons.remove_circle_outline_outlined, color: Colors.grey),
+            onPressed: () => remove(),
           ),
-          ActivitySummaryItemSmall(
-            width: MediaQuery.of(context).size.width * 0.75,
-            activity: activity,
-            rightWidget: Icon(Icons.drag_handle, color: Colors.grey),
-            smallIcon: true,
-          ),
-        ],
-      ),
-    );
+          smallIcon: true,
+        );
+    } else {
+      return ActivitySummaryItemSmall(
+        width: MediaQuery.of(context).size.width,
+        activity: activity,
+        smallIcon: true,
+      );
+    }
   }
 }
 
