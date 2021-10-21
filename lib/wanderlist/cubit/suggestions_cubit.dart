@@ -4,14 +4,14 @@ import 'package:application/wanderlist/cubit/suggestions_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SuggestionsCubit extends Cubit<SuggestionsState> {
-  SuggestionsCubit(this.repository) : super(Initial());
+  SuggestionsCubit(this.repository, String wanderlistId) : super(Initial(wanderlistId));
 
   final IActivityRepository repository;
 
-  Future<void> loadSuggestions() async {
+  Future<void> loadSuggestions(String wanderlistId) async {
     if (state is Initial) {
       emit(Loading());
-      List<ActivityDetails> activities = await repository.getActivities();
+      List<ActivityDetails> activities = await repository.getSuggestForWanderlist(wanderlistId);
       emit(Loaded(activities));
     }
   }

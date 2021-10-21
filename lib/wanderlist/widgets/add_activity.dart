@@ -67,14 +67,19 @@ class ActivitySuggestions extends StatelessWidget {
       buildWhen: (t, n) => t != n,
       builder: (context, state) {
         if (state is suggestionsState.Initial) {
-          context.read<SuggestionsCubit>().loadSuggestions();
+          context.read<SuggestionsCubit>().loadSuggestions(state.wanderlistId);
         } else if (state is suggestionsState.Loaded) {
-          return Column (
+          return Material (
+              borderRadius: BorderRadius.all(Radius.circular(WanTheme.CARD_CORNER_RADIUS)),
+          color: Colors.white,
+          child: Container (
+            padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Column (
             children: [
               for (var activity in state.activities)
-                _SuggestionsItem(activity)
+                _SuggestionsItem(activity),
             ]
-          );
+          )));
         }
 
         return Container();

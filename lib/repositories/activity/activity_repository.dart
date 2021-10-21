@@ -4,7 +4,9 @@ import 'package:application/models/activity.dart';
 import 'package:application/repositories/activity/i_activity_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ActivityRepository implements IActivityRepository {
+/* deprecated */
+
+class ActivityRepository {
   final CollectionReference _activities =
       FirebaseFirestore.instance.collection('activities');
 
@@ -22,7 +24,6 @@ class ActivityRepository implements IActivityRepository {
 
   @override
   Future<List<ActivityDetails>> getActivities() async {
-    log("test");
     QuerySnapshot<Object?> snapshot = await _activities.limit(50).get();
     List<ActivityDetails> activities =
         snapshot.docs.map((DocumentSnapshot doc) {
@@ -30,7 +31,6 @@ class ActivityRepository implements IActivityRepository {
       data["id"] = doc.id;
       return ActivityDetails.fromJson(data);
     }).toList();
-    log("test");
     return activities;
   }
 }

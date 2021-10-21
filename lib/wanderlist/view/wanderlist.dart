@@ -27,7 +27,7 @@ class WanderlistPage extends StatelessWidget {
               create: (context) => WanderlistCubit(RestWanderlistRepository()),
             ),
             BlocProvider<SuggestionsCubit>(
-              create: (context) => SuggestionsCubit(RestActivityRepository()),
+              create: (context) => SuggestionsCubit(RestActivityRepository(), wanderlist.id),
             ),
           ],
           child: _PageContent(wanderlist.wanderlist),

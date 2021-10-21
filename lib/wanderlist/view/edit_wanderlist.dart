@@ -87,12 +87,12 @@ class _EditWanderlistBody extends StatelessWidget {
       builder: (context, state) {
         if (state is Editing) {
           return
-              Padding (
+              Container (
                 padding: EdgeInsets.all(8),
               child: ListView (
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 48.0, right: 48.0),
+                    padding: EdgeInsets.only(left: 8.0, right: 8.0),
                     child: _EditNameTextfield(state.wanderlist.name),
                   ),
                   Padding(padding: EdgeInsets.only(top: 10)),
@@ -109,8 +109,7 @@ class _EditWanderlistBody extends StatelessWidget {
                             fontWeight: FontWeight.normal)),
                   ),
                   Padding(padding: EdgeInsets.only(top: 10)),
-                  Container(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
-                  child: ActivitySuggestions()),
+                  ActivitySuggestions(),
 
 
                 ],

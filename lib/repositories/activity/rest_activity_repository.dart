@@ -17,10 +17,19 @@ class RestActivityRepository implements IActivityRepository {
 
   @override
   Future<List<ActivityDetails>> getActivities() async {
-    log("test");
     var data = await getDocument(restUri("activities", {"rec": "yes"})) as Map<String, dynamic>;
     List<ActivityDetails> activities = List.empty(growable: true);
     data["results"].forEach((json) => activities.add(ActivityDetails.fromJson(json)));
     return activities;
   }
+
+  @override
+  Future<List<ActivityDetails>> getSuggestForWanderlist(String wanderlistId) async {
+    var data = await getDocument(restUri("activities", {"wanderlist": wanderlistId})) as Map<String, dynamic>;
+    List<ActivityDetails> activities = List.empty(growable: true);
+    data["results"].forEach((json) => activities.add(ActivityDetails.fromJson(json)));
+    return activities;
+  }
+
+
 }
