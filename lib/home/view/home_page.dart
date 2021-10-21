@@ -42,7 +42,6 @@ class _HomePage extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                ListView(),
                 _FilledHomePage(gotoWanderlistsPage),
               ],
             ),
@@ -133,7 +132,7 @@ class _FilledHomePage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     double tripInfoHeight = 130;
-    double viewPortHeight = MediaQuery.of(context).size.height - 145;
+    double viewPortHeight = MediaQuery.of(context).size.height - 160;
     double wanderlistHeight = height - tripInfoHeight;
 
     return Column(
@@ -196,7 +195,13 @@ class _TripInfo extends StatelessWidget {
           return CircularProgressIndicator();
         } else if (state is UserLoaded) {
           return Container(
-              child: RewardInfo(width, height, 442, 558, 1000, 442 / 1000));
+              child: RewardInfo(
+                  width,
+                  height,
+                  state.points,
+                  state.pointsUntilReward,
+                  state.nextRewardTotalPoints,
+                  state.percentageUntilReward));
         }
 
         return Container(child: Text("Error!"));
