@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 @immutable
 class UserDetails extends Equatable {
   UserDetails(this.email, this.firstName, this.lastName, this.wanderlists,
-      this.completedActivities);
+      this.completedActivities, {this.originalJSON: const {}});
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     List<UserWanderlist> wanderlists = [];
@@ -34,9 +34,11 @@ class UserDetails extends Equatable {
       json['last_name'],
       wanderlists,
       completedActivities,
+      originalJSON: json,
     );
   }
 
+  late Map<String, dynamic> originalJSON;
   final String email;
   final String firstName;
   final String lastName;
@@ -60,13 +62,15 @@ class UserDetails extends Equatable {
       jsonCompletedActivities.add(activityReference);
     });
 
-    return {
-      'email': email,
-      'first_name': firstName,
-      'last_name': lastName,
-      'wanderlists': jsonWanderLists,
-      'completed_activities': completedActivities.map((a) => a.toRef()).toList(),
-    };
+
+    originalJSON['email'] = email;
+    originalJSON['first_name'] = firstName;
+    originalJSON['last_name'] = lastName;
+    originalJSON['wanderlists'] = jsonWanderLists;
+    originalJSON['completed_activities'] =
+        completedActivities.map((a) => a.toRef()).toList();
+
+    return originalJSON;
   }
 
   UserDetails copyWith({

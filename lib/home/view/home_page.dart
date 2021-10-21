@@ -157,6 +157,7 @@ class _FilledHomePage extends StatelessWidget {
               ),
             ],
           ),
+          ),
         ),
       ],
     );

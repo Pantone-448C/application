@@ -7,22 +7,23 @@ import 'package:flutter/services.dart';
 
 import 'login/view/login.dart';
 
-class Titlebar extends StatelessWidget implements PreferredSizeWidget {
-  void handleProfileButton(BuildContext context) {
-    if (FirebaseAuth.instance.currentUser == null) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginPage(),
-          ));
-    } else {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfilePage(),
-          ));
-    }
+void handleProfileButton(BuildContext context) {
+  if (FirebaseAuth.instance.currentUser == null) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ));
+  } else {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfilePage(),
+        ));
   }
+}
+
+class Titlebar extends StatelessWidget implements PreferredSizeWidget {
 
   static const titleSize = 30.0;
   static const barHeight = WanTheme.TITLEBAR_HEIGHT;

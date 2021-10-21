@@ -22,6 +22,6 @@ class ProfileCubit extends Cubit<ProfileState> {
       points += activity.points;
     });
     emit(ProfileLoaded(user.firstName, user.lastName, points,
-        "https://www.biography.com/.image/t_share/MTc0NjMzNDczMzM0NTg1MzM0/gettyimages-465470375.jpg"));
+        "", user));
   }
 }

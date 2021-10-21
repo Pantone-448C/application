@@ -1,21 +1,17 @@
 import 'package:application/components/list_of_wanderlists.dart';
-import 'package:application/components/searchfield.dart';
-import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/user_wanderlist.dart';
-import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:application/repositories/wanderlist/rest_wanderlist_repository.dart';
-import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_cubit.dart';
 import 'package:application/userwanderlists/cubit/userwanderlists_state.dart';
 import 'package:application/userwanderlists/widgets/new_wanderlist_dialog.dart';
-import 'package:application/wanderlist/view/view_wanderlist.dart';
 import 'package:application/wanderlist/view/wanderlist.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../apptheme.dart';
+import '../../titlebar.dart';
 import '../cubit/userwanderlists_cubit.dart';
 import '../cubit/userwanderlists_state.dart';
 
@@ -59,7 +55,21 @@ class _WanderlistsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
+      appBar: AppBar(
+          title: Text("Your Wanderlists", style: TextStyle(color: WanTheme.colors.pink)),
+        actions: [
+      IconButton(
+      color: WanTheme.colors.grey,
+        icon: Icon(
+          Icons.account_circle_outlined,
+        ),
+        onPressed: () {
+          handleProfileButton(context);
+        },
+      ),
+      ],
+    ),
+    floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(
                 context: context,
@@ -72,7 +82,6 @@ class _WanderlistsView extends StatelessWidget {
         body: BlocBuilder<UserWanderlistsCubit, UserWanderlistsState>(
           builder: (context, state) {
             if (state is UserWanderlistsLoaded) {
-              print(state.wanderlists);
               return ListOfWanderlists(
                 readOnly: false,
                 wanderlists: state.wanderlists,
@@ -126,8 +135,6 @@ class _CreateWanderlistButton extends StatelessWidget {
 class UserWanderlistsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: UserWanderlists(),
-    );
+      return UserWanderlists();
   }
 }

@@ -35,7 +35,7 @@ class RewardsList extends StatelessWidget {
           ),
         ),
         TextSpan(
-          text: "Rewards",
+          text: " Rewards",
           style: Theme.of(context).textTheme.headline3,
         ),
       ]),
