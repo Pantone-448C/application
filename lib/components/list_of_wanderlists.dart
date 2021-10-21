@@ -79,8 +79,7 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
 
     if (widget.searchable) {
       return Stack (
-      children: [
-        list,
+        children: [list,
         Padding (
           padding: EdgeInsets.all(8),
             child:  Material (
