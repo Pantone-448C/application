@@ -251,7 +251,7 @@ class AddedPointsCard extends StatelessWidget {
           ),
           Padding(padding: EdgeInsets.only(top: 4)),
           Text(
-            "You've got " + afterPoints.toString() + " points!",
+            "You've got " + beforePoints.toString() + " points!",
             style: TextStyle(fontSize: 16, fontFamily: "inter"),
           ),
         ],
