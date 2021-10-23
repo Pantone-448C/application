@@ -1,6 +1,5 @@
-
-
 import 'package:application/models/activity.dart';
+import 'package:application/models/user.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrScannerState {
@@ -20,7 +19,6 @@ class QrScannerError extends QrScannerState {
 
   QrScannerError(this.errorMsg);
 }
-
 
 class AddActivity extends QrScannerState {
   final String activity;
@@ -42,6 +40,11 @@ class ActivityAlreadyComplete extends QrScannerState {
 
 class AddedActivity extends QrScannerState {
   final ActivityDetails activity;
+  final UserDetails user;
+  final int beforePoints;
+  final int afterPoints;
+  final int activityPoints;
 
-  AddedActivity(this.activity);
+  AddedActivity(this.activity, this.user, this.beforePoints, this.afterPoints,
+      this.activityPoints);
 }

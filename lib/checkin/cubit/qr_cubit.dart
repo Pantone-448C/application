@@ -41,7 +41,6 @@ class QrCubit extends Cubit<QrScannerState> {
     List<UserWanderlist> lists =
         List<UserWanderlist>.from(await userRepository.getUserWanderlists());
 
-
     bool changed = false;
     lists.forEach((e) {
       if (e.wanderlist.activities.any((elem) {
@@ -55,6 +54,9 @@ class QrCubit extends Cubit<QrScannerState> {
       }
     });
 
+    UserDetails user = await userRepository.getUserData();
+    int beforePoints = calculateTotalPoints(user.completedActivities);
+
     /* Add activity to user's completed activity, for points tracking */
     var completed =
         (await userRepository.getUserCompletedActivities()).toList();
@@ -65,9 +67,29 @@ class QrCubit extends Cubit<QrScannerState> {
       emit(ActivityAlreadyComplete(a));
     }
 
+    int afterPoints = beforePoints;
+    if (!changed) {
+      afterPoints = beforePoints + a.points;
+    }
+
     await userRepository.updateUserWanderlists(lists);
     await userRepository.updateUserCompletedActivities(completed);
 
-    emit(AddedActivity(a));
+    emit(AddedActivity(a, user, beforePoints, afterPoints, a.points));
+  }
+
+  int calculateTotalPoints(List<ActivityDetails> userActivities) {
+    int totalPoints = 0;
+    for (ActivityDetails details in userActivities) {
+      totalPoints += details.points;
+    }
+
+    while (totalPoints >= 0) {
+      totalPoints -= 1000;
+    }
+
+    totalPoints += 1000;
+
+    return totalPoints;
   }
 }

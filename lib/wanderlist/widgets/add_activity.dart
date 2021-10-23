@@ -48,7 +48,7 @@ class AddActivityOverlay extends StatelessWidget {
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.normal)),
             ),
-            Container(height: 345, child: _Suggestions()),
+            Container(height: 345, child: ActivitySuggestions()),
           ],
         ),
       ),
@@ -60,28 +60,29 @@ class AddActivityOverlay extends StatelessWidget {
   }
 }
 
-class _Suggestions extends StatelessWidget {
+class ActivitySuggestions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SuggestionsCubit, suggestionsState.SuggestionsState>(
+      buildWhen: (t, n) => t != n,
       builder: (context, state) {
         if (state is suggestionsState.Initial) {
-          context.read<SuggestionsCubit>().loadSuggestions();
-        } else if (state is suggestionsState.Loading) {
-          return CircularProgressIndicator();
+          context.read<SuggestionsCubit>().loadSuggestions(state.wanderlistId);
         } else if (state is suggestionsState.Loaded) {
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: state.activities.length,
-            itemBuilder: (context, index) {
-              return _SuggestionsItem(state.activities[index]);
-            },
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
-          );
+          return Material (
+              borderRadius: BorderRadius.all(Radius.circular(WanTheme.CARD_CORNER_RADIUS)),
+          color: Colors.white,
+          child: Container (
+            padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Column (
+            children: [
+              for (var activity in state.activities)
+                _SuggestionsItem(activity),
+            ]
+          )));
         }
 
-        return CircularProgressIndicator();
+        return Container();
       },
       listener: (context, state) => {},
     );
@@ -94,20 +95,10 @@ class _SuggestionsItem extends StatelessWidget {
   final ActivityDetails activity;
 
   Widget addButton(BuildContext context, wanderlistState.Editing state) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        elevation: 0.0,
-        shadowColor: Colors.transparent,
-      ),
-      onPressed: () {
-        context.read<WanderlistCubit>().addActivity(state.wanderlist, activity);
-      },
-      child: Text(
-        "Add",
-        style:
-            TextStyle(fontSize: 10, fontFamily: "Inter", color: Colors.white),
-      ),
-    );
+    return IconButton(icon: Icon(Icons.add_circle_outline_rounded),
+          color: WanColors().pink, onPressed: () {
+              context.read<WanderlistCubit>().addActivity(state.wanderlist, activity);
+            });
   }
 
   Widget successfullyAddedIcon() {
@@ -145,7 +136,6 @@ class _SuggestionsItem extends StatelessWidget {
                   activity: activity,
                   smallIcon: true,
                   rightWidget: Container(
-                    height: 20,
                     child: pickItemIcon(context, state),
                   ),
                 ),

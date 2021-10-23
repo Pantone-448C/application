@@ -9,11 +9,12 @@ class ActivityDetails extends Equatable {
       this.address, this.points, this.tags);
 
   factory ActivityDetails.fromJson(Map<String, dynamic> json) {
+
     var a = ActivityDetails(
       json["id"],
       json['name'],
       json['about'],
-      json['thumb_url'],
+      "",
       json['image_url'],
       json['address'],
       json['points'],

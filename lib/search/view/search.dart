@@ -22,8 +22,13 @@ class SearchPage extends StatelessWidget {
           drawerScrimColor: Colors.transparent,
           body: SlidingUpPanel(
             panelBuilder: (ScrollController sc) => _SearchPage(sc),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25.0),
+              topRight: Radius.circular(25.0),
+            ),
             body: Container(
-                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                padding:
+                    EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                 child: Stack(children: <Widget>[
                   MapSample(),
                   _ActivityPreview(),
@@ -130,7 +135,8 @@ class _ActivityPage extends StatelessWidget {
           }
 
           if (state is SearchInitial) {
-            return Expanded(child: _ActivityList(sc, activities: state.suggestion));
+            return Expanded(
+                child: _ActivityList(sc, activities: state.suggestion));
           }
 
           if (state is SearchResults) {
@@ -138,7 +144,7 @@ class _ActivityPage extends StatelessWidget {
                 child: Column(children: [
               Icon(Icons.horizontal_rule, color: WanColors().grey),
               Text("Search results",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               Expanded(child: _ActivityList(sc, activities: state.results)),
             ]));
           }
@@ -148,7 +154,6 @@ class _ActivityPage extends StatelessWidget {
                 child: Column(children: [
               Icon(Icons.horizontal_rule, color: WanColors().grey),
               Text("Nearby Activities",
-
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               Expanded(child: _ActivityList(sc, activities: state.suggestion))
             ]));

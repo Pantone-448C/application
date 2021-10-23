@@ -52,6 +52,7 @@ class _PinnedWanderlistsContent extends StatelessWidget {
 
   Widget _wanderlists(BuildContext context) {
     return ListOfWanderlists(
+      scrollable: false,
       searchable: false,
       readOnly: true,
       onWanderlistTap: (UserWanderlist uw) => Navigator.push(
