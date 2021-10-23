@@ -8,6 +8,8 @@ import 'package:application/wanderlist/cubit/wanderlist_state.dart';
 import 'package:application/wanderlist/view/edit_wanderlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:social_share/social_share.dart';
 
 class ViewWanderlistPage extends StatelessWidget {
   ViewWanderlistPage(this.wanderlist);
@@ -86,7 +88,14 @@ class _TopRow extends StatelessWidget {
             fontFamily: 'Inter',
           ),
         ),
-        Padding(padding: EdgeInsets.only(left: 10)),
+        Padding(padding: EdgeInsets.only(left: 5)),
+        IconButton(
+          icon: FaIcon(FontAwesomeIcons.facebook),
+          onPressed: () async {
+            await SocialShare.shareFacebookStory("https://www.computerhope.com/jargon/j/jpg.png","#000000",
+            "https://deep-link-url","facebook-app-id");
+          }
+        ),
         Container(
           width: 30,
           height: 30,
