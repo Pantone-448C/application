@@ -305,7 +305,7 @@ class SustainabilityBox extends StatelessWidget {
         child: Container(
           color: WanTheme.colors.white,
           padding:
-              EdgeInsets.only(top: 5.0, left: 15.0, right: 15.0, botton: 15.0),
+              EdgeInsets.only(top: 5.0, left: 15.0, right: 15.0, bottom: 15.0),
           child: Column(
             children: [
               Row(
