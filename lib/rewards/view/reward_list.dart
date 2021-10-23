@@ -7,11 +7,24 @@ import 'package:application/models/reward.dart';
 import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:application/rewards/cubit/rewards_list_cubit.dart';
 import 'package:application/rewards/cubit/rewards_list_state.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class RewardsList extends StatelessWidget {
+  RewardsList({
+    this.hasTitle = true,
+    this.maxRewardNum = -1,
+    this.loaderColour = Colors.pink,
+    this.carousel = false,
+  });
+
+  final bool hasTitle;
+  final int maxRewardNum;
+  final Color loaderColour;
+  final bool carousel;
+
   RichText _title(BuildContext context) {
     return RichText(
       text: TextSpan(children: [
@@ -40,13 +53,28 @@ class RewardsList extends StatelessWidget {
   Widget _rewards(BuildContext context, List<Reward> rewards) {
     if (rewards.length == 0) {
       return Center(child: _noRewardsText(context));
+    } else if (this.carousel) {
+      return CarouselSlider.builder(
+        itemBuilder: (BuildContext context, int i, int realIndex) {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(28.0),
+            child: Card(child: _RewardItem(rewards[i])),
+          );
+        },
+        options: CarouselOptions(
+            autoPlay: true, enlargeCenterPage: true, height: 110),
+        itemCount: rewards.length,
+      );
     } else {
       return Container(
         child: ListView.separated(
           shrinkWrap: true,
-          itemCount: rewards.length,
+          itemCount: maxRewardNum == -1 ? rewards.length : maxRewardNum,
           itemBuilder: (context, i) {
-            return _RewardItem(rewards[i]);
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _RewardItem(rewards[i]),
+            );
           },
           separatorBuilder: (context, i) =>
               Padding(padding: EdgeInsets.only(top: 16.0)),
@@ -60,14 +88,16 @@ class RewardsList extends StatelessWidget {
     return BlocBuilder<RewardsListCubit, RewardsListState>(
       builder: (context, state) {
         return Container(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _title(context),
-                Padding(padding: EdgeInsets.only(top: 16)),
+                hasTitle ? _title(context) : Container(),
+                hasTitle
+                    ? Padding(padding: EdgeInsets.only(top: 16))
+                    : Container(),
                 state is RewardsListLoaded
                     ? _rewards(context, state.rewards)
                     : Center(child: CircularProgressIndicator()),
