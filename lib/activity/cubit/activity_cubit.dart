@@ -19,7 +19,7 @@ class ActivityCubit extends Cubit<ActivityState> {
 
   Future<void> getActivityInfo() async {
     var a = await activityRepository.getActivity(id);
-    emit(ActivityLoaded(a.name, a.address, 100, a.about, a.sustainability, a.imageUrl));
+    emit(ActivityLoaded(a.name, a.address, a.points, a.about, a.sustainability, a.imageUrl));
   }
 
   Future<void> launchMaps() async {
