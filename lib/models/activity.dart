@@ -15,7 +15,6 @@ class ActivityDetails extends Equatable {
       json['name'],
       json['about'],
       json['sustainability'],
-      json['thumb_url'],
       json['image_url'],
       json['address'],
       json['points'],

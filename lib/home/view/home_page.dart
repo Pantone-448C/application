@@ -42,7 +42,6 @@ class _HomePage extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                ListView(),
                 _FilledHomePage(gotoWanderlistsPage),
               ],
             ),
@@ -128,18 +127,21 @@ class _FilledHomePage extends StatelessWidget {
 
   final Function() gotoWanderlistsPage;
 
-  Column _homepageItems(BuildContext context, UserLoaded state) {
+  Widget _homepageItems(BuildContext context, UserLoaded state) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
     double tripInfoHeight = 130;
+    double viewPortHeight = MediaQuery.of(context).size.height - 160;
     double wanderlistHeight = height - tripInfoHeight;
 
     return Column(
       children: <Widget>[
         Container(
-          // height: SizeConfig(context).h,
-          child: Expanded(child: ListView(
+          height: viewPortHeight,
+          child: ListView(
+            physics:
+                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             shrinkWrap: true,
             children: [
               Container(
@@ -154,7 +156,6 @@ class _FilledHomePage extends StatelessWidget {
                 ),
               ),
             ],
-          ),
           ),
         ),
       ],
@@ -194,7 +195,15 @@ class _TripInfo extends StatelessWidget {
           return CircularProgressIndicator();
         } else if (state is UserLoaded) {
           return Container(
-              child: RewardInfo(width, height, 442, 558, 1000, 442 / 1000));
+              child: RewardInfo(
+                  width,
+                  height,
+                  state.points,
+                  state.pointsUntilReward,
+                  state.nextRewardTotalPoints,
+                  state.percentageUntilReward,
+            state.numRewards,
+          ));
         }
 
         return Container(child: Text("Error!"));

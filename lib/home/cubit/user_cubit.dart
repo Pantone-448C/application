@@ -23,15 +23,27 @@ class UserCubit extends Cubit<UserState> {
     UserDetails user = await userRepository.getUserData();
     List<UserWanderlist> userWanderlists =
         (await userRepository.getActiveWanderlists()).toList();
+    int pointsForNextReward = await userRepository.getPointsForNextReward();
+    int points = calculateTotalPoints(user.completedActivities);
 
-    emit(UserLoaded(442, 1000 - 442, 1000, 442 / 1000, userWanderlists));
+    int numRewards = (await userRepository.getUserRewards()).length;
+
+    emit(UserLoaded(points, pointsForNextReward - points, pointsForNextReward,
+        points / pointsForNextReward, userWanderlists, numRewards));
   }
 
-  int calculatePercentageComplete(List<UserWanderlist> wanderlists) {
-    return 0;
-  }
+  int calculateTotalPoints(List<ActivityDetails> userActivities) {
+    int totalPoints = 0;
+    for (ActivityDetails details in userActivities) {
+      totalPoints += details.points;
+    }
 
-  int calculateTotalPoints(List<UserWanderlist> wanderlists) {
-    return 0;
+    while (totalPoints >= 0) {
+      totalPoints -= 1000;
+    }
+
+    totalPoints += 1000;
+
+    return totalPoints;
   }
 }

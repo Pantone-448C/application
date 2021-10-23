@@ -42,6 +42,9 @@ class RestUserRepository implements IUserRepository {
   Future<Iterable<Reward>> getUserRewards() async {
     Map<String, dynamic> user =
         await getDocument(restUri("user", {})) as Map<String, dynamic>;
+    if (user["rewards"] == null) {
+      return [];
+    }
     return (user["rewards"] as List)
         .map((reward) => Reward.fromJson(reward as Map<String, dynamic>))
         .toList();
