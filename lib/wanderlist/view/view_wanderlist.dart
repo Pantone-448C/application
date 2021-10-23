@@ -1,3 +1,8 @@
+import 'dart:io';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:application/apptheme.dart';
 import 'package:application/components/activity_summary_item_small.dart';
 import 'package:application/models/activity.dart';
@@ -32,7 +37,7 @@ class ViewWanderlistPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _TopRow(wanderlist.name, _onEditPress),
+            _TopRow(wanderlist.name, wanderlist.activities, _onEditPress),
             Padding(padding: EdgeInsets.only(top: 10)),
             _UneditableActivityList(wanderlist.activities),
           ],
@@ -70,9 +75,10 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _TopRow extends StatelessWidget {
-  _TopRow(this.name, this.edit);
+  _TopRow(this.name, this.activities, this.edit);
 
   final String name;
+  final List<ActivityDetails> activities;
   final Function(BuildContext) edit;
 
   @override
@@ -90,10 +96,16 @@ class _TopRow extends StatelessWidget {
         ),
         Padding(padding: EdgeInsets.only(left: 5)),
         IconButton(
-          icon: FaIcon(FontAwesomeIcons.facebook),
+          icon: FaIcon(FontAwesomeIcons.shareAlt),
           onPressed: () async {
-            await SocialShare.shareFacebookStory("https://www.computerhope.com/jargon/j/jpg.png","#000000",
-            "https://deep-link-url","facebook-app-id");
+            var response = await http.get(Uri.parse(this.activities[0].imageUrl));
+            Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+            String path = join(documentDirectory.path, 'imagetest.png');
+            File file = new File(path);
+            file.writeAsBytesSync(response.bodyBytes);
+
+            SocialShare.shareOptions("Check out this Wanderlist!", imagePath: path);
           }
         ),
         Container(
