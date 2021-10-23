@@ -36,6 +36,7 @@ class ActivityInfo extends StatelessWidget {
                     ],
                   ),
                   AboutBox(),
+                  SustainabilityBox(),
                 ],
               );
             } else {
@@ -283,6 +284,56 @@ class AboutBox extends StatelessWidget {
               ),
                     Text(
                       state.about,
+                      style: TextStyle(fontSize: 16),
+                    ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SustainabilityBox extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var state = context.read<ActivityCubit>().state as ActivityLoaded;
+    return Container(
+      margin: EdgeInsets.all(20.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(18.0),
+        child: Container(
+          color: WanTheme.colors.white,
+          padding:
+              EdgeInsets.only(top: 5.0, left: 15.0, right: 15.0, botton: 15.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 90,
+                    child: Text(
+                      "Sustainability Info",
+                      style: TextStyle(
+                        fontFamily: "inter",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 10,
+                    child: IconButton(
+                      iconSize: 20.0,
+                      icon: Icon(Icons.arrow_forward_ios_rounded),
+                      onPressed: () {},
+                    ),
+                  )
+                ],
+              ),
+                    Text(
+                      state.sustainability,
                       style: TextStyle(fontSize: 16),
                     ),
             ],
