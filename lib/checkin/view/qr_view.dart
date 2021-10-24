@@ -1,6 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:application/apptheme.dart';
+import 'package:application/checkin/widgets/new_reward_dialog.dart';
+import 'package:application/checkin/widgets/points_earned_dialog.dart';
 import 'package:application/components/activity_summary_item_large.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
 import 'package:application/repositories/user/rest_user_repository.dart';
@@ -140,128 +143,123 @@ class _InfoOverlay extends StatelessWidget {
 class _QrAddActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QrCubit, QrScannerState>(builder: (context, state) {
-      if (state is QrScannerError) {
-        return Stack(
-          children: <Widget>[_QRCameraView(), _InfoOverlay(state.errorMsg)],
+    return BlocConsumer<QrCubit, QrScannerState>(builder: (context, state) {
+      return _buildWidget(context, state);
+    }, listener: (context, state) {
+      if (state is AddedActivity) {
+        context.read<QrCubit>().checkForReward();
+      } else if (state is NewReward) {
+        log("show dialog");
+        showDialog(
+          context: context,
+          builder: (context) => Dialog(
+            child: NewRewardDialog(
+              state.newReward,
+              () => Navigator.of(context).pop(),
+            ),
+          ),
         );
-      } else if (state is QrScannerLoading) {
-        return Center(child: CircularProgressIndicator());
-      } else if (state is GotActivity) {
-        return Column(children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top + 20,
-                left: 20,
-                right: 20,
-                bottom: 25),
-            child: ActivitySummaryItemLarge(state.activity),
-          ),
-          AddedPointsCard(
-            loading: true,
-          ),
-        ]);
-      } else if (state is AddedActivity) {
-        return Column(children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top + 20,
-                left: 20,
-                right: 20,
-                bottom: 25),
-            child: ActivitySummaryItemLarge(state.activity),
-          ),
-          AddedPointsCard(
-            loading: false,
-            success: true,
-            beforePoints: state.beforePoints,
-            afterPoints: state.afterPoints,
-            activityPoints: state.activityPoints,
-          ),
-        ]);
-      } else if (state is ActivityAlreadyComplete) {
-        return Column(children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top + 20,
-                left: 20,
-                right: 20,
-                bottom: 25),
-            child: ActivitySummaryItemLarge(state.activity),
-          ),
-          AddedPointsCard(
-            loading: false,
-            success: false,
-          ),
-        ]);
       }
-
-      throw Exception("oops, fell through");
-      return Center(child: CircularProgressIndicator());
     });
   }
-}
 
-class AddedPointsCard extends StatelessWidget {
-  AddedPointsCard({
-    this.loading = true,
-    this.success = false,
-    this.beforePoints = 0,
-    this.afterPoints = 0,
-    this.activityPoints = 0,
-  });
-
-  final bool loading;
-  final bool success;
-  final int beforePoints;
-  final int afterPoints;
-  final int activityPoints;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
-      child: Container(
-        constraints: BoxConstraints(
-          maxHeight: 150,
-          minWidth: MediaQuery.of(context).size.width,
-        ),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(WanTheme.CARD_CORNER_RADIUS)),
-        child: _buildWidgetType(context),
-      ),
-    );
-  }
-
-  Widget _buildWidgetType(BuildContext context) {
-    if (loading) {
+  _buildWidget(BuildContext context, QrScannerState state) {
+    if (state is QrScannerError) {
+      return Stack(
+        children: <Widget>[_QRCameraView(), _InfoOverlay(state.errorMsg)],
+      );
+    } else if (state is QrScannerLoading) {
       return Center(child: CircularProgressIndicator());
-    } else if (success) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.check_circle_outline_rounded, size: 32),
-          Padding(padding: EdgeInsets.only(top: 16)),
-          Text(
-            "+" + activityPoints.toString() + " points",
-            style: TextStyle(
-                fontSize: 24, fontFamily: "inter", fontWeight: FontWeight.w600),
-          ),
-          Padding(padding: EdgeInsets.only(top: 4)),
-          Text(
-            "You've got " + beforePoints.toString() + " points!",
-            style: TextStyle(fontSize: 16, fontFamily: "inter"),
-          ),
-        ],
-      );
-    } else if (!success) {
-      return Center(
-        child: Text("Oops! Something went wrong. Please try again."),
-      );
-    } else {
-      return Container();
+    } else if (state is GotActivity) {
+      return Column(children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + 20,
+              left: 20,
+              right: 20,
+              bottom: 25),
+          child: ActivitySummaryItemLarge(state.activity),
+        ),
+        AddedPointsCard(
+          loading: true,
+        ),
+      ]);
+    } else if (state is AddedActivity) {
+      return Column(children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + 20,
+              left: 20,
+              right: 20,
+              bottom: 25),
+          child: ActivitySummaryItemLarge(state.activity),
+        ),
+        Spacer(),
+        AddedPointsCard(
+          loading: false,
+          success: true,
+          beforePoints: state.beforePoints,
+          afterPoints: state.afterPoints,
+          activityPoints: state.activityPoints,
+        ),
+        Spacer(),
+        ElevatedButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text("Continue"),
+        ),
+        Spacer(),
+      ]);
+    } else if (state is NewReward) {
+      return Column(children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + 20,
+              left: 20,
+              right: 20,
+              bottom: 25),
+          child: ActivitySummaryItemLarge(state.activity),
+        ),
+        Spacer(),
+        AddedPointsCard(
+          loading: false,
+          success: true,
+          beforePoints: state.beforePoints,
+          afterPoints: state.afterPoints,
+          activityPoints: state.activityPoints,
+        ),
+        Spacer(),
+        ElevatedButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text("Continue"),
+        ),
+        Spacer(),
+      ]);
+    } else if (state is ActivityAlreadyComplete) {
+      return Column(children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + 20,
+              left: 20,
+              right: 20,
+              bottom: 25),
+          child: ActivitySummaryItemLarge(state.activity),
+        ),
+        Spacer(),
+        AddedPointsCard(
+          loading: false,
+          success: false,
+        ),
+        Spacer(),
+        ElevatedButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text("Continue"),
+        ),
+        Spacer(),
+      ]);
     }
+
+    throw Exception("oops, fell through");
+    return Center(child: CircularProgressIndicator());
   }
 }
 
