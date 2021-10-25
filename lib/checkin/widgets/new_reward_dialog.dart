@@ -22,6 +22,7 @@ class NewRewardDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(WanTheme.CARD_CORNER_RADIUS),
         color: Colors.white,
       ),
+      padding: EdgeInsets.all(16.0),
       child: _DialogContent(reward, onContinuePress, onClosePress),
     );
   }
@@ -39,14 +40,32 @@ class _DialogContent extends StatelessWidget {
     return Column(
       children: [
         Row(
+          mainAxisAlignment: onClosePress != null
+              ? MainAxisAlignment.spaceAround
+              : MainAxisAlignment.center,
           children: [
-            Text("Congratulations!"),
+            ShaderMask(
+              blendMode: BlendMode.srcIn,
+              shaderCallback: (Rect bounds) =>
+                  WanTheme.colors.pinkOrangeGradient.createShader(
+                      Rect.fromLTWH(0, 0, bounds.width, bounds.height)),
+              child: Text(
+                "Congratulations!",
+                textAlign: TextAlign.center,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline3!
+                    .copyWith(fontWeight: FontWeight.w600),
+              ),
+            ),
             onClosePress != null
                 ? IconButton(icon: Icon(Icons.close), onPressed: onClosePress)
                 : Container(),
           ],
         ),
+        Spacer(),
         _NewReward(reward),
+        Spacer(),
         _ActionButtons(onContinuePress),
       ],
     );
@@ -64,7 +83,11 @@ class _NewReward extends StatelessWidget {
 
     return Column(
       children: [
-        Text("You've received a reward!"),
+        Text(
+          "You've received a new reward!",
+          style: Theme.of(context).textTheme.bodyText2!.copyWith(fontSize: 16),
+        ),
+        Padding(padding: EdgeInsets.only(top: 16.0)),
         RewardCard(
           reward.name,
           reward.imageUrl,
@@ -87,12 +110,11 @@ class _ActionButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onContinuePress,
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(WanTheme.BUTTON_CORNER_RADIUS),
-            ),
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            WanTheme.BUTTON_CORNER_RADIUS,
           ),
         ),
       ),

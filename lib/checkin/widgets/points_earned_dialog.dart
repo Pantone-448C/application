@@ -49,18 +49,15 @@ class _AddedPointsCardState extends State<AddedPointsCard>
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 0, left: 16.0, right: 16.0),
-      child: Container(
-        constraints: BoxConstraints(
-          maxHeight: 200,
-          minWidth: MediaQuery.of(context).size.width,
-        ),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(WanTheme.CARD_CORNER_RADIUS)),
-        child: _buildWidgetType(context),
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: 200,
+        minWidth: MediaQuery.of(context).size.width,
       ),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(WanTheme.CARD_CORNER_RADIUS)),
+      child: _buildWidgetType(context),
     );
   }
 

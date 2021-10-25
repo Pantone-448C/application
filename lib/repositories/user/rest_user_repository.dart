@@ -58,10 +58,18 @@ class RestUserRepository implements IUserRepository {
 
   @override
   Future<Reward> getRecommendedReward() async {
-    Map<String, dynamic> reward =
-        await getDocument(restUri("user/rewards/next", {}))
-            as Map<String, dynamic>;
-    return Reward.fromRewardOnlyJson(reward);
+    // Map<String, dynamic> reward =
+    //     await getDocument(restUri("user/rewards/next", {}))
+    //         as Map<String, dynamic>;
+    return Reward(
+      "",
+      DateTime.now(),
+      "A description",
+      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FImage&psig=AOvVaw29mg9cQsnE8B9-ez9kFfxo&ust=1635214575841000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNikjJG_5PMCFQAAAAAdAAAAABAD",
+      "A location",
+      "name",
+      "20% off stuff",
+    );
   }
 
   @override

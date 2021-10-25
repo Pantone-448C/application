@@ -101,6 +101,10 @@ class QrCubit extends Cubit<QrScannerState> {
     }
   }
 
+  void returnToQrScanner() {
+    emit(QrScannerError("Please Scan an Activity Code"));
+  }
+
   int calculateTotalPoints(List<ActivityDetails> userActivities) {
     int totalPoints = 0;
     for (ActivityDetails details in userActivities) {

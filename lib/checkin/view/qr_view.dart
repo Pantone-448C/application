@@ -5,6 +5,7 @@ import 'package:application/apptheme.dart';
 import 'package:application/checkin/widgets/new_reward_dialog.dart';
 import 'package:application/checkin/widgets/points_earned_dialog.dart';
 import 'package:application/components/activity_summary_item_large.dart';
+import 'package:application/models/activity.dart';
 import 'package:application/repositories/activity/activity_repository.dart';
 import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:application/repositories/user/user_repository.dart';
@@ -153,6 +154,9 @@ class _QrAddActivity extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) => Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(WanTheme.CARD_CORNER_RADIUS),
+            ),
             child: NewRewardDialog(
               state.newReward,
               () => Navigator.of(context).pop(),
@@ -171,30 +175,19 @@ class _QrAddActivity extends StatelessWidget {
     } else if (state is QrScannerLoading) {
       return Center(child: CircularProgressIndicator());
     } else if (state is GotActivity) {
-      return Column(children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 20,
-              left: 20,
-              right: 20,
-              bottom: 25),
-          child: ActivitySummaryItemLarge(state.activity),
-        ),
+      return _buildCheckinContent(
+        context,
+        "Checking you in",
+        state.activity,
         AddedPointsCard(
           loading: true,
         ),
-      ]);
+      );
     } else if (state is AddedActivity) {
-      return Column(children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 20,
-              left: 20,
-              right: 20,
-              bottom: 25),
-          child: ActivitySummaryItemLarge(state.activity),
-        ),
-        Spacer(),
+      return _buildCheckinContent(
+        context,
+        "We've checked you in!",
+        state.activity,
         AddedPointsCard(
           loading: false,
           success: true,
@@ -202,24 +195,12 @@ class _QrAddActivity extends StatelessWidget {
           afterPoints: state.afterPoints,
           activityPoints: state.activityPoints,
         ),
-        Spacer(),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text("Continue"),
-        ),
-        Spacer(),
-      ]);
+      );
     } else if (state is NewReward) {
-      return Column(children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 20,
-              left: 20,
-              right: 20,
-              bottom: 25),
-          child: ActivitySummaryItemLarge(state.activity),
-        ),
-        Spacer(),
+      return _buildCheckinContent(
+        context,
+        "We've checked you in!",
+        state.activity,
         AddedPointsCard(
           loading: false,
           success: true,
@@ -227,39 +208,64 @@ class _QrAddActivity extends StatelessWidget {
           afterPoints: state.afterPoints,
           activityPoints: state.activityPoints,
         ),
-        Spacer(),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text("Continue"),
-        ),
-        Spacer(),
-      ]);
+      );
     } else if (state is ActivityAlreadyComplete) {
-      return Column(children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 20,
-              left: 20,
-              right: 20,
-              bottom: 25),
-          child: ActivitySummaryItemLarge(state.activity),
-        ),
-        Spacer(),
+      return _buildCheckinContent(
+        context,
+        "You've already checked into this activity before",
+        state.activity,
         AddedPointsCard(
           loading: false,
           success: false,
         ),
-        Spacer(),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text("Continue"),
-        ),
-        Spacer(),
-      ]);
+      );
     }
 
     throw Exception("oops, fell through");
-    return Center(child: CircularProgressIndicator());
+  }
+
+  Widget _buildCheckinContent(BuildContext context, String headerText,
+      ActivityDetails activity, AddedPointsCard card) {
+    return Container(
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top + 20,
+        left: 20,
+        right: 20,
+        bottom: 25,
+      ),
+      child: Column(
+        children: <Widget>[
+          Text(
+            headerText,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontSize: 24,
+              fontFamily: "inter",
+              fontWeight: FontWeight.w500,
+              color: WanTheme.colors.pink,
+            ),
+          ),
+          Spacer(),
+          ActivitySummaryItemLarge(activity),
+          Spacer(),
+          card,
+          Spacer(),
+          ElevatedButton(
+            onPressed: () => context.read<QrCubit>().returnToQrScanner(),
+            child: Text("Continue"),
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(double.infinity, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                  WanTheme.BUTTON_CORNER_RADIUS,
+                ),
+              ),
+            ),
+          ),
+          Spacer(),
+        ],
+      ),
+    );
   }
 }
 
