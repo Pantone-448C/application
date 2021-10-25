@@ -1,9 +1,10 @@
 import 'package:application/apptheme.dart';
 import 'package:application/components/rewards/reward_card.dart';
 import 'package:application/models/reward.dart';
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 
-class NewRewardDialog extends StatelessWidget {
+class NewRewardDialog extends StatefulWidget {
   NewRewardDialog(this.reward, this.onContinuePress, {this.onClosePress});
 
   final Reward reward;
@@ -11,7 +12,23 @@ class NewRewardDialog extends StatelessWidget {
   final Function()? onClosePress;
 
   @override
+  State<NewRewardDialog> createState() => _NewRewardDialogState();
+}
+
+class _NewRewardDialogState extends State<NewRewardDialog> {
+  late ConfettiController _confettiController;
+
+  @override
+  void initState() {
+    super.initState();
+    _confettiController = ConfettiController(
+      duration: Duration(seconds: 2),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _confettiController.play();
     return Container(
       constraints: BoxConstraints(
         maxWidth: 380,
@@ -23,12 +40,33 @@ class NewRewardDialog extends StatelessWidget {
         color: Colors.white,
       ),
       padding: EdgeInsets.all(16.0),
-      child: _DialogContent(reward, onContinuePress, onClosePress),
+      child: Stack(
+        children: [
+          _DialogContent(
+              widget.reward, widget.onContinuePress, widget.onClosePress),
+          Align(
+            alignment: Alignment.topCenter,
+            child: ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirectionality: BlastDirectionality.explosive,
+              shouldLoop: false,
+              emissionFrequency: 0.1,
+              colors: [
+                Colors.green,
+                Colors.blue,
+                WanTheme.colors.pink,
+                WanTheme.colors.orange,
+                Colors.purple,
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
-class _DialogContent extends StatelessWidget {
+class _DialogContent extends StatefulWidget {
   _DialogContent(this.reward, this.onContinuePress, this.onClosePress);
 
   final Reward reward;
@@ -36,11 +74,16 @@ class _DialogContent extends StatelessWidget {
   final Function()? onClosePress;
 
   @override
+  State<_DialogContent> createState() => _DialogContentState();
+}
+
+class _DialogContentState extends State<_DialogContent> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: onClosePress != null
+          mainAxisAlignment: widget.onClosePress != null
               ? MainAxisAlignment.spaceAround
               : MainAxisAlignment.center,
           children: [
@@ -58,15 +101,16 @@ class _DialogContent extends StatelessWidget {
                     .copyWith(fontWeight: FontWeight.w600),
               ),
             ),
-            onClosePress != null
-                ? IconButton(icon: Icon(Icons.close), onPressed: onClosePress)
+            widget.onClosePress != null
+                ? IconButton(
+                    icon: Icon(Icons.close), onPressed: widget.onClosePress)
                 : Container(),
           ],
         ),
         Spacer(),
-        _NewReward(reward),
+        _NewReward(widget.reward),
         Spacer(),
-        _ActionButtons(onContinuePress),
+        _ActionButtons(widget.onContinuePress),
       ],
     );
   }
