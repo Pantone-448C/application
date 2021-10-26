@@ -177,11 +177,12 @@ class _QrAddActivity extends StatelessWidget {
     } else if (state is GotActivity) {
       return _buildCheckinContent(
         context,
-        "Checking you in",
+        "Checking you in...",
         state.activity,
         AddedPointsCard(
           loading: true,
         ),
+        hasContinueButton: false,
       );
     } else if (state is AddedActivity) {
       return _buildCheckinContent(
@@ -225,7 +226,8 @@ class _QrAddActivity extends StatelessWidget {
   }
 
   Widget _buildCheckinContent(BuildContext context, String headerText,
-      ActivityDetails activity, AddedPointsCard card) {
+      ActivityDetails activity, AddedPointsCard card,
+      {bool hasContinueButton = true}) {
     return Container(
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + 20,
@@ -250,14 +252,20 @@ class _QrAddActivity extends StatelessWidget {
           Spacer(),
           card,
           Spacer(),
-          ElevatedButton(
-            onPressed: () => context.read<QrCubit>().returnToQrScanner(),
-            child: Text("Continue"),
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(double.infinity, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                  WanTheme.BUTTON_CORNER_RADIUS,
+          Visibility(
+            visible: hasContinueButton,
+            maintainSize: true,
+            maintainState: true,
+            maintainAnimation: true,
+            child: ElevatedButton(
+              onPressed: () => context.read<QrCubit>().returnToQrScanner(),
+              child: Text("Continue"),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    WanTheme.BUTTON_CORNER_RADIUS,
+                  ),
                 ),
               ),
             ),

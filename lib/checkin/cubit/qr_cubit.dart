@@ -86,9 +86,10 @@ class QrCubit extends Cubit<QrScannerState> {
     if (state is AddedActivity) {
       AddedActivity castState = state as AddedActivity;
       int userRewardPoints = await userRepository.getPointsForNextReward();
-      if (true || castState.afterPoints >= userRewardPoints) {
+      if (castState.afterPoints >= userRewardPoints) {
         log("hi");
         Reward reward = await userRepository.getRecommendedReward();
+        await userRepository.addReward(reward);
         emit(NewReward(
           castState.activity,
           castState.user,

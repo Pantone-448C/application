@@ -87,6 +87,10 @@ class _DialogContentState extends State<_DialogContent> {
               ? MainAxisAlignment.spaceAround
               : MainAxisAlignment.center,
           children: [
+            Icon(
+              Icons.emoji_events_outlined,
+              color: WanTheme.colors.orange,
+            ),
             ShaderMask(
               blendMode: BlendMode.srcIn,
               shaderCallback: (Rect bounds) =>

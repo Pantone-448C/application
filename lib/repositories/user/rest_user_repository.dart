@@ -61,20 +61,21 @@ class RestUserRepository implements IUserRepository {
     Map<String, dynamic> reward =
         await getDocument(restUri("user/rewards/next", {}))
             as Map<String, dynamic>;
-    return Reward.fromJson(reward);
+    log(reward.toString());
+    return Reward.fromJson({"date": "", "reward": reward});
   }
 
   @override
   Future<void> addReward(Reward reward) async {
-    if (isUserRewardsEndpointImplemented) {
-      List<Map> rewards =
-          (await getUserRewards()).map((reward) => reward.toJson()).toList();
-      rewards.add(reward.toJson());
-      await postDocument(restUri("user/rewards", {}), {"rewards": rewards});
-    } else {
-      throw new UnimplementedError(
-          "This method is not fully implemented yet, use updateUserDate");
-    }
+    List<Map> rewards =
+        (await getUserRewards()).map((reward) => reward.toJson()).toList();
+    rewards.add(reward.toJson());
+    Map<String, dynamic> data = (await getUserData()).toJson();
+    data["rewards"] = rewards;
+    var headers = await getToken();
+    headers["content-type"] = "application/json";
+    await http.post(restUri("user", {}),
+        headers: headers, body: json.encode(data));
   }
 
   @override
