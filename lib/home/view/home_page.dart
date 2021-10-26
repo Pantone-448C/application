@@ -209,7 +209,7 @@ class _FilledHomePage extends StatelessWidget {
               if (state.recommendedActivities.length > 0) Padding(padding: EdgeInsets.only(top: 20.0)),
               if (state.recommendedActivities.length > 0)  _ActivityRecommendationList(activities: state.recommendedActivities),
               Padding(padding: EdgeInsets.only(top: 20.0)),
-              _ExploreButton(() => gotoWanderlistsPage(SEARCH_PAGE), "Explore Activities!"),
+              _ExploreButton(() => gotoWanderlistsPage(SEARCH_PAGE), "Explore Activities"),
             ],
           ),
         ),
@@ -332,9 +332,8 @@ class _ExploreButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children:[ Expanded (child: Padding(padding: EdgeInsets.all(8),
         child: Material (
-          color: Colors.white,
+          color: WanTheme.colors.pink,
             shadowColor: Colors.white.withOpacity(0.5),
-            elevation: 1.5,
             borderRadius: BorderRadius.all(Radius.circular(WanTheme.CARD_CORNER_RADIUS)),
             child: InkWell (
         splashColor: WanTheme.colors.pink,
@@ -346,10 +345,7 @@ class _ExploreButton extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
             child: Center (child: Text(
             text,
-            style: Theme.of(context)
-                .textTheme
-                .headline4!
-                .copyWith(color: WanTheme.colors.pink),
+              style: Theme.of(context).textTheme.headline3!.copyWith(color: Colors.white),
           ))),
       ))),
     )]);
