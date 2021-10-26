@@ -77,16 +77,15 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
     );
 
     if (widget.searchable) {
-      return Stack(
-        children: [
-          list,
-          Padding(
-              padding: EdgeInsets.all(8),
-              child: Material(
-                  borderRadius: BorderRadius.circular(25),
-                  shadowColor: Colors.grey.withOpacity(0.5),
-                  elevation: 5,
-                  child: searchBar)),
+      return Stack (
+        children: [list,
+        Padding (
+          padding: EdgeInsets.all(8),
+            child:  Material (
+        borderRadius: BorderRadius.circular(25),
+          shadowColor: Colors.grey.withOpacity(0.5),
+          elevation: 5,
+          child: searchBar)),
         ],
       );
     } else {
