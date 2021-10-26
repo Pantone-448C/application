@@ -35,8 +35,11 @@ class RewardsList extends StatelessWidget {
           ),
         ),
         TextSpan(
-          text: " Rewards",
-          style: Theme.of(context).textTheme.headline3,
+          text: "Rewards",
+          style: Theme.of(context)
+              .textTheme
+              .headline3!
+              .copyWith(fontWeight: FontWeight.w500),
         ),
       ]),
     );
@@ -56,10 +59,7 @@ class RewardsList extends StatelessWidget {
     } else if (this.carousel) {
       return CarouselSlider.builder(
         itemBuilder: (BuildContext context, int i, int realIndex) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(28.0),
-            child: Card(child: _RewardItem(rewards[i])),
-          );
+          return Card(child: _RewardItem(rewards[i]));
         },
         options: CarouselOptions(
             autoPlay: true, enlargeCenterPage: true, height: 110),
@@ -72,12 +72,12 @@ class RewardsList extends StatelessWidget {
           itemCount: maxRewardNum == -1 ? rewards.length : maxRewardNum,
           itemBuilder: (context, i) {
             return Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(0.0),
               child: _RewardItem(rewards[i]),
             );
           },
           separatorBuilder: (context, i) =>
-              Padding(padding: EdgeInsets.only(top: 16.0)),
+              Padding(padding: EdgeInsets.only(bottom: 8.0)),
           physics: NeverScrollableScrollPhysics(),
         ),
       );
@@ -85,26 +85,26 @@ class RewardsList extends StatelessWidget {
   }
 
   Widget _listContainer(BuildContext context) {
+    double topPadding = this.carousel ? 0.0 : 16.0;
     return BlocBuilder<RewardsListCubit, RewardsListState>(
       builder: (context, state) {
         return Container(
-          padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                hasTitle ? _title(context) : Container(),
-                hasTitle
-                    ? Padding(padding: EdgeInsets.only(top: 16))
-                    : Container(),
-                state is RewardsListLoaded
-                    ? _rewards(context, state.rewards)
-                    : Center(child: CircularProgressIndicator()),
-              ],
-            ),
-            physics:
-                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          padding: EdgeInsets.only(top: topPadding, bottom: 16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              hasTitle ? _title(context) : Container(),
+              hasTitle
+                  ? Padding(padding: EdgeInsets.only(top: 16))
+                  : Container(),
+              state is RewardsListLoaded
+                  ? _rewards(context, state.rewards)
+                  : Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+            ],
           ),
         );
       },

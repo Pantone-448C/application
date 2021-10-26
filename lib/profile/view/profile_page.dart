@@ -89,7 +89,7 @@ class _UserInfo extends StatelessWidget {
       "$firstName $lastName",
       style: TextStyle(
         fontFamily: "inter",
-        fontSize: 24,
+        fontSize: 28,
         fontWeight: FontWeight.bold,
         color: Colors.black,
       ),
@@ -190,23 +190,31 @@ class _ProfilePage extends StatelessWidget {
         if (state is ProfileInitial) {
           return Center(child: CircularProgressIndicator());
         } else if (state is ProfileLoaded) {
-          return Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-              // info container
-                children: [
-                  Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                _UserInfo(state.firstName, state.lastName, state.points, state.user),
-                ],
-              ),
-            Expanded(child: RewardsList()),
-            ]);
+          return SingleChildScrollView(
+            physics:
+                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
+                    _UserInfo(state.firstName, state.lastName, state.points,
+                        state.user),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: Expanded(child: RewardsList()),
+                ),
+              ],
+            ),
+          );
         } else {
           return Container(child: Text("Error!"));
         }
-      }
+      },
     );
 
   }
