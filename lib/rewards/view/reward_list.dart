@@ -100,7 +100,10 @@ class RewardsList extends StatelessWidget {
                   : Container(),
               state is RewardsListLoaded
                   ? _rewards(context, state.rewards)
-                  : Center(child: CircularProgressIndicator()),
+                  : Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
             ],
           ),
         );
