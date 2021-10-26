@@ -30,10 +30,13 @@ class UnusedRewardsDropdown extends StatelessWidget {
           collapsedIconColor: WanTheme.colors.orange,
           title: unusedRewardsText(context, unusedRewards.toString()),
           children: [
-            RewardsList(
-              hasTitle: false,
-              maxRewardNum: 1,
-              carousel: true,
+            Container(
+              constraints: BoxConstraints(maxHeight: 126),
+              child: RewardsList(
+                hasTitle: false,
+                maxRewardNum: 1,
+                carousel: true,
+              ),
             )
           ],
         ),
