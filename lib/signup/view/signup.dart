@@ -33,6 +33,7 @@ class _InputBox extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
       child: TextField(
+        obscureText: obscureText,
         onChanged: onChanged,
         decoration: inputDecoration(_labelText),
       ),
