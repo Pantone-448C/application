@@ -83,62 +83,57 @@ class RewardCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(8.0),
       constraints: BoxConstraints(
-        maxHeight: 80,
-        maxWidth: 80,
+        maxHeight: 90,
+        maxWidth: 90,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
         children: [
-          Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              // Image container
-              Container(
-                constraints: BoxConstraints(
-                  maxHeight: 80,
-                  maxWidth: 80,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  image: DecorationImage(
-                    fit: BoxFit.fitHeight,
-                    image: NetworkImage(this.iconURL),
-                  ),
-                ),
+          // Image container
+          Container(
+            constraints: BoxConstraints(
+              maxHeight: 90,
+              maxWidth: 90,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.0),
+              image: DecorationImage(
+                fit: BoxFit.fitHeight,
+                image: NetworkImage(this.iconURL),
               ),
-              // Linear gradient container going from black at the bottom to
-              // completely transparent at the top
-              Container(
-                constraints: BoxConstraints(
-                  maxHeight: 80,
-                  maxWidth: 80,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  gradient: LinearGradient(
-                    begin: FractionalOffset.topCenter,
-                    end: FractionalOffset.bottomCenter,
-                    colors: [
-                      Colors.black.withOpacity(0.0),
-                      Colors.black.withOpacity(0.5),
-                    ],
-                    stops: [0.0, 1.0],
-                  ),
-                ),
+            ),
+          ),
+          // Linear gradient container going from black at the bottom to
+          // completely transparent at the top
+          Container(
+            constraints: BoxConstraints(
+              maxHeight: 90,
+              maxWidth: 90,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.0),
+              gradient: LinearGradient(
+                begin: FractionalOffset.topCenter,
+                end: FractionalOffset.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.0),
+                  Colors.black.withOpacity(0.5),
+                ],
+                stops: [0.0, 1.0],
               ),
-              // Text with padding around each side
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                constraints: BoxConstraints(maxWidth: 95),
-                child: Text(
-                  this.name,
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w300,
-                      color: WanTheme.colors.white),
-                ),
-              ),
-            ],
+            ),
+          ),
+          // Text with padding around each side
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            constraints: BoxConstraints(maxWidth: 95),
+            child: Text(
+              this.name,
+              style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                  color: WanTheme.colors.white),
+            ),
           ),
         ],
       ),
