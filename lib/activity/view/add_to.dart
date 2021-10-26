@@ -88,9 +88,28 @@ class _PageBody extends StatelessWidget {
                       readOnly: true,
                       onWanderlistTap: (UserWanderlist wanderlist) {
                               cubit.addActivityToWanderlist(wanderlist.wanderlist);
-                          Navigator.pop(context);
-                        },
-                      )),
+
+
+                              var name = wanderlist.wanderlist.name;
+                              final snackBar = SnackBar(
+                                content: Text(
+                                  'Added to Wanderlist $name!',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                backgroundColor: WanTheme.colors.pink,
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+
+
+
+                              Navigator.pop(context);
+                      },
+                    )),
                     ])
           );
         } else {
