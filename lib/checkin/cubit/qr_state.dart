@@ -1,4 +1,5 @@
 import 'package:application/models/activity.dart';
+import 'package:application/models/reward.dart';
 import 'package:application/models/user.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -47,4 +48,16 @@ class AddedActivity extends QrScannerState {
 
   AddedActivity(this.activity, this.user, this.beforePoints, this.afterPoints,
       this.activityPoints);
+}
+
+class NewReward extends QrScannerState {
+  final ActivityDetails activity;
+  final UserDetails user;
+  final int beforePoints;
+  final int afterPoints;
+  final int activityPoints;
+  final Reward newReward;
+
+  NewReward(this.activity, this.user, this.beforePoints, this.afterPoints,
+      this.activityPoints, this.newReward);
 }

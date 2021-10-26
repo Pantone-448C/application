@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:application/models/activity.dart';
+import 'package:application/models/reward.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/activity/i_activity_repository.dart';
@@ -67,8 +69,10 @@ class QrCubit extends Cubit<QrScannerState> {
       emit(ActivityAlreadyComplete(a));
     }
 
+    // Find out how many points the user had before completing the activity
+    // and how many they have now that they have completed the activity.
     int afterPoints = beforePoints;
-    if (!changed) {
+    if (changed) {
       afterPoints = beforePoints + a.points;
     }
 
@@ -76,6 +80,30 @@ class QrCubit extends Cubit<QrScannerState> {
     await userRepository.updateUserCompletedActivities(completed);
 
     emit(AddedActivity(a, user, beforePoints, afterPoints, a.points));
+  }
+
+  Future<void> checkForReward() async {
+    if (state is AddedActivity) {
+      AddedActivity castState = state as AddedActivity;
+      int userRewardPoints = await userRepository.getPointsForNextReward();
+      if (castState.afterPoints >= userRewardPoints) {
+        log("hi");
+        Reward reward = await userRepository.getRecommendedReward();
+        await userRepository.addReward(reward);
+        emit(NewReward(
+          castState.activity,
+          castState.user,
+          castState.beforePoints,
+          castState.afterPoints,
+          castState.activityPoints,
+          reward,
+        ));
+      }
+    }
+  }
+
+  void returnToQrScanner() {
+    emit(QrScannerError("Please Scan an Activity Code"));
   }
 
   int calculateTotalPoints(List<ActivityDetails> userActivities) {
