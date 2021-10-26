@@ -127,7 +127,7 @@ class _NewReward extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool redeemed = reward.redemptionDate == null;
+    bool redeemed = reward.redemptionDate != null;
 
     return Column(
       children: [
