@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class NewWanderlistDialog extends StatelessWidget {
   NewWanderlistDialog(this.parentCubit);
 
-  final UserWanderlistsCubit parentCubit;
+  final parentCubit; // UserWanderlistsCubit
   final _nameController = TextEditingController();
 
   _createButtonCallback() {
@@ -34,7 +34,7 @@ class NewWanderlistDialog extends StatelessWidget {
             TextField(
               controller: _nameController,
             ),
-            _ModalButtons(_createButtonCallback),
+            AddWLModalButtons(_createButtonCallback),
           ],
         ),
       ),
@@ -42,8 +42,8 @@ class NewWanderlistDialog extends StatelessWidget {
   }
 }
 
-class _ModalButtons extends StatelessWidget {
-  _ModalButtons(this.createButtonCallback);
+class AddWLModalButtons extends StatelessWidget {
+  AddWLModalButtons(this.createButtonCallback);
 
   final Function() createButtonCallback;
 

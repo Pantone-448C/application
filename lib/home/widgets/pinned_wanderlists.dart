@@ -1,6 +1,7 @@
 import 'package:application/apptheme.dart';
 import 'package:application/components/list_of_wanderlists.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
+import 'package:application/home/view/home_page.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
 import 'package:application/wanderlist/view/wanderlist.dart';
@@ -10,7 +11,7 @@ class PinnedWanderlists extends StatelessWidget {
   const PinnedWanderlists(this.pinnedWanderlists, this.gotoWanderlistsPage);
 
   final List<UserWanderlist> pinnedWanderlists;
-  final Function() gotoWanderlistsPage;
+  final Function(int) gotoWanderlistsPage;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,18 @@ class _PinnedWanderlistsContent extends StatelessWidget {
       padding: EdgeInsets.all(10),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_contentTitle(context), _wanderlists(context)]),
+          children: [_contentTitle(context),
+            if (pinnedWanderlists.length > 0)
+              _wanderlists(context)
+            else
+              Center(child:
+              Container(
+                padding: EdgeInsets.all(16),
+                  child: Text("You have no lists yet!",
+                      style: Theme.of(context).textTheme.caption,
+                  )
+              ))
+          ]),
     );
   }
 }
@@ -86,7 +98,7 @@ class _PinnedWanderlistsContent extends StatelessWidget {
 class _ViewAllWanderlistsButton extends StatelessWidget {
   _ViewAllWanderlistsButton(this.gotoWanderlistsPage);
 
-  final Function() gotoWanderlistsPage;
+  final Function(int) gotoWanderlistsPage;
 
   static const Radius corner = Radius.circular(WanTheme.CARD_CORNER_RADIUS);
 
@@ -132,7 +144,7 @@ class _ViewAllWanderlistsButton extends StatelessWidget {
                 .copyWith(color: WanTheme.colors.white),
           ),
         ),
-        onPressed: () => gotoWanderlistsPage(),
+        onPressed: () => gotoWanderlistsPage(WANDERLIST_PAGE),
       ),
     );
   }

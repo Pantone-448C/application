@@ -1,9 +1,11 @@
 import 'package:application/models/activity.dart';
+import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
 import 'package:application/repositories/activity/i_activity_repository.dart';
 import 'package:application/repositories/user/i_user_repository.dart';
 import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'add_to_state.dart';
@@ -27,6 +29,17 @@ class ActivityAddCubit extends Cubit<ActivityAddState> {
   Future<void> loadActivityAdd() async {
     var userWanderlists = (await userRepository.getUserWanderlists());
     emit(ActivityAddLoaded(List.of(userWanderlists)));
+  }
+
+  Future<void> createWanderlist(String name) async {
+    emit (ActivityAddLoading());
+    UserDetails details = await userRepository.getUserData();
+    String creatorName = details.firstName + " " + details.lastName;
+    Wanderlist wanderlist = Wanderlist("", name, creatorName, [], "");
+    wanderlist = await wanderlistRepository.addWanderlist(wanderlist);
+    UserWanderlist userWanderlist = UserWanderlist(wanderlist, [], false, 0, wanderlist.id);
+    userRepository.addUserWanderlist(userWanderlist);
+    addActivityToWanderlist(wanderlist);
   }
 
   Future<void> addActivityToWanderlist(Wanderlist wanderlist) async {

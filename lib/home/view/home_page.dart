@@ -1,8 +1,11 @@
 import 'package:application/apptheme.dart';
+import 'package:application/components/activity_summary_item_small.dart';
 import 'package:application/home/cubit/user_cubit.dart';
 import 'package:application/home/widgets/pinned_wanderlists.dart';
 import 'package:application/home/widgets/reward_info.dart';
 import 'package:application/home/widgets/wanderlists_list_view.dart';
+import 'package:application/models/activity.dart';
+import 'package:application/repositories/activity/rest_activity_repository.dart';
 import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:application/sizeconfig.dart';
 import 'package:application/userwanderlists/view/userwanderlists.dart';
@@ -10,6 +13,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../titlebar.dart';
+
+const int HOME_PAGE = 0;
+const int SEARCH_PAGE = 1;
+const int QR_PAGE = 2;
+const int WANDERLIST_PAGE = 3;
 
 Widget _emptyOrFilledHomePage(numWanderlists, gotoWanderlistsPage) {
   if (numWanderlists > 0) {
@@ -22,7 +30,7 @@ class _HomePage extends StatelessWidget {
 
   _HomePage(this.gotoWanderlistsPage);
 
-  final Function() gotoWanderlistsPage;
+  final Function(int) gotoWanderlistsPage;
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +71,12 @@ class HomePage extends StatelessWidget {
 
   HomePage(this.gotoWanderlistsPage);
 
-  final Function() gotoWanderlistsPage;
+  final Function(int) gotoWanderlistsPage;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserCubit(RestUserRepository()),
+      create: (context) => UserCubit(RestUserRepository(), RestActivityRepository()),
 
       child: Scaffold (
         appBar: Titlebar(),
@@ -119,13 +127,56 @@ class _EmptyHomePage extends StatelessWidget {
   }
 }
 
+class _ActivityRecommendationList extends StatelessWidget {
+
+  final List<ActivityDetails> activities;
+
+  const _ActivityRecommendationList({Key? key, required this.activities}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 8.0, right: 8.0),
+      child: Container(
+          decoration: BoxDecoration(
+              color: WanTheme.colors.white,
+              borderRadius:
+              BorderRadius.all(Radius.circular(WanTheme.CARD_CORNER_RADIUS))),
+          padding: EdgeInsets.all(8),
+          child: Column(children: [
+            RichText(
+              text: TextSpan(
+                children: [
+                  WidgetSpan(
+                    child: Container(),
+                  ),
+                  TextSpan(
+                    text: "Recommended Activities",
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ],
+              ),
+            ),
+            Container(height: 8),
+            for (var activity in activities)
+              ActivitySummaryItemSmall(activity: activity,
+                smallIcon: true,
+              )
+          ])
+      ),
+    );
+
+  }
+
+}
+
 /// The standard home page with trip info and a list of wanderlists.
 /// The only way to get to this state is to have loaded user data and
 /// the ui showing > 0 wanderlists.
 class _FilledHomePage extends StatelessWidget {
   _FilledHomePage(this.gotoWanderlistsPage);
 
-  final Function() gotoWanderlistsPage;
+  final Function(int) gotoWanderlistsPage;
 
   Widget _homepageItems(BuildContext context, UserLoaded state) {
     double width = MediaQuery.of(context).size.width;
@@ -155,6 +206,10 @@ class _FilledHomePage extends StatelessWidget {
                   gotoWanderlistsPage,
                 ),
               ),
+              if (state.recommendedActivities.length > 0) Padding(padding: EdgeInsets.only(top: 20.0)),
+              if (state.recommendedActivities.length > 0)  _ActivityRecommendationList(activities: state.recommendedActivities),
+              Padding(padding: EdgeInsets.only(top: 20.0)),
+              _ExploreButton(() => gotoWanderlistsPage(SEARCH_PAGE), "Explore Activities"),
             ],
           ),
         ),
@@ -243,3 +298,62 @@ class _Wanderlists extends StatelessWidget {
     );
   }
 }
+
+class _ExploreButton extends StatelessWidget {
+  _ExploreButton (this.gotoPage, this.text);
+
+  final Function() gotoPage;
+  final String text;
+
+  static const Radius corner = Radius.circular(WanTheme.CARD_CORNER_RADIUS);
+
+  Widget _background(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          height: 25,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              bottomLeft: corner,
+              bottomRight: corner,
+            ),
+            color: WanTheme.colors.white,
+          ),
+        ),
+        Container(
+          height: 25,
+        ),
+      ],
+    );
+  }
+
+  Widget _button(BuildContext context) {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children:[ Expanded (child: Padding(padding: EdgeInsets.all(8),
+        child: Material (
+          color: WanTheme.colors.pink,
+            shadowColor: Colors.white.withOpacity(0.5),
+            borderRadius: BorderRadius.all(Radius.circular(WanTheme.CARD_CORNER_RADIUS)),
+            child: InkWell (
+        splashColor: WanTheme.colors.pink,
+        borderRadius: BorderRadius.all(
+          Radius.circular(WanTheme.BUTTON_CORNER_RADIUS),
+        ),
+        onTap : () => gotoPage(),
+        child:  Padding(
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+            child: Center (child: Text(
+            text,
+              style: Theme.of(context).textTheme.headline3!.copyWith(color: Colors.white),
+          ))),
+      ))),
+    )]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _button(context);
+  }
+}
+

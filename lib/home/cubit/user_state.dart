@@ -20,6 +20,7 @@ class UserLoaded extends Equatable implements UserState {
       this.percentageUntilReward,
       this.pinnedWanderlists,
     this.numRewards,
+      this.recommendedActivities,
   );
 
   final int points;
@@ -27,6 +28,7 @@ class UserLoaded extends Equatable implements UserState {
   final int nextRewardTotalPoints;
   final double percentageUntilReward;
   final List<UserWanderlist> pinnedWanderlists;
+  final List<ActivityDetails> recommendedActivities;
   final int numRewards;
 
   @override
@@ -37,5 +39,6 @@ class UserLoaded extends Equatable implements UserState {
         percentageUntilReward,
         pinnedWanderlists,
         numRewards,
-      ];
+        recommendedActivities,
+  ];
 }

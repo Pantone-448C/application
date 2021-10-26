@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 @immutable
 class ActivityDetails extends Equatable {
   ActivityDetails(this.id, this.name, this.about, this.sustainability, 
-      this.thumbUrl, this.imageUrl, this.address, this.points, this.tags);
+      this.imageUrl, this.address, this.points, this.tags);
 
   factory ActivityDetails.fromJson(Map<String, dynamic> json) {
 
@@ -42,7 +42,6 @@ class ActivityDetails extends Equatable {
   final String name;
   final String about;
   final String sustainability;
-  final String thumbUrl;
   final String imageUrl;
   final String address;
   final List<dynamic> tags;
@@ -51,7 +50,7 @@ class ActivityDetails extends Equatable {
 
   @override
   List<Object?> get props =>
-      [id, name, about, sustainability, thumbUrl, imageUrl, address, points];
+      [id, name, about, sustainability, imageUrl, address, points];
 
 
   Map<String, dynamic> toRef() {
@@ -65,7 +64,6 @@ class ActivityDetails extends Equatable {
       'name': name,
       'about': about,
       'sustainability': sustainability,
-      'thumb_url': thumbUrl,
       'image_url': imageUrl,
       'address': address,
       'tags': tags,
@@ -77,7 +75,6 @@ class ActivityDetails extends Equatable {
     String? name,
     String? about,
     String? sustainability,
-    String? thumbUrl,
     String? imageUrl,
     String? address,
     int? points,
@@ -88,7 +85,6 @@ class ActivityDetails extends Equatable {
       name ?? this.name,
       about ?? this.about,
       sustainability ?? this.sustainability,
-      thumbUrl ?? this.thumbUrl,
       imageUrl ?? this.imageUrl,
       address ?? this.address,
       points ?? this.points,
