@@ -76,6 +76,11 @@ class _AppContainerState extends State<AppContainer> {
     _pageController.jumpToPage(3);
   }
 
+  void _gotoPage(int page) {
+    _pageController.jumpToPage(page);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +92,7 @@ class _AppContainerState extends State<AppContainer> {
           controller: _pageController,
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
-            Container(child: HomePage(_gotoWanderlistsPage)),
+            Container(child: HomePage(_gotoPage)),
             Container(child: SearchPage()),
             Container(child: WanQrPage()),
             Container(child: UserWanderlistsPage()),
