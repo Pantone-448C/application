@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:application/apptheme.dart';
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart';
@@ -27,20 +29,49 @@ class RewardCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: WanTheme.colors.white,
           borderRadius: BorderRadius.circular(WanTheme.CARD_CORNER_RADIUS),
-          boxShadow: [
-            BoxShadow(
-                offset: Offset(0.0, 4.0),
-                blurRadius: 4.0,
-                color: Color(0x19000000))
-          ],
         ),
-        child: Container(
-          constraints: BoxConstraints(maxWidth: 340, maxHeight: 110),
-          child: Row(
+        child: ClipRect(
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              _buildRewardIcon(),
-              CustomPaint(painter: _DashPathPainter()),
-              _buildRewardDetails(),
+              Container(
+                constraints: BoxConstraints(maxWidth: 340, maxHeight: 110),
+                child: Row(
+                  children: [
+                    _buildRewardIcon(),
+                    CustomPaint(painter: _DashPathPainter()),
+                    _buildRewardDetails(),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: redeemed,
+                child: Transform.rotate(
+                  angle: math.pi / 4,
+                  child: Container(
+                    width: 400,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: redeemed,
+                child: Transform.rotate(
+                  angle: math.pi / 4,
+                  child: Text(
+                    "Redeemed!",
+                    style: TextStyle(
+                      fontFamily: "inter",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -49,8 +80,12 @@ class RewardCard extends StatelessWidget {
   }
 
   Widget _buildRewardIcon() {
-    return Expanded(
-      flex: 1,
+    return Container(
+      margin: EdgeInsets.all(8.0),
+      constraints: BoxConstraints(
+        maxHeight: 80,
+        maxWidth: 80,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -59,8 +94,10 @@ class RewardCard extends StatelessWidget {
             children: [
               // Image container
               Container(
-                width: 95,
-                height: 95,
+                constraints: BoxConstraints(
+                  maxHeight: 80,
+                  maxWidth: 80,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   image: DecorationImage(
@@ -72,8 +109,10 @@ class RewardCard extends StatelessWidget {
               // Linear gradient container going from black at the bottom to
               // completely transparent at the top
               Container(
-                width: 95,
-                height: 95,
+                constraints: BoxConstraints(
+                  maxHeight: 80,
+                  maxWidth: 80,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   gradient: LinearGradient(
@@ -125,10 +164,10 @@ class RewardCard extends StatelessWidget {
             Padding(padding: EdgeInsets.only(bottom: 4.0)),
             _buildOfferPill(),
             Padding(padding: EdgeInsets.only(bottom: 4.0)),
-            Text(
-              this.location,
-              style: TextStyle(fontFamily: "Inter", fontSize: 14),
-            ),
+            // Text(
+            //   this.location,
+            //   style: TextStyle(fontFamily: "Inter", fontSize: 14),
+            // ),
           ],
         ),
       ),
@@ -153,15 +192,15 @@ class RewardCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-          this.offer,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: WanTheme.colors.orange,
-            fontFamily: "Inter",
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
+            this.offer,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: WanTheme.colors.orange,
+              fontFamily: "Inter",
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
         ],
       ),
     );
