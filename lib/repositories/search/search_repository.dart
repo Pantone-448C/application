@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:application/activity/view/activity_info.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/repositories/rest_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
