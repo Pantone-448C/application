@@ -1,6 +1,5 @@
 import 'package:application/apptheme.dart';
 import 'package:application/pages/login/cubit/login_cubit.dart';
-import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -105,8 +104,7 @@ InputDecoration inputDecoration(String label) {
 class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var size = SizeConfig(context);
-    var logoHeight = size.hPc * 33;
+    var logoHeight = 0.33 * MediaQuery.of(context).size.height;
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
       return Container(
         height: logoHeight,

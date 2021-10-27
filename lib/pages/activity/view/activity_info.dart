@@ -1,7 +1,6 @@
 import 'package:application/apptheme.dart';
 import 'package:application/pages/activity/cubit/activity_cubit.dart';
 import 'package:application/repositories/activity/rest_activity_repository.dart';
-import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -229,14 +228,13 @@ class LocationButton extends StatelessWidget {
 class _BackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SizeConfig size = SizeConfig(context);
     return Padding(
-      padding: EdgeInsets.all(size.w * 0.02),
+      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.02),
       child: IconButton(
         onPressed: () => Navigator.pop(context),
         icon: Icon(Icons.arrow_back_rounded),
         color: WanTheme.colors.white,
-        iconSize: size.w * 0.09,
+        iconSize: MediaQuery.of(context).size.width * 0.09,
       ),
     );
   }

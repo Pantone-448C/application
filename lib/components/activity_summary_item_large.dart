@@ -3,7 +3,6 @@ import 'package:application/pages/activity/view/activity_info.dart';
 import 'package:flutter/material.dart';
 
 import '../apptheme.dart';
-import '../sizeconfig.dart';
 import 'activity_summary_item_small.dart';
 
 class ActivitySummaryItemLarge extends ActivitySummaryItemSmall {
@@ -22,8 +21,8 @@ class ActivitySummaryItemLarge extends ActivitySummaryItemSmall {
         onTap: () => Navigator.push(context,
             MaterialPageRoute(builder: (context) => ActivityInfo(activity.id))),
         child: Container(
-            height: SizeConfig(context).w / 2 + 75,
-            width: SizeConfig(context).w,
+            height: MediaQuery.of(context).size.width / 2 + 75,
+            width: MediaQuery.of(context).size.width,
             color: Colors.transparent,
             child: Container(
                 decoration: BoxDecoration(

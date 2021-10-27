@@ -12,7 +12,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-import '../../../sizeconfig.dart';
 import '../cubit/qr_cubit.dart';
 import '../cubit/qr_state.dart';
 
@@ -118,7 +117,7 @@ class _InfoOverlay extends StatelessWidget {
       ClipRRect(
         borderRadius: BorderRadius.circular(50),
         child: Container(
-          width: SizeConfig(context).wPc * 50,
+          width: MediaQuery.of(context).size.width * 0.5,
           padding: EdgeInsets.all(10),
           color: WanTheme.colors.white,
           child: Center(

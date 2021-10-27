@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../apptheme.dart';
-import '../../../titlebar.dart';
+import '../../../components/titlebar.dart';
 import '../cubit/userwanderlists_cubit.dart';
 import '../cubit/userwanderlists_state.dart';
 

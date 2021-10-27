@@ -6,11 +6,10 @@ import 'package:application/pages/home/widgets/pinned_wanderlists.dart';
 import 'package:application/pages/home/widgets/reward_info.dart';
 import 'package:application/repositories/activity/rest_activity_repository.dart';
 import 'package:application/repositories/user/rest_user_repository.dart';
-import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../titlebar.dart';
+import '../../../components/titlebar.dart';
 
 const int HOME_PAGE = 0;
 const int SEARCH_PAGE = 1;
@@ -85,7 +84,6 @@ class _EmptyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig sz = SizeConfig(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,7 +96,7 @@ class _EmptyHomePage extends StatelessWidget {
         SizedBox(height: 25),
         Container(
           height: 50,
-          width: sz.wPc * 70,
+          width: 0.7 * MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               color: WanTheme.colors.pink,
               borderRadius: BorderRadius.circular(20)),
