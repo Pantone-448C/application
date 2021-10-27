@@ -1,4 +1,5 @@
 import 'package:application/models/activity.dart';
+import 'package:application/models/reward.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/repositories/activity/i_activity_repository.dart';
@@ -20,18 +21,26 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> getTripInfo() async {
     emit(UserLoading());
+
+    var pointsForNextReward = userRepository.getPointsForNextReward();
+    var recs = activityRepository.getActivities();
+
     UserDetails user = await userRepository.getUserData();
+    var numRewards = 0;
+    if (user.originalJSON["rewards"] != null) {
+      numRewards = (user.originalJSON["rewards"] as List)
+          .map((reward) => Reward.fromJson(reward as Map<String, dynamic>))
+          .length;
+    }
+
     List<UserWanderlist> userWanderlists =
-        (await userRepository.getActiveWanderlists()).toList();
-    int pointsForNextReward = await userRepository.getPointsForNextReward();
+      user.wanderlists.where((wanderlist) => wanderlist.inTrip).toList();
+
     int points = calculateTotalPoints(user.completedActivities);
 
-    int numRewards = (await userRepository.getUserRewards()).length;
-
-    var recs = await activityRepository.getActivities();
-
-    emit(UserLoaded(points, pointsForNextReward - points, pointsForNextReward,
-        points / pointsForNextReward, userWanderlists, numRewards, recs));
+    emit(UserLoaded(points, (await pointsForNextReward) - points, await pointsForNextReward,
+        points / (await pointsForNextReward), userWanderlists, numRewards,
+        await recs));
   }
 
   int calculateTotalPoints(List<ActivityDetails> userActivities) {
