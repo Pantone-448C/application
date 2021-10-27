@@ -47,6 +47,8 @@ dependencies:
       ref: master
   dotted_border: ^2.0.0+1
   path_drawing: ^0.5.1
+  social_share: ^2.1.1
+  font_awesome_flutter: ^9.2.0
   dotted_decoration: ^2.0.0
   carousel_slider: ^4.0.0
   confetti: ^0.6.0
