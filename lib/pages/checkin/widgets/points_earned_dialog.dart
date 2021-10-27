@@ -1,4 +1,5 @@
 import 'package:application/components/apptheme.dart';
+import 'package:application/pages/checkin/view/qr_view.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';
 
@@ -67,7 +68,7 @@ class _AddedPointsCardState extends State<AddedPointsCard>
     } else if (widget.success) {
       _progressAnimationController.forward();
       return TweenAnimationBuilder(
-        duration: Duration(milliseconds: 500),
+        duration: ANIMATION_DURATION,
         tween: Tween<double>(
           begin: widget.beforePoints.toDouble(),
           end: widget.afterPoints.toDouble(),

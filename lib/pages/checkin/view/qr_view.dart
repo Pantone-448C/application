@@ -15,6 +15,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import '../cubit/qr_cubit.dart';
 import '../cubit/qr_state.dart';
 
+const ANIMATION_DURATION = Duration(milliseconds: 500);
+
 class _QRViewExampleState extends State<_QRViewExample> {
   Barcode? result;
   QRViewController? controller;
@@ -145,7 +147,7 @@ class _QrAddActivity extends StatelessWidget {
       return _buildWidget(context, state);
     }, listener: (context, state) {
       if (state is AddedActivity) {
-        context.read<QrCubit>().checkForReward();
+        //context.read<QrCubit>().checkForReward();
       } else if (state is NewReward) {
         log("show dialog");
         showDialog(

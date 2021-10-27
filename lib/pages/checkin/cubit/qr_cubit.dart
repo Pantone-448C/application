@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -5,6 +6,7 @@ import 'package:application/models/activity.dart';
 import 'package:application/models/reward.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
+import 'package:application/pages/checkin/view/qr_view.dart';
 import 'package:application/repositories/user/i_user_repository.dart';
 import 'package:bloc/bloc.dart';
 
@@ -36,12 +38,11 @@ class QrCubit extends Cubit<QrScannerState> {
     }
 
     emit(GotActivity(a));
-
-    List<UserWanderlist> lists =
-        List<UserWanderlist>.from(await userRepository.getUserWanderlists());
+    UserDetails user = await userRepository.getUserData();
 
     bool changed = false;
-    lists.forEach((e) {
+
+    user.wanderlists.forEach((e) {
       if (e.wanderlist.activities.any((elem) {
         return elem.id == activity;
       })) {
@@ -53,13 +54,11 @@ class QrCubit extends Cubit<QrScannerState> {
       }
     });
 
-    UserDetails user = await userRepository.getUserData();
+    // UserDetails user = await userRepository.getUserData();
     int beforePoints = calculateTotalPoints(user.completedActivities);
 
     /* Add activity to user's completed activity, for points tracking */
-    var completed =
-        (await userRepository.getUserCompletedActivities()).toList();
-    completed.add(a);
+    user.completedActivities.add(a);
     changed = true; // TODO: Add condition on frequency of earning points
 
     if (!changed) {
@@ -73,29 +72,32 @@ class QrCubit extends Cubit<QrScannerState> {
       afterPoints = beforePoints + a.points;
     }
 
-    await userRepository.updateUserWanderlists(lists);
-    await userRepository.updateUserCompletedActivities(completed);
+    await userRepository.updateUserData(user);
+    //await userRepository.updateUserWanderlists(lists);
+    //await userRepository.updateUserCompletedActivities(completed);
 
     emit(AddedActivity(a, user, beforePoints, afterPoints, a.points));
+    checkForReward();
   }
 
   Future<void> checkForReward() async {
     if (state is AddedActivity) {
       AddedActivity castState = state as AddedActivity;
-      int userRewardPoints = await userRepository.getPointsForNextReward();
-      if (castState.afterPoints >= userRewardPoints) {
-        log("hi");
-        Reward reward = await userRepository.getRecommendedReward();
-        await userRepository.addReward(reward);
-        emit(NewReward(
-          castState.activity,
-          castState.user,
-          castState.beforePoints,
-          castState.afterPoints,
-          castState.activityPoints,
-          reward,
-        ));
-      }
+      var userRewardPoints =  userRepository.getPointsForNextReward();
+      var reward = userRepository.getRecommendedReward();
+      Timer(ANIMATION_DURATION + const Duration(milliseconds: 70), () async {
+        if (castState.afterPoints >= await userRewardPoints) {
+          userRepository.addReward(await reward);
+          emit(NewReward(
+            castState.activity,
+            castState.user,
+            castState.beforePoints,
+            castState.afterPoints,
+            castState.activityPoints,
+            await reward,
+          ));
+        }
+      });
     }
   }
 
