@@ -109,7 +109,8 @@ class WanderlistSummaryItem extends StatelessWidget {
         children: <Widget>[
           Expanded(
             flex: imageFlex,
-            child: _ImageComponent(this.width, this.height, this.imageUrl),
+            child: _ImageComponent(this.width, this.height, this.imageUrl,
+              this.listName),
           ),
           Spacer(flex: 4),
           Expanded(
@@ -141,28 +142,78 @@ class _ImageComponent extends StatelessWidget {
   final double parentWidth;
   final double parentHeight;
   final String imageUrl;
+  final String text;
 
-  _ImageComponent(this.parentWidth, this.parentHeight, this.imageUrl);
+  _ImageComponent(this.parentWidth, this.parentHeight, this.imageUrl, this.text);
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
-      child: new AspectRatio(
-        aspectRatio: 1 / 1,
-        child: new Container(
-          decoration: new BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(WanTheme.THUMB_CORNER_RADIUS),
-            ),
-            image: new DecorationImage(
-              fit: BoxFit.fitHeight,
-              alignment: FractionalOffset.topCenter,
-              image: new NetworkImage(this.imageUrl),
+    if (imageUrl != "")
+      return new Center(
+        child: new AspectRatio(
+          aspectRatio: 1 / 1,
+          child: new Container(
+            decoration: new BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(WanTheme.THUMB_CORNER_RADIUS),
+              ),
+              image: DecorationImage(
+                fit: BoxFit.fitHeight,
+                alignment: FractionalOffset.topCenter,
+                image: new NetworkImage(this.imageUrl),
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    else {
+      return new Center(
+        child: new AspectRatio(
+          aspectRatio: 1 / 1,
+          child: new Container(
+            decoration: new BoxDecoration(
+              color: WanTheme.colors.pink,
+              borderRadius: BorderRadius.all(
+                Radius.circular(WanTheme.THUMB_CORNER_RADIUS),
+              ),
+            ),
+            child: Center (child: Container (
+                color: WanTheme.colors.pink,
+                child: Text(text[0].toUpperCase(), style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: WanTheme.colors.white,
+                )))),
+          ),
+        ),
+      );
+
+
+
+      return new Center(
+        child: new AspectRatio(
+          aspectRatio: 1 / 1,
+          child: new Container(
+            decoration: new BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(WanTheme.THUMB_CORNER_RADIUS),
+                ),
+            ),
+          ),
+        ),
+      );
+
+
+      return Center (child: Container (
+        color: WanTheme.colors.pink,
+          child: Text(text[0].toUpperCase(), style: TextStyle(
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+        color: WanTheme.colors.white,
+      ))));
+    }
   }
 }
 
