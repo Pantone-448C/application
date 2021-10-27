@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -5,6 +6,7 @@ import 'package:application/models/activity.dart';
 import 'package:application/models/reward.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
+import 'package:application/pages/checkin/view/qr_view.dart';
 import 'package:application/repositories/user/i_user_repository.dart';
 import 'package:bloc/bloc.dart';
 
@@ -70,29 +72,32 @@ class QrCubit extends Cubit<QrScannerState> {
       afterPoints = beforePoints + a.points;
     }
 
-    userRepository.updateUserData(user);
+    await userRepository.updateUserData(user);
     //await userRepository.updateUserWanderlists(lists);
     //await userRepository.updateUserCompletedActivities(completed);
 
     emit(AddedActivity(a, user, beforePoints, afterPoints, a.points));
+    checkForReward();
   }
 
   Future<void> checkForReward() async {
     if (state is AddedActivity) {
       AddedActivity castState = state as AddedActivity;
-      int userRewardPoints = await userRepository.getPointsForNextReward();
-      if (castState.afterPoints >= userRewardPoints) {
-        Reward reward = await userRepository.getRecommendedReward();
-        await userRepository.addReward(reward);
-        emit(NewReward(
-          castState.activity,
-          castState.user,
-          castState.beforePoints,
-          castState.afterPoints,
-          castState.activityPoints,
-          reward,
-        ));
-      }
+      var userRewardPoints =  userRepository.getPointsForNextReward();
+      var reward = userRepository.getRecommendedReward();
+      Timer(ANIMATION_DURATION + const Duration(milliseconds: 70), () async {
+        if (castState.afterPoints >= await userRewardPoints) {
+          userRepository.addReward(await reward);
+          emit(NewReward(
+            castState.activity,
+            castState.user,
+            castState.beforePoints,
+            castState.afterPoints,
+            castState.activityPoints,
+            await reward,
+          ));
+        }
+      });
     }
   }
 
