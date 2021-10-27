@@ -62,7 +62,7 @@ class _ActivityHistoryList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: ListView(padding: EdgeInsets.all(8), children: [
-      for (var activity in activities)
+      for (var activity in activities.reversed)
         Container(
             padding: EdgeInsets.only(bottom: 8),
             child: ActivitySummaryItemSmall(activity: activity))

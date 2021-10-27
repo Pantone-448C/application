@@ -36,12 +36,11 @@ class QrCubit extends Cubit<QrScannerState> {
     }
 
     emit(GotActivity(a));
-
-    List<UserWanderlist> lists =
-        List<UserWanderlist>.from(await userRepository.getUserWanderlists());
+    UserDetails user = await userRepository.getUserData();
 
     bool changed = false;
-    lists.forEach((e) {
+
+    user.wanderlists.forEach((e) {
       if (e.wanderlist.activities.any((elem) {
         return elem.id == activity;
       })) {
@@ -53,13 +52,11 @@ class QrCubit extends Cubit<QrScannerState> {
       }
     });
 
-    UserDetails user = await userRepository.getUserData();
+    // UserDetails user = await userRepository.getUserData();
     int beforePoints = calculateTotalPoints(user.completedActivities);
 
     /* Add activity to user's completed activity, for points tracking */
-    var completed =
-        (await userRepository.getUserCompletedActivities()).toList();
-    completed.add(a);
+    user.completedActivities.add(a);
     changed = true; // TODO: Add condition on frequency of earning points
 
     if (!changed) {
@@ -73,8 +70,9 @@ class QrCubit extends Cubit<QrScannerState> {
       afterPoints = beforePoints + a.points;
     }
 
-    await userRepository.updateUserWanderlists(lists);
-    await userRepository.updateUserCompletedActivities(completed);
+    userRepository.updateUserData(user);
+    //await userRepository.updateUserWanderlists(lists);
+    //await userRepository.updateUserCompletedActivities(completed);
 
     emit(AddedActivity(a, user, beforePoints, afterPoints, a.points));
   }
@@ -84,7 +82,6 @@ class QrCubit extends Cubit<QrScannerState> {
       AddedActivity castState = state as AddedActivity;
       int userRewardPoints = await userRepository.getPointsForNextReward();
       if (castState.afterPoints >= userRewardPoints) {
-        log("hi");
         Reward reward = await userRepository.getRecommendedReward();
         await userRepository.addReward(reward);
         emit(NewReward(
