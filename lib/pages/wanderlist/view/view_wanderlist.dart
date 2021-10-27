@@ -2,10 +2,8 @@ import 'package:application/apptheme.dart';
 import 'package:application/components/activity_summary_item_small.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/models/wanderlist.dart';
-import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/pages/wanderlist/cubit/wanderlist_cubit.dart';
 import 'package:application/pages/wanderlist/cubit/wanderlist_state.dart';
-import 'package:application/pages/wanderlist/view/edit_wanderlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,6 +42,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   _AppBar();
 
   static const barHeight = WanTheme.TITLEBAR_HEIGHT;
+
   @override
   Size get preferredSize => Size.fromHeight(barHeight);
 

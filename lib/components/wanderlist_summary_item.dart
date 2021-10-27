@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 import '../apptheme.dart';
 
@@ -105,8 +105,8 @@ class WanderlistSummaryItem extends StatelessWidget {
         children: <Widget>[
           Expanded(
             flex: imageFlex,
-            child: _ImageComponent(this.width, this.height, this.imageUrl,
-              this.listName),
+            child: _ImageComponent(
+                this.width, this.height, this.imageUrl, this.listName),
           ),
           Spacer(flex: 4),
           Expanded(
@@ -140,7 +140,8 @@ class _ImageComponent extends StatelessWidget {
   final String imageUrl;
   final String text;
 
-  _ImageComponent(this.parentWidth, this.parentHeight, this.imageUrl, this.text);
+  _ImageComponent(
+      this.parentWidth, this.parentHeight, this.imageUrl, this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -173,42 +174,43 @@ class _ImageComponent extends StatelessWidget {
                 Radius.circular(WanTheme.THUMB_CORNER_RADIUS),
               ),
             ),
-            child: Center (child: Container (
-                color: WanTheme.colors.pink,
-                child: Text(text[0].toUpperCase(), style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                  color: WanTheme.colors.white,
-                )))),
+            child: Center(
+                child: Container(
+                    color: WanTheme.colors.pink,
+                    child: Text(text[0].toUpperCase(),
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                          color: WanTheme.colors.white,
+                        )))),
           ),
         ),
       );
-
-
 
       return new Center(
         child: new AspectRatio(
           aspectRatio: 1 / 1,
           child: new Container(
             decoration: new BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(WanTheme.THUMB_CORNER_RADIUS),
-                ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(WanTheme.THUMB_CORNER_RADIUS),
+              ),
             ),
           ),
         ),
       );
 
-
-      return Center (child: Container (
-        color: WanTheme.colors.pink,
-          child: Text(text[0].toUpperCase(), style: TextStyle(
-        fontFamily: 'Inter',
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-        color: WanTheme.colors.white,
-      ))));
+      return Center(
+          child: Container(
+              color: WanTheme.colors.pink,
+              child: Text(text[0].toUpperCase(),
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: WanTheme.colors.white,
+                  ))));
     }
   }
 }
@@ -222,9 +224,7 @@ class _TextComponent extends StatelessWidget {
 
   _TextComponent(this.listName, this.authorName, this.numTotalItems,
       this.numCompletedItems)
-      : completed = "Contains " +
-            numTotalItems.toString() +
-            " activities";
+      : completed = "Contains " + numTotalItems.toString() + " activities";
 
   @override
   Widget build(BuildContext context) {

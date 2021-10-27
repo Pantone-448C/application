@@ -1,4 +1,3 @@
-
 import 'package:geolocator/geolocator.dart';
 
 class GPSPosition {
@@ -6,7 +5,6 @@ class GPSPosition {
   late LocationPermission permission;
 
   Future<Position> getPosition() async {
-
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return Future.error('Location services are disabled.');
@@ -26,7 +24,5 @@ class GPSPosition {
     }
 
     return Geolocator.getCurrentPosition();
-
   }
-
 }

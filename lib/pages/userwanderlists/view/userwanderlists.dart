@@ -1,11 +1,11 @@
 import 'package:application/components/list_of_wanderlists.dart';
 import 'package:application/models/user_wanderlist.dart';
-import 'package:application/repositories/user/rest_user_repository.dart';
-import 'package:application/repositories/wanderlist/rest_wanderlist_repository.dart';
 import 'package:application/pages/userwanderlists/cubit/userwanderlists_cubit.dart';
 import 'package:application/pages/userwanderlists/cubit/userwanderlists_state.dart';
 import 'package:application/pages/userwanderlists/widgets/new_wanderlist_dialog.dart';
 import 'package:application/pages/wanderlist/view/wanderlist.dart';
+import 'package:application/repositories/user/rest_user_repository.dart';
+import 'package:application/repositories/wanderlist/rest_wanderlist_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,8 +19,8 @@ class UserWanderlists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserWanderlistsCubit( RestUserRepository(),
-        RestWanderlistRepository()),
+      create: (context) => UserWanderlistsCubit(
+          RestUserRepository(), RestWanderlistRepository()),
       child: _UserWanderlistsContainer(),
     );
   }
@@ -55,21 +55,22 @@ class _WanderlistsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text("Your Wanderlists", style: TextStyle(color: WanTheme.colors.pink)),
-        actions: [
-      IconButton(
-      color: WanTheme.colors.grey,
-        icon: Icon(
-          Icons.account_circle_outlined,
+        appBar: AppBar(
+          title: Text("Your Wanderlists",
+              style: TextStyle(color: WanTheme.colors.pink)),
+          actions: [
+            IconButton(
+              color: WanTheme.colors.grey,
+              icon: Icon(
+                Icons.account_circle_outlined,
+              ),
+              onPressed: () {
+                handleProfileButton(context);
+              },
+            ),
+          ],
         ),
-        onPressed: () {
-          handleProfileButton(context);
-        },
-      ),
-      ],
-    ),
-    floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(
                 context: context,
@@ -135,6 +136,6 @@ class _CreateWanderlistButton extends StatelessWidget {
 class UserWanderlistsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-      return UserWanderlists();
+    return UserWanderlists();
   }
 }

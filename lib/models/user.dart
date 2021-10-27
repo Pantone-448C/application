@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
@@ -9,7 +8,8 @@ import 'package:flutter/material.dart';
 @immutable
 class UserDetails extends Equatable {
   UserDetails(this.email, this.firstName, this.lastName, this.wanderlists,
-      this.completedActivities, {this.originalJSON: const {}});
+      this.completedActivities,
+      {this.originalJSON: const {}});
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     List<UserWanderlist> wanderlists = [];
@@ -61,7 +61,6 @@ class UserDetails extends Equatable {
           FirebaseFirestore.instance.collection("activities").doc(activity.id);
       jsonCompletedActivities.add(activityReference);
     });
-
 
     originalJSON['email'] = email;
     originalJSON['first_name'] = firstName;

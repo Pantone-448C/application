@@ -1,5 +1,5 @@
-import 'package:application/pages/activity/view/activity_info.dart';
 import 'package:application/models/activity.dart';
+import 'package:application/pages/activity/view/activity_info.dart';
 import 'package:flutter/material.dart';
 
 import '../apptheme.dart';

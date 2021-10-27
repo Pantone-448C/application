@@ -1,9 +1,7 @@
 import 'package:application/models/activity.dart';
-import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
-import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
 import 'package:application/pages/wanderlist/cubit/wanderlist_state.dart';
-import 'package:flutter/material.dart';
+import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WanderlistCubit extends Cubit<WanderlistState> {
@@ -44,7 +42,7 @@ class WanderlistCubit extends Cubit<WanderlistState> {
 
   cancelEdit() {
     if (state is Editing) {
-       emit(Viewing((state as Editing).original));
+      emit(Viewing((state as Editing).original));
     } else {
       emit(state);
     }

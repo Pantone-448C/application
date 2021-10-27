@@ -1,10 +1,6 @@
-import 'package:application/apptheme.dart';
 import 'package:application/pages/signup/cubit/signup_cubit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 InputDecoration inputDecoration(String label) {

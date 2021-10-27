@@ -1,8 +1,7 @@
 import 'package:application/models/activity.dart';
 import 'package:geolocator/geolocator.dart';
 
-
-abstract class SearchState{
+abstract class SearchState {
   const SearchState();
 
   List<ActivityDetails> get suggestion => [];
@@ -17,10 +16,9 @@ class SearchInitial implements SearchState {
 
 class SearchLoading implements SearchState {
   final List<ActivityDetails> suggestion;
+
   SearchLoading(this.suggestion);
 }
-
-
 
 class SearchSuggest implements SearchState {
   final List<ActivityDetails> suggestion;
@@ -28,11 +26,10 @@ class SearchSuggest implements SearchState {
   SearchSuggest(this.suggestion);
 }
 
-
-
 class SearchResults implements SearchState {
   final List<ActivityDetails> results;
   final List<ActivityDetails> suggestion;
+
   SearchResults(this.results, this.suggestion);
 }
 

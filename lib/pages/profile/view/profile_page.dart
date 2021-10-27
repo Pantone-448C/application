@@ -4,13 +4,10 @@ import 'package:application/models/activity.dart';
 import 'package:application/models/user.dart';
 import 'package:application/pages/profile/cubit/profile_cubit.dart';
 import 'package:application/pages/profile/cubit/profile_state.dart';
-import 'package:application/repositories/user/rest_user_repository.dart';
-import 'package:application/repositories/user/user_repository.dart';
 import 'package:application/pages/rewards/view/reward_list.dart';
+import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'package:application/titlebar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class _UserPhoto extends StatelessWidget {
@@ -24,7 +21,8 @@ class _UserPhoto extends StatelessWidget {
             width: 144,
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(WanTheme.CARD_CORNER_RADIUS)),
+              borderRadius: BorderRadius.all(
+                  Radius.circular(WanTheme.CARD_CORNER_RADIUS)),
               image: DecorationImage(
                 fit: BoxFit.fitHeight,
                 image: NetworkImage(state.imgUrl),
@@ -39,9 +37,7 @@ class _UserPhoto extends StatelessWidget {
   }
 }
 
-
 class _ActivityHistoryPage extends StatelessWidget {
-
   final List<ActivityDetails> activities;
 
   const _ActivityHistoryPage(this.activities);
@@ -49,31 +45,29 @@ class _ActivityHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(title: Text("Activity History", style: TextStyle(color: WanTheme.colors.pink))),
-    body: _ActivityHistoryList(activities),
+      appBar: AppBar(
+          title: Text("Activity History",
+              style: TextStyle(color: WanTheme.colors.pink))),
+      body: _ActivityHistoryList(activities),
     );
   }
-
 }
 
 class _ActivityHistoryList extends StatelessWidget {
   final List<ActivityDetails> activities;
+
   _ActivityHistoryList(List<ActivityDetails> this.activities);
 
   @override
   Widget build(BuildContext context) {
-        return Container (child: ListView (
-          padding: EdgeInsets.all(8),
-            children: [
-              for (var activity in activities)
-                Container(
-                  padding: EdgeInsets.only(bottom: 8),
-                    child: ActivitySummaryItemSmall(activity: activity))
-        ]));
-
-
+    return Container(
+        child: ListView(padding: EdgeInsets.all(8), children: [
+      for (var activity in activities)
+        Container(
+            padding: EdgeInsets.only(bottom: 8),
+            child: ActivitySummaryItemSmall(activity: activity))
+    ]));
   }
-
 }
 
 class _UserInfo extends StatelessWidget {
@@ -137,8 +131,11 @@ class _UserInfo extends StatelessWidget {
             ),
           ),
         ),
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => _ActivityHistoryPage(user.completedActivities))),
+        onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    _ActivityHistoryPage(user.completedActivities))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -150,10 +147,10 @@ class _UserInfo extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-          Container (
-            padding: EdgeInsets.only(right: 8),
-            child: Icon(Icons.chevron_right, color: Colors.white),
-          ),
+            Container(
+              padding: EdgeInsets.only(right: 8),
+              child: Icon(Icons.chevron_right, color: Colors.white),
+            ),
           ],
         ),
       ),
@@ -162,29 +159,28 @@ class _UserInfo extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileCubit, ProfileState>(
-    builder: (context, state) => Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(padding: EdgeInsets.only(top: 8.0)),
-        _name(firstName, lastName),
-        _bigSmallText(context, "$points", "points"),
-        _bigSmallText(context, "12", "completed activities"),
-        Padding(padding: EdgeInsets.only(top: 18.0)),
-        Row(
-            children: [
-                _activityHistoryButton(context),
-              Container(width: 8),
-              _LogoutButton()]),
-      ],
-    ));
+        builder: (context, state) => Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(padding: EdgeInsets.only(top: 8.0)),
+                _name(firstName, lastName),
+                _bigSmallText(context, "$points", "points"),
+                _bigSmallText(context, "12", "completed activities"),
+                Padding(padding: EdgeInsets.only(top: 18.0)),
+                Row(children: [
+                  _activityHistoryButton(context),
+                  Container(width: 8),
+                  _LogoutButton()
+                ]),
+              ],
+            ));
   }
 }
 
 class _ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         if (state is ProfileInitial) {
@@ -216,9 +212,7 @@ class _ProfilePage extends StatelessWidget {
         }
       },
     );
-
   }
-
 }
 
 class _UserInfoContainer extends StatelessWidget {
@@ -226,7 +220,7 @@ class _UserInfoContainer extends StatelessWidget {
 
   Material _buildInfoContainerWithChild(BuildContext context, Widget child) {
     return Material(
-        child: Container (
+        child: Container(
       padding: EdgeInsets.all(8.0),
       child: child,
     ));
@@ -244,7 +238,8 @@ class _UserInfoContainer extends StatelessWidget {
             Row(
               children: [
                 Padding(padding: EdgeInsets.fromLTRB(20, 0, 0, 0)),
-                _UserInfo(state.firstName, state.lastName, state.points, state.user),
+                _UserInfo(
+                    state.firstName, state.lastName, state.points, state.user),
               ],
             ),
           );
@@ -290,11 +285,11 @@ class _LogoutButton extends StatelessWidget {
                 fontFamily: "inter",
               ),
             ),
-            Container (
-              padding: EdgeInsets.only(right: 8),
-              child: Icon(
-              Icons.logout,
-            )),
+            Container(
+                padding: EdgeInsets.only(right: 8),
+                child: Icon(
+                  Icons.logout,
+                )),
           ],
         ),
       ),

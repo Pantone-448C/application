@@ -2,7 +2,6 @@ import 'package:application/models/activity.dart';
 import 'package:application/models/user.dart';
 import 'package:application/pages/profile/cubit/profile_state.dart';
 import 'package:application/repositories/user/i_user_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
@@ -21,7 +20,6 @@ class ProfileCubit extends Cubit<ProfileState> {
     completed.forEach((activity) {
       points += activity.points;
     });
-    emit(ProfileLoaded(user.firstName, user.lastName, points,
-        "", user));
+    emit(ProfileLoaded(user.firstName, user.lastName, points, "", user));
   }
 }

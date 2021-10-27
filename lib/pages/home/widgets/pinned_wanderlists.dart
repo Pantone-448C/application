@@ -1,9 +1,7 @@
 import 'package:application/apptheme.dart';
 import 'package:application/components/list_of_wanderlists.dart';
-import 'package:application/components/wanderlist_summary_item.dart';
-import 'package:application/pages/home/view/home_page.dart';
 import 'package:application/models/user_wanderlist.dart';
-import 'package:application/models/wanderlist.dart';
+import 'package:application/pages/home/view/home_page.dart';
 import 'package:application/pages/wanderlist/view/wanderlist.dart';
 import 'package:flutter/material.dart';
 
@@ -77,20 +75,19 @@ class _PinnedWanderlistsContent extends StatelessWidget {
         ),
       ),
       padding: EdgeInsets.all(10),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_contentTitle(context),
-            if (pinnedWanderlists.length > 0)
-              _wanderlists(context)
-            else
-              Center(child:
-              Container(
-                padding: EdgeInsets.all(16),
-                  child: Text("You have no lists yet!",
-                      style: Theme.of(context).textTheme.caption,
-                  )
-              ))
-          ]),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        _contentTitle(context),
+        if (pinnedWanderlists.length > 0)
+          _wanderlists(context)
+        else
+          Center(
+              child: Container(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    "You have no lists yet!",
+                    style: Theme.of(context).textTheme.caption,
+                  )))
+      ]),
     );
   }
 }

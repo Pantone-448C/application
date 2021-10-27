@@ -1,5 +1,4 @@
 import 'package:application/models/activity.dart';
-import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
 import 'package:equatable/equatable.dart';
 

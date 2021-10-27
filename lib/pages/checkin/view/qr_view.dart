@@ -2,13 +2,11 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:application/apptheme.dart';
-import 'package:application/pages/checkin/widgets/new_reward_dialog.dart';
-import 'package:application/pages/checkin/widgets/points_earned_dialog.dart';
 import 'package:application/components/activity_summary_item_large.dart';
 import 'package:application/models/activity.dart';
-import 'package:application/repositories/activity/activity_repository.dart';
+import 'package:application/pages/checkin/widgets/new_reward_dialog.dart';
+import 'package:application/pages/checkin/widgets/points_earned_dialog.dart';
 import 'package:application/repositories/user/rest_user_repository.dart';
-import 'package:application/repositories/user/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

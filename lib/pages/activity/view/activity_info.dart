@@ -1,5 +1,5 @@
-import 'package:application/pages/activity/cubit/activity_cubit.dart';
 import 'package:application/apptheme.dart';
+import 'package:application/pages/activity/cubit/activity_cubit.dart';
 import 'package:application/repositories/activity/rest_activity_repository.dart';
 import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';
@@ -23,26 +23,25 @@ class ActivityInfo extends StatelessWidget {
       child: Scaffold(
         backgroundColor: WanTheme.colors.offWhite,
         body: BlocBuilder<ActivityCubit, ActivityState>(
-          builder: (context, state) {
-            if (state is ActivityLoaded) {
-              return ListView(
-                children: [
-                  LocationImage(),
-                  Column(
-                    children: [
-                      _Title(),
-                      _PointsTooltip(),
-                    ],
-                  ),
-                  AboutBox(),
-                  SustainabilityBox(),
-                ],
-              );
-            } else {
-              return Center(child:CircularProgressIndicator());
-            }
+            builder: (context, state) {
+          if (state is ActivityLoaded) {
+            return ListView(
+              children: [
+                LocationImage(),
+                Column(
+                  children: [
+                    _Title(),
+                    _PointsTooltip(),
+                  ],
+                ),
+                AboutBox(),
+                SustainabilityBox(),
+              ],
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
           }
-        ),
+        }),
       ),
     );
   }
@@ -53,12 +52,12 @@ class LocationImage extends StatelessWidget {
     var state = context.read<ActivityCubit>().state as ActivityLoaded;
     return Stack(
       children: <Widget>[
-                Image(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(state.imgUrl),
-                  height: MediaQuery.of(context).size.width * 0.8,
-                  width: MediaQuery.of(context).size.width,
-                ),
+        Image(
+          fit: BoxFit.cover,
+          image: NetworkImage(state.imgUrl),
+          height: MediaQuery.of(context).size.width * 0.8,
+          width: MediaQuery.of(context).size.width,
+        ),
         Container(
           height: MediaQuery.of(context).size.width * 0.8,
           width: MediaQuery.of(context).size.width,
@@ -109,33 +108,33 @@ class _Title extends StatelessWidget {
 class _Details extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-      var state = context.read<ActivityCubit>().state as ActivityLoaded;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                padding: EdgeInsets.all(WanTheme.CARD_PADDING),
-                child: Text(
-                  state.name,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.black,
-                  ),
-                )),
-            Container(
-                padding: EdgeInsets.only(
-                    left: WanTheme.CARD_PADDING, bottom: WanTheme.CARD_PADDING),
-                child: Text(
-                  state.address,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ))
-          ],
-        );
-      }
+    var state = context.read<ActivityCubit>().state as ActivityLoaded;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+            padding: EdgeInsets.all(WanTheme.CARD_PADDING),
+            child: Text(
+              state.name,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Colors.black,
+              ),
+            )),
+        Container(
+            padding: EdgeInsets.only(
+                left: WanTheme.CARD_PADDING, bottom: WanTheme.CARD_PADDING),
+            child: Text(
+              state.address,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ))
+      ],
+    );
+  }
 }
 
 class _PointsTooltip extends StatelessWidget {
@@ -154,26 +153,26 @@ class _PointsTooltip extends StatelessWidget {
           bottom: _POINTSPADDING,
         ),
         child: Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      fontFamily: 'inter',
-                      color: WanTheme.colors.orange,
-                      fontSize: 17.0,
-                    ),
-                    children: [
-                      TextSpan(text: "Earn "),
-                      TextSpan(
-                        text: "${state.points.toString()} points",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextSpan(text: " from this activity")
-                    ],
-                  ),
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontFamily: 'inter',
+                color: WanTheme.colors.orange,
+                fontSize: 17.0,
+              ),
+              children: [
+                TextSpan(text: "Earn "),
+                TextSpan(
+                  text: "${state.points.toString()} points",
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
+                TextSpan(text: " from this activity")
+              ],
+            ),
           ),
         ),
-      );
+      ),
+    );
   }
 }
 
@@ -281,10 +280,10 @@ class AboutBox extends StatelessWidget {
                   )
                 ],
               ),
-                    Text(
-                      state.about,
-                      style: TextStyle(fontSize: 16),
-                    ),
+              Text(
+                state.about,
+                style: TextStyle(fontSize: 16),
+              ),
             ],
           ),
         ),
@@ -331,10 +330,10 @@ class SustainabilityBox extends StatelessWidget {
                   )
                 ],
               ),
-                    Text(
-                      state.sustainability,
-                      style: TextStyle(fontSize: 16),
-                    ),
+              Text(
+                state.sustainability,
+                style: TextStyle(fontSize: 16),
+              ),
             ],
           ),
         ),

@@ -1,21 +1,16 @@
 import 'package:application/models/activity.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
-import 'package:application/models/wanderlist.dart';
-import 'package:application/repositories/activity/activity_repository.dart';
 import 'package:application/repositories/activity/i_activity_repository.dart';
-import 'package:application/repositories/activity/rest_activity_repository.dart';
-import 'package:application/repositories/search/i_search_repository.dart';
-import 'package:application/repositories/search/search_repository.dart';
 import 'package:application/repositories/user/i_user_repository.dart';
-import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit(this.userRepository, this.activityRepository) : super(UserInitial()) {
+  UserCubit(this.userRepository, this.activityRepository)
+      : super(UserInitial()) {
     emit(UserInitial());
     getTripInfo();
   }

@@ -4,8 +4,6 @@ import 'package:application/models/user_wanderlist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'i_user_repository.dart';
-
 /// Deprecated - no longer up to date with spec
 class UserRepository {
   UserRepository() {

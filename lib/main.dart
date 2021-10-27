@@ -1,16 +1,13 @@
+import 'package:application/apptheme.dart';
+import 'package:application/pages/checkin/view/qr_view.dart';
 import 'package:application/pages/search/view/search.dart';
-import 'package:application/pages/signup/view/signup.dart';
-import 'package:application/titlebar.dart';
 import 'package:application/pages/userwanderlists/view/userwanderlists.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:application/apptheme.dart';
 
 import 'pages/home/view/home_page.dart';
 import 'pages/login/view/login.dart';
-import 'titlebar.dart';
-import 'package:application/pages/checkin/view/qr_view.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -79,7 +76,6 @@ class _AppContainerState extends State<AppContainer> {
   void _gotoPage(int page) {
     _pageController.jumpToPage(page);
   }
-
 
   @override
   Widget build(BuildContext context) {

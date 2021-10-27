@@ -1,8 +1,7 @@
-import 'package:application/pages/activity/view/activity_info.dart';
 import 'package:application/components/small_square_image.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/models/user_wanderlist.dart';
-import 'package:application/repositories/activity/activity_repository.dart';
+import 'package:application/pages/activity/view/activity_info.dart';
 import 'package:application/pages/wanderlist/view/wanderlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

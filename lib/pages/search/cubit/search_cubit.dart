@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:application/models/activity.dart';
+import 'package:application/pages/search/cubit/search_state.dart';
 import 'package:application/repositories/position/position.dart';
 import 'package:application/repositories/search/i_search_repository.dart';
-import 'package:application/pages/search/cubit/search_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 

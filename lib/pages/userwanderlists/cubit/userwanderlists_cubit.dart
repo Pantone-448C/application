@@ -1,11 +1,9 @@
-import 'package:application/pages/activity/cubit/activity_cubit.dart';
 import 'package:application/models/user.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
+import 'package:application/pages/userwanderlists/cubit/userwanderlists_state.dart';
 import 'package:application/repositories/user/i_user_repository.dart';
 import 'package:application/repositories/wanderlist/i_wanderlist_repository.dart';
-import 'package:application/pages/userwanderlists/cubit/userwanderlists_state.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
@@ -60,7 +58,8 @@ class UserWanderlistsCubit extends Cubit<UserWanderlistsState> {
     String creatorName = details.firstName + " " + details.lastName;
     Wanderlist wanderlist = Wanderlist("", name, creatorName, [], "");
     wanderlist = await wanderlistRepository.addWanderlist(wanderlist);
-    UserWanderlist userWanderlist = UserWanderlist(wanderlist, [], false, 0, wanderlist.id);
+    UserWanderlist userWanderlist =
+        UserWanderlist(wanderlist, [], false, 0, wanderlist.id);
     await userRepository.addUserWanderlist(userWanderlist);
     await _loadLists();
   }

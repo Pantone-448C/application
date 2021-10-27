@@ -1,8 +1,9 @@
 import 'package:application/models/activity.dart';
 import 'package:application/repositories/activity/i_activity_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:map_launcher/map_launcher.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:map_launcher/map_launcher.dart';
+
 part 'activity_state.dart';
 
 class ActivityCubit extends Cubit<ActivityState> {
@@ -19,7 +20,8 @@ class ActivityCubit extends Cubit<ActivityState> {
 
   Future<void> getActivityInfo() async {
     var a = await activityRepository.getActivity(id);
-    emit(ActivityLoaded(a.name, a.address, a.points, a.about, a.sustainability, a.imageUrl));
+    emit(ActivityLoaded(
+        a.name, a.address, a.points, a.about, a.sustainability, a.imageUrl));
   }
 
   Future<void> launchMaps() async {

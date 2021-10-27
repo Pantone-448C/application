@@ -1,10 +1,6 @@
 import 'package:application/apptheme.dart';
-import 'package:application/repositories/user/rest_user_repository.dart';
-import 'package:application/pages/rewards/cubit/rewards_list_cubit.dart';
-import 'package:application/pages/rewards/cubit/rewards_list_state.dart';
 import 'package:application/pages/rewards/view/reward_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UnusedRewardsDropdown extends StatelessWidget {
   UnusedRewardsDropdown(this.width, this.height, this.unusedRewards);

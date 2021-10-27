@@ -14,13 +14,13 @@ class UserLoading implements UserState {
 
 class UserLoaded extends Equatable implements UserState {
   const UserLoaded(
-      this.points,
-      this.pointsUntilReward,
-      this.nextRewardTotalPoints,
-      this.percentageUntilReward,
-      this.pinnedWanderlists,
+    this.points,
+    this.pointsUntilReward,
+    this.nextRewardTotalPoints,
+    this.percentageUntilReward,
+    this.pinnedWanderlists,
     this.numRewards,
-      this.recommendedActivities,
+    this.recommendedActivities,
   );
 
   final int points;
@@ -40,5 +40,5 @@ class UserLoaded extends Equatable implements UserState {
         pinnedWanderlists,
         numRewards,
         recommendedActivities,
-  ];
+      ];
 }

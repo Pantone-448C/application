@@ -1,7 +1,4 @@
-import 'package:application/pages/userwanderlists/cubit/userwanderlists_cubit.dart';
-import 'package:application/pages/userwanderlists/cubit/userwanderlists_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NewWanderlistDialog extends StatelessWidget {
   NewWanderlistDialog(this.parentCubit);

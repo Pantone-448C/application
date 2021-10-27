@@ -69,17 +69,16 @@ class ActivitySuggestions extends StatelessWidget {
         if (state is suggestionsState.Initial) {
           context.read<SuggestionsCubit>().loadSuggestions(state.wanderlistId);
         } else if (state is suggestionsState.Loaded) {
-          return Material (
-              borderRadius: BorderRadius.all(Radius.circular(WanTheme.CARD_CORNER_RADIUS)),
-          color: Colors.white,
-          child: Container (
-            padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Column (
-            children: [
-              for (var activity in state.activities)
-                _SuggestionsItem(activity),
-            ]
-          )));
+          return Material(
+              borderRadius: BorderRadius.all(
+                  Radius.circular(WanTheme.CARD_CORNER_RADIUS)),
+              color: Colors.white,
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: Column(children: [
+                    for (var activity in state.activities)
+                      _SuggestionsItem(activity),
+                  ])));
         }
 
         return Container();
@@ -95,10 +94,14 @@ class _SuggestionsItem extends StatelessWidget {
   final ActivityDetails activity;
 
   Widget addButton(BuildContext context, wanderlistState.Editing state) {
-    return IconButton(icon: Icon(Icons.add_circle_outline_rounded),
-          color: WanColors().pink, onPressed: () {
-              context.read<WanderlistCubit>().addActivity(state.wanderlist, activity);
-            });
+    return IconButton(
+        icon: Icon(Icons.add_circle_outline_rounded),
+        color: WanColors().pink,
+        onPressed: () {
+          context
+              .read<WanderlistCubit>()
+              .addActivity(state.wanderlist, activity);
+        });
   }
 
   Widget successfullyAddedIcon() {

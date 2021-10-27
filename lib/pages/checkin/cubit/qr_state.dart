@@ -1,7 +1,6 @@
 import 'package:application/models/activity.dart';
 import 'package:application/models/reward.dart';
 import 'package:application/models/user.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrScannerState {
   const QrScannerState();

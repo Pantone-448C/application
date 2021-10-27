@@ -1,14 +1,14 @@
 import 'package:application/components/activity_summary_item_small.dart';
 import 'package:application/components/searchfield.dart';
-import 'package:application/repositories/search/search_repository.dart';
 import 'package:application/pages/search/cubit/search_cubit.dart';
 import 'package:application/pages/search/cubit/search_state.dart';
 import 'package:application/pages/search/view/mapwidget.dart';
+import 'package:application/repositories/search/search_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+
 import '../../../apptheme.dart';
 
 class SearchPage extends StatelessWidget {
@@ -68,7 +68,9 @@ class _ActivityPreview extends StatelessWidget {
 
 class _SearchPage extends StatelessWidget {
   final ScrollController sc;
+
   _SearchPage(this.sc);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -123,6 +125,7 @@ class _SearchBar extends StatelessWidget {
 
 class _ActivityPage extends StatelessWidget {
   final ScrollController sc;
+
   _ActivityPage(this.sc);
 
   @override

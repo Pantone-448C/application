@@ -1,6 +1,5 @@
 import 'package:application/models/user.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 
 abstract class ProfileState {
   const ProfileState();
@@ -11,7 +10,8 @@ class ProfileInitial implements ProfileState {
 }
 
 class ProfileLoaded extends Equatable implements ProfileState {
-  const ProfileLoaded(this.firstName, this.lastName, this.points, this.imgUrl, this.user);
+  const ProfileLoaded(
+      this.firstName, this.lastName, this.points, this.imgUrl, this.user);
 
   final UserDetails user;
   final String firstName;
@@ -34,7 +34,7 @@ class ProfileLoaded extends Equatable implements ProfileState {
       lastName ?? this.lastName,
       points ?? this.points,
       imgUrl ?? this.imgUrl,
-      user?? this.user,
+      user ?? this.user,
     );
   }
 }

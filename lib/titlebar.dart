@@ -1,5 +1,4 @@
 import 'package:application/apptheme.dart';
-import 'package:application/pages/activity/view/activity_info.dart';
 import 'package:application/pages/profile/view/profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ void handleProfileButton(BuildContext context) {
 }
 
 class Titlebar extends StatelessWidget implements PreferredSizeWidget {
-
   static const titleSize = 30.0;
   static const barHeight = WanTheme.TITLEBAR_HEIGHT;
 

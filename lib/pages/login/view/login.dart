@@ -1,12 +1,11 @@
+import 'package:application/apptheme.dart';
 import 'package:application/pages/login/cubit/login_cubit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:application/sizeconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import '../../signup/view/signup.dart';
-import 'package:application/apptheme.dart';
-import 'package:application/sizeconfig.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -28,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
 class LoginForm extends StatelessWidget {
   static const horizontalInset = 30.0;
   static const topInset = 50.0;
+
   LoginForm({Key? key}) : super(key: key);
 
   void showError(BuildContext context, String reason) {
@@ -35,7 +35,7 @@ class LoginForm extends StatelessWidget {
     if (reason == "user-not-found") {
       heading = "Couldn't log in";
       body = "No user found with that email address";
-    } else if (reason == "wrong-password"){
+    } else if (reason == "wrong-password") {
       heading = "Couldn't log in";
       body = "Invalid password";
     } else {
@@ -56,6 +56,7 @@ class LoginForm extends StatelessWidget {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(

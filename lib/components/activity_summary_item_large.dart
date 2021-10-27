@@ -1,12 +1,10 @@
-import 'package:application/pages/activity/view/activity_info.dart';
 import 'package:application/models/activity.dart';
+import 'package:application/pages/activity/view/activity_info.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'activity_summary_item_small.dart';
 import '../apptheme.dart';
 import '../sizeconfig.dart';
+import 'activity_summary_item_small.dart';
 
 class ActivitySummaryItemLarge extends ActivitySummaryItemSmall {
   final ActivityDetails activity;
@@ -15,43 +13,39 @@ class ActivitySummaryItemLarge extends ActivitySummaryItemSmall {
   final bool? complete;
 
   ActivitySummaryItemLarge(this.activity,
-      {Key? key,
-        this.complete,
-      this.width = 375,
-      this.height = 75.0 * 3.4}) : super(activity: activity);
+      {Key? key, this.complete, this.width = 375, this.height = 75.0 * 3.4})
+      : super(activity: activity);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector (
-        onTap:() => Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ActivityInfo(activity.id))),
-    child: Container(
-        height: SizeConfig(context).w / 2 + 75,
-        width: SizeConfig(context).w,
-        color: Colors.transparent,
+    return GestureDetector(
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ActivityInfo(activity.id))),
         child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                    Radius.circular(WanTheme.CARD_CORNER_RADIUS))),
-            child: Column(children: <Widget>[
-              Expanded(
-                  flex: 0,
-                  child:
-                      _ImageComponent(this.width, this.height, activity.imageUrl)),
-              Row(children: <Widget>[
-                Expanded(
-                    child: Container(
-                        padding: const EdgeInsets.all(8),
-                        child:
-                            _TextComponent(activity.name, activity.about))),
-                Container (
-                  padding: EdgeInsets.only(right: 8),
-                    child: Icon(Icons.chevron_right, color: Colors.grey)),
-              ]),
-            ]))));
+            height: SizeConfig(context).w / 2 + 75,
+            width: SizeConfig(context).w,
+            color: Colors.transparent,
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(WanTheme.CARD_CORNER_RADIUS))),
+                child: Column(children: <Widget>[
+                  Expanded(
+                      flex: 0,
+                      child: _ImageComponent(
+                          this.width, this.height, activity.imageUrl)),
+                  Row(children: <Widget>[
+                    Expanded(
+                        child: Container(
+                            padding: const EdgeInsets.all(8),
+                            child:
+                                _TextComponent(activity.name, activity.about))),
+                    Container(
+                        padding: EdgeInsets.only(right: 8),
+                        child: Icon(Icons.chevron_right, color: Colors.grey)),
+                  ]),
+                ]))));
   }
 }
 

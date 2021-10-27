@@ -1,10 +1,7 @@
 import 'package:application/apptheme.dart';
 import 'package:application/components/activity_summary_item_small.dart';
-import 'package:application/components/searchfield.dart';
 import 'package:application/models/activity.dart';
-import 'package:application/models/user_wanderlist.dart';
 import 'package:application/models/wanderlist.dart';
-import 'package:application/repositories/wanderlist/wanderlist_repository.dart';
 import 'package:application/pages/wanderlist/cubit/wanderlist_cubit.dart';
 import 'package:application/pages/wanderlist/cubit/wanderlist_state.dart';
 import 'package:application/pages/wanderlist/widgets/add_activity.dart';
@@ -26,57 +23,59 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   _AppBar();
 
   static const barHeight = WanTheme.TITLEBAR_HEIGHT;
+
   @override
   Size get preferredSize => Size.fromHeight(barHeight);
 
   Widget _cancelButton(BuildContext context) {
-    return TextButton (
-      child: Row(children: [Icon(Icons.arrow_back, color: Theme.of(context).accentColor),
+    return TextButton(
+      child: Row(children: [
+        Icon(Icons.arrow_back, color: Theme.of(context).accentColor),
         Text(" Cancel"),
       ]),
       onPressed: () {
-         context.read<WanderlistCubit>().cancelEdit();
-         Navigator.of(context).pop(true);
+        context.read<WanderlistCubit>().cancelEdit();
+        Navigator.of(context).pop(true);
       },
     );
   }
 
   Widget _saveButton(BuildContext context) {
-    return TextButton (
+    return TextButton(
         onPressed: () {
           context.read<WanderlistCubit>().endEdit();
           Navigator.of(context).pop(true);
         },
-        child: Row (children: [Icon(Icons.check_rounded),
-          Text("  Save")]));
+        child: Row(children: [Icon(Icons.check_rounded), Text("  Save")]));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<WanderlistCubit, WanderlistState>(
-      listener: (context, state) => {},
-      builder: (context, state) {
-        if (state is Editing) {
-          if (state.isChanged) {
-            return AppBar(
-              backgroundColor: Colors.white,
-              title: Text("Wanderlist", style: TextStyle(color: WanTheme.colors.pink)),
-              centerTitle: true,
-              actions: [_saveButton(context)],
-              leading: _cancelButton(context),
-              leadingWidth: 100,
-            );
-          } else {
-            return AppBar(
-              backgroundColor: Colors.white,
-              title: Text("Wanderlist", style: TextStyle(color: WanTheme.colors.pink)),
-              centerTitle: true,
-            );
+        listener: (context, state) => {},
+        builder: (context, state) {
+          if (state is Editing) {
+            if (state.isChanged) {
+              return AppBar(
+                backgroundColor: Colors.white,
+                title: Text("Wanderlist",
+                    style: TextStyle(color: WanTheme.colors.pink)),
+                centerTitle: true,
+                actions: [_saveButton(context)],
+                leading: _cancelButton(context),
+                leadingWidth: 100,
+              );
+            } else {
+              return AppBar(
+                backgroundColor: Colors.white,
+                title: Text("Wanderlist",
+                    style: TextStyle(color: WanTheme.colors.pink)),
+                centerTitle: true,
+              );
+            }
           }
-          }
-        return Container();
-      }
-    );
+          return Container();
+        });
   }
 }
 
@@ -86,10 +85,9 @@ class _EditWanderlistBody extends StatelessWidget {
     return BlocConsumer<WanderlistCubit, WanderlistState>(
       builder: (context, state) {
         if (state is Editing) {
-          return
-              Container (
-                padding: EdgeInsets.all(8),
-              child: ListView (
+          return Container(
+              padding: EdgeInsets.all(8),
+              child: ListView(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 8.0, right: 8.0),
@@ -110,8 +108,6 @@ class _EditWanderlistBody extends StatelessWidget {
                   ),
                   Padding(padding: EdgeInsets.only(top: 10)),
                   ActivitySuggestions(),
-
-
                 ],
               ));
         }
@@ -142,8 +138,7 @@ class _EditNameTextfield extends StatelessWidget {
       builder: (context, WanderlistState state) {
         if (state is Editing) {
           return TextField(
-            style: TextStyle(color: Colors.black,
-            fontSize: 24),
+            style: TextStyle(color: Colors.black, fontSize: 24),
             textAlign: TextAlign.center,
             maxLines: null,
             keyboardType: TextInputType.text,
@@ -219,7 +214,8 @@ class _EditableActivityList extends StatelessWidget {
 }
 
 class _EditableActivityListItem extends StatelessWidget {
-  _EditableActivityListItem(this.key, this.activity, this.remove, this.showRemove);
+  _EditableActivityListItem(
+      this.key, this.activity, this.remove, this.showRemove);
 
   final bool showRemove;
   final Key key;
@@ -230,14 +226,14 @@ class _EditableActivityListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     if (showRemove) {
       return ActivitySummaryItemSmall(
-          width: MediaQuery.of(context).size.width,
-          activity: activity,
-          rightWidget: IconButton(icon:
-          Icon(Icons.remove_circle_outline_outlined, color: Colors.grey),
-            onPressed: () => remove(),
-          ),
-          smallIcon: true,
-        );
+        width: MediaQuery.of(context).size.width,
+        activity: activity,
+        rightWidget: IconButton(
+          icon: Icon(Icons.remove_circle_outline_outlined, color: Colors.grey),
+          onPressed: () => remove(),
+        ),
+        smallIcon: true,
+      );
     } else {
       return ActivitySummaryItemSmall(
         width: MediaQuery.of(context).size.width,

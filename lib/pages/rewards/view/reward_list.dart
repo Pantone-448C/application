@@ -1,16 +1,14 @@
-import 'dart:developer';
 
 import 'package:application/apptheme.dart';
 import 'package:application/components/rewards/reward_card.dart';
 import 'package:application/components/rewards/reward_details_popup.dart';
 import 'package:application/models/reward.dart';
-import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:application/pages/rewards/cubit/rewards_list_cubit.dart';
 import 'package:application/pages/rewards/cubit/rewards_list_state.dart';
+import 'package:application/repositories/user/rest_user_repository.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 class RewardsList extends StatelessWidget {
   RewardsList({
