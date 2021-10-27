@@ -1,4 +1,4 @@
-import 'package:application/apptheme.dart';
+import 'package:application/components/apptheme.dart';
 import 'package:application/components/searchfield.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/user_wanderlist.dart';

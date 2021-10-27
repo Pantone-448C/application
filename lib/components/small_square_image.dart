@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../apptheme.dart';
+import 'apptheme.dart';
 
 class SmallSquareImage extends StatelessWidget {
   final double parentWidth;

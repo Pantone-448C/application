@@ -1,4 +1,4 @@
-import 'package:application/apptheme.dart';
+import 'package:application/components/apptheme.dart';
 import 'package:application/pages/home/widgets/unused_rewards_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_widgets/gradient_widgets.dart';

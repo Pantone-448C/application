@@ -6,7 +6,7 @@ import 'package:application/pages/wanderlist/view/wanderlist.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../../apptheme.dart';
+import '../../../components/apptheme.dart';
 
 class DetailedWanderlistSummary extends StatelessWidget {
   final double width;

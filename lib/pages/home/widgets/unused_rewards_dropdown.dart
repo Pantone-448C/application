@@ -1,4 +1,4 @@
-import 'package:application/apptheme.dart';
+import 'package:application/components/apptheme.dart';
 import 'package:application/pages/rewards/view/reward_list.dart';
 import 'package:flutter/material.dart';
 

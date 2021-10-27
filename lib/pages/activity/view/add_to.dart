@@ -9,7 +9,7 @@ import 'package:application/repositories/wanderlist/rest_wanderlist_repository.d
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../apptheme.dart';
+import '../../../components/apptheme.dart';
 
 class _PageBody extends StatelessWidget {
   final _nameController = TextEditingController();

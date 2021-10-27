@@ -1,4 +1,4 @@
-import 'package:application/apptheme.dart';
+import 'package:application/components/apptheme.dart';
 import 'package:application/components/activity_summary_item_small.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/models/wanderlist.dart';

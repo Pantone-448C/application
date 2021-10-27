@@ -1,4 +1,4 @@
-import 'package:application/apptheme.dart';
+import 'package:application/components/apptheme.dart';
 import 'package:application/pages/activity/cubit/activity_cubit.dart';
 import 'package:application/repositories/activity/rest_activity_repository.dart';
 import 'package:flutter/material.dart';

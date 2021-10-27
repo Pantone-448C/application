@@ -1,4 +1,4 @@
-import 'package:application/apptheme.dart';
+import 'package:application/components/apptheme.dart';
 import 'package:application/pages/checkin/view/qr_view.dart';
 import 'package:application/pages/search/view/search.dart';
 import 'package:application/pages/userwanderlists/view/userwanderlists.dart';

@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:application/apptheme.dart';
+import 'package:application/components/apptheme.dart';
 import 'package:application/components/activity_summary_item_large.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/pages/checkin/widgets/new_reward_dialog.dart';

@@ -1,4 +1,4 @@
-import 'package:application/apptheme.dart';
+import 'package:application/components/apptheme.dart';
 import 'package:application/components/list_of_wanderlists.dart';
 import 'package:application/models/user_wanderlist.dart';
 import 'package:application/pages/home/view/home_page.dart';

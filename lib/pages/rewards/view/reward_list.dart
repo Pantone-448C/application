@@ -1,5 +1,5 @@
 
-import 'package:application/apptheme.dart';
+import 'package:application/components/apptheme.dart';
 import 'package:application/components/rewards/reward_card.dart';
 import 'package:application/components/rewards/reward_details_popup.dart';
 import 'package:application/models/reward.dart';

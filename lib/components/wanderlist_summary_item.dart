@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../apptheme.dart';
+import 'apptheme.dart';
 
 class GetListSummary extends StatelessWidget {
   final String activity;
