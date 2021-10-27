@@ -4,7 +4,9 @@ This is the repository that stores the application code for WanderList, being bu
 ## Running the application
 
 ### Installation
-Note that this requires the `flutter` and `adb` command line utilities to be installed. 
+Note that this requires the `flutter` and `adb` command line utilities to be installed. See the installation guides for [flutter](https://flutter.dev/docs/get-started/install) and [adb](https://developer.android.com/studio/command-line/adb)
+
+
 ```bash
 git clone https://www.github.com/Pantone-448C/application.git && cd application
 ```
