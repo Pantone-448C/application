@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../apptheme.dart';
+import 'apptheme.dart';
 
 class SmallSquareImage extends StatelessWidget {
   final double parentWidth;
@@ -16,7 +16,8 @@ class SmallSquareImage extends StatelessWidget {
         aspectRatio: 1 / 1,
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(WanTheme.THUMB_CORNER_RADIUS)),
+              borderRadius: BorderRadius.all(
+                  Radius.circular(WanTheme.THUMB_CORNER_RADIUS)),
               image: DecorationImage(
                 fit: BoxFit.fitHeight,
                 alignment: FractionalOffset.topCenter,

@@ -1,10 +1,8 @@
-import 'package:application/activity/view/activity_info.dart';
 import 'package:application/models/activity.dart';
+import 'package:application/pages/activity/view/activity_info.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../apptheme.dart';
+import 'apptheme.dart';
 
 class ActivitySummaryItemSmall extends StatelessWidget {
   final double height;

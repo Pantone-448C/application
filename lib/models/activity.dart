@@ -5,11 +5,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 @immutable
 class ActivityDetails extends Equatable {
-  ActivityDetails(this.id, this.name, this.about, this.sustainability, 
+  ActivityDetails(this.id, this.name, this.about, this.sustainability,
       this.imageUrl, this.address, this.points, this.tags);
 
   factory ActivityDetails.fromJson(Map<String, dynamic> json) {
-
     var a = ActivityDetails(
       json["id"],
       json['name'],
@@ -24,9 +23,9 @@ class ActivityDetails extends Equatable {
     if (json.containsKey("location")) {
       if (json["location"] is GeoPoint) {
         // is GeoPoint from firebase
-        a.location = LatLng(json["location"].latitude, json["location"].longitude);
-      }
-      else if (json["location"].containsKey("type")) {
+        a.location =
+            LatLng(json["location"].latitude, json["location"].longitude);
+      } else if (json["location"].containsKey("type")) {
         // is GeoJSON from mongo db
         a.location = LatLng(json['location']["coordinates"][1],
             json["location"]['coordinates'][0]);
@@ -51,7 +50,6 @@ class ActivityDetails extends Equatable {
   @override
   List<Object?> get props =>
       [id, name, about, sustainability, imageUrl, address, points];
-
 
   Map<String, dynamic> toRef() {
     return {
@@ -88,7 +86,7 @@ class ActivityDetails extends Equatable {
       imageUrl ?? this.imageUrl,
       address ?? this.address,
       points ?? this.points,
-      tags?? this.tags,
+      tags ?? this.tags,
     );
   }
 }

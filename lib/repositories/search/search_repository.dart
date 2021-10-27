@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-import 'package:application/activity/view/activity_info.dart';
 import 'package:application/models/activity.dart';
 import 'package:application/repositories/rest_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'i_search_repository.dart';
 import 'package:http/http.dart' as http;
 
+import 'i_search_repository.dart';
 
 class SearchRepository implements ISearchRepository {
   static const API_BASE_PATH = "/activity";
@@ -21,17 +20,24 @@ class SearchRepository implements ISearchRepository {
   }
 
   _getToken() async {
-    return {"authorization": await FirebaseAuth.instance.currentUser!.getIdToken()};
+    return {
+      "authorization": await FirebaseAuth.instance.currentUser!.getIdToken()
+    };
   }
 
   @override
-  Future<List<ActivityDetails>> getNear(double lat, double lon, {double range=50}) async {
+  Future<List<ActivityDetails>> getNear(double lat, double lon,
+      {double range = 50}) async {
     final uri = Uri(
-      scheme: API_SCHEME,
-      host: API_HOST,
-      path: API_BASE_PATH + "/near",
-      port: API_PORT,
-      queryParameters: {"lat": lat.toString(), "lon": lon.toString(), "range": range.toString()});
+        scheme: API_SCHEME,
+        host: API_HOST,
+        path: API_BASE_PATH + "/near",
+        port: API_PORT,
+        queryParameters: {
+          "lat": lat.toString(),
+          "lon": lon.toString(),
+          "range": range.toString()
+        });
 
     final response = await http.get(uri, headers: await _getToken());
 
@@ -61,5 +67,4 @@ class SearchRepository implements ISearchRepository {
 
     throw Exception(["Bad request"]);
   }
-
 }

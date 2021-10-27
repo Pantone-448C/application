@@ -1,4 +1,4 @@
-import 'package:application/apptheme.dart';
+import 'package:application/components/apptheme.dart';
 import 'package:application/components/searchfield.dart';
 import 'package:application/components/wanderlist_summary_item.dart';
 import 'package:application/models/user_wanderlist.dart';
@@ -77,15 +77,16 @@ class _ListOfWanderlistsState extends State<ListOfWanderlists> {
     );
 
     if (widget.searchable) {
-      return Stack (
-        children: [list,
-        Padding (
-          padding: EdgeInsets.all(8),
-            child:  Material (
-        borderRadius: BorderRadius.circular(25),
-          shadowColor: Colors.grey.withOpacity(0.5),
-          elevation: 5,
-          child: searchBar)),
+      return Stack(
+        children: [
+          list,
+          Padding(
+              padding: EdgeInsets.all(8),
+              child: Material(
+                  borderRadius: BorderRadius.circular(25),
+                  shadowColor: Colors.grey.withOpacity(0.5),
+                  elevation: 5,
+                  child: searchBar)),
         ],
       );
     } else {

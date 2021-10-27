@@ -5,5 +5,4 @@ class EditableText extends StatelessWidget {
   Widget build(BuildContext context) {
     throw UnimplementedError();
   }
-
 }
